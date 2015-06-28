@@ -9,6 +9,18 @@ var fs = require('fs');
 var source_url = {check: '', review: ''};
 var target_url = {check: '', review: ''};
 
+//根据ID获取医生信息
+router.get('/info', function (req, res, next) {
+    var doctor_id = req.param('doctor_id');
+    req.models.doctor.get(doctor_id, function (err, item) {
+        if (err) {
+            res.json(result(false, err.msg, {}));
+        } else {
+            res.json(result(true, '', item));
+        }
+    });
+});
+
 //获取出院的病人
 router.get('/out_sicks', function (req, res, next) {
     var doctor_id = req.param('doctor_id');
