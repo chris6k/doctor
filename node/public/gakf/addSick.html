@@ -200,7 +200,7 @@
 				}); 
 		    }
 		    
-		    $(".my-collapse .secondCon").on("touchstart",function(){
+		    $(".my-collapse").on("touchstart",".secondCon",function(){
 				var p =$(this).parent().parent();
 				p.find(".detail").html($(this).html());
 				p.find(".detailInput").val($(this).attr("alt"));
