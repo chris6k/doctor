@@ -18,7 +18,7 @@
 				<span class="header r" alt="1">我是病人</span>
 			</div>
 		</div>
-		<form id="signForm" method="post" onsubmit="return false;">
+		<form id="signForm" method="post">
 			<div class="form-group">
 				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="账号" ms-duplex="d.username">
 			</div>
@@ -38,7 +38,7 @@
 			<input type="hidden" id="type" value="doctor" ms-duplex-string="d.type" name="type">
 			<div class="form-group text-right row">
 				<div class="col-xs-11">
-					<button type="submit" class="btn btn-primary my-button" >登录</button>
+					<button type="submit"  class="btn btn-primary my-button" >登录</button>
 				</div>
 			</div>
 			
@@ -87,7 +87,7 @@
 					}
 				});
 
-			reg.validate("signForm");
+			reg.validate("signForm",vm);
 
 		});
 	</script>
