@@ -159,6 +159,9 @@
 					data:{sick:d},
 					success: function(d){
 						console.log(d.success);
+						if(d.success){
+							window.location.href= "sick.html?doctor_id="+d.content.doctor_id;
+						}
 		    		},
 		    		error:function(){
 
