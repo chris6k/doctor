@@ -104,7 +104,7 @@ router.post('/reg', function (req, res, next) {
         if (err || !doctor || doctor.length == 0) {
             res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
         } else {
-            req.models.sick.find({bed_no: bed_no, doctor_name: doctor_name, name: name}, function (err, sick) {
+            req.models.sick.find({bed_id: bed_no, doctor_name: doctor_name, name: name}, function (err, sick) {
                 if (err) {
                     res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
                 } else if (sick && sick.length > 0) {
