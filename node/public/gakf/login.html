@@ -18,12 +18,12 @@
 				<span class="header r" alt="1">我是病人</span>
 			</div>
 		</div>
-		<form id="signForm" method="post">
+		<form id="signForm" method="post" action="/user/login">
 			<div class="form-group">
-				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="账号" ms-duplex="d.username">
+				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="账号" >
 			</div>
 			<div class="form-group ">
-				<input type="password" class="form-control my-input password" id="password" name="password" placeholder="密码" ms-duplex="d.password"/>
+				<input type="password" class="form-control my-input password" id="password" name="password" placeholder="密码" />
 			</div>
 			<div class="form-group row sign-control">
 				<div class="col-xs-4">
@@ -35,61 +35,35 @@
 				 <a href="#">忘记密码</a>
 				</div>
 			</div>
-			<input type="hidden" id="type" value="doctor" ms-duplex-string="d.type" name="type">
+			<input type="hidden" id="type" value="doctor"  name="type">
 			<div class="form-group text-right row">
 				<div class="col-xs-11">
 					<button type="submit"  class="btn btn-primary my-button" >登录</button>
 				</div>
 			</div>
-			
+			<input type="hidden" name="wx_id" value="11">
 		</form>
 		
 	</div>
 	<script type="text/javascript">
-	require(["validate.form","avalon"],function(reg){
-			
-				var data = {
-		            "username":"",
-		            "password":"",
-		            "type":""
-				}
-				var vm = avalon.define({
-		          $id: "test",
-		          d:data,
-		          save:function(){
-		          	var d = JSON.stringify(vm.d.$model);
-		          	$.ajax({
-		          		type:"post",
-						url: "/user/login",
-						dataType: "json", 
-						data:d,
-						success: function(d){
-							console.log(d);
-			    		},
-			    		error:function(){
+	require(["validate.form"],function(reg){
 
-			    		}
-		          	})
-		          }
-			    });
-			    avalon.scan();
-
-				$("#header-con").on("touchstart",'.header',function(){
-					$("#header-con").find(".header").removeClass("selected");
-					$(this).addClass("selected");
-					var info = $(this).attr("alt");
-					if(info == 1){
-						$(".register").show();
-						$("#type").val("sick");
-					}else{
-						$(".register").hide();
-						$("#type").val("doctor");
-					}
-				});
-
-			reg.validate("signForm",vm);
-
+		$("#header-con").on("touchstart",'.header',function(){
+			$("#header-con").find(".header").removeClass("selected");
+			$(this).addClass("selected");
+			var info = $(this).attr("alt");
+			if(info == 1){
+				$(".register").show();
+				$("#type").val("sick");
+			}else{
+				$(".register").hide();
+				$("#type").val("doctor");
+			}
 		});
+
+		reg.validate("signForm",vm);
+
+	});
 	</script>
 </body>
 </html>
