@@ -8,6 +8,7 @@ var auth_url = 'http://guanaikangfu.com/user/callback';
 var db_define = require('./db/define');
 var orm = require('orm');
 var app = express();
+app.listen(80, '0.0.0.0');
 var weixin = require('./biz/weixin');
 weixin(app);
 app.use(orm.express("mysql://guanai:guanai@rdsnsbba6rlncdjwb97bd.mysql.rds.aliyuncs.com/guanai", {
@@ -92,6 +93,7 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
+
 
 
 module.exports = app;
