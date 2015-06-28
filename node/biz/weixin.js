@@ -4,9 +4,9 @@ var weixin_biz = function (app) {
 // 微信接入配置
     weixin.configurate({
         app: app,
-        token: '你的token',
-        appid: '你的appid',
-        secret: '你的srcret'
+        token: 'guanai',
+        appid: 'wx9b2bbce36613b66e',
+        secret: 'b4c3079540dd4b57269a09b5e2d36dc0'
     });
 
     // 监听文本消息

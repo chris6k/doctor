@@ -1,10 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var result = require('./result');
+var weixin = require('weixin-apis');
 //TODO
 var login_url = '';
 var target_url = {sick: '', doctor: ''};
 var reg_url = '';
+
+router.post('/callback', function (req, res, next) {
+    var code = req.param("CODE");
+});
 
 router.post('/login', function (req, res, next) {
     var username = req.param('username');
