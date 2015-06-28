@@ -192,7 +192,7 @@
 					url: "/sick/info?id="+id,
 					dataType: "json", 
 					success: function(obj){
-						vmodel.d = obj.content;
+						vmodel.d = $.extend(data,obj.content);
 		    		},
 		    		error:function(){
 
