@@ -60,7 +60,7 @@ router.post('/login', function (req, res, next) {
         if (err) {
             res.redirect(login_url + "?err=2&wx_id=" + wx_id);
         } else if (data && data.length > 0) {
-            if (data[0].status === 't' && (data[0].type === type)) {
+            if (data[0].status === 't') {
                 //todo
                 res.redirect(target_url[type]);
             } else {
