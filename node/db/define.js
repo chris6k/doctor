@@ -1,5 +1,5 @@
 var define = function (db, models) {
-
+    db.settings.set('instance.cache', false);
     //医生表
     models.doctor = db.define('doctor', {
         name: {type: 'text'},
