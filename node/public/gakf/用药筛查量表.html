@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>用药筛查量表</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+</head>
+<body>
+	<div class="">
+		<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top">
+		  <div id="my-tab">
+		    <div class="col-xs-3 text-center my-nav-line selected">
+		    	<a href="">阵痛</a>
+		    </div>
+		    <div class="col-xs-3 text-center my-nav-line">
+		    	<a href="">抗骨松</a>
+		    </div>
+		    <div class="col-xs-3 text-center my-nav-line">
+		    	<a href="">抗凝</a>
+		    </div>
+		    <div class="col-xs-3 text-center my-nav-line">
+		    	<a href="">手术</a>
+		    </div>
+		  </div>
+		</nav>
+		<div style="margin-top:45px;"></div>
+		<span style="margin: 10px;display: inline-block;">请选择患者是否有以下禁忌状况：</span>
+		<ul class="list-group" id="gradeList">
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>对曲马多过敏 </span>
+		  	</div>
+		  	<div class="col-xs-4">
+		  		<span alt= "0" class="tag"></span>
+		  	</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>酒精、安眠药、镇痛剂或其它精神 药物急性中毒 </span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "1" class="tag"></span>
+			  	<span class="right tagcon sl8"></span>
+		  	</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>严重心血管疾病</span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "1" class="tag"></span>
+			  	<span class="right tagcon sl8"></span>
+			 </div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>急性心肌梗</span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "2" class="tag"></span>
+		  		<span class="right tagcon sl8"></span>
+			</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>惊厥</span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "1" class="tag"></span>
+			  	<span class="right tagcon sl8"></span>
+			</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>对塞来昔布过敏</span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "1" class="tag"></span>
+			  	<span class="right tagcon sl8"></span>
+			</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>对磺胺过敏</span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "2" class="tag"></span>
+			  	<span class="right tagcon sl8"></span>
+			</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>服用阿司匹林或其他NSAIDs后诱发哮喘、 荨麻疹或过敏 </span>
+		  	</div>
+		  	<div class="col-xs-4">
+			  	<span alt= "2" class="tag"></span>
+			  	<span class="right tagcon sl8"></span>
+			</div>
+		  	<span></span>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-8">
+		  		<span>冠状动脉搭桥手术（CABG）围手术期疼痛 </span>
+		  	</div>
+		  	<div class="col-xs-4">
+		  	<span alt= "1" class="tag"></span>
+		  	<span class="right tagcon sl8"></span>
+			</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<div class="col-xs-9">
+		  		<span>活动性消化道溃疡 </span>
+		  	</div>
+		  	<div class="col-xs-3">
+		  	<span alt= "2" class="tag"></span>
+		  	<span class="right tagcon sl8"></span>
+			</div>
+		  </li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		require(["jquery"],function($){
+			function selected(obj,type){
+				var t = "greentag";
+				switch(type){
+					case "1":
+					t ="yellowtag";
+					break;
+					case "2":
+					t = "redtag";
+					break;
+				}
+				if(!$(obj).data("isSelected")){
+					$(obj).addClass("selected");
+					$(obj).find(".tag").addClass(t);
+					$(obj).find(".tagcon").html("+"+type+"分");
+					$(obj).data("isSelected",true);
+				}else{
+					$(obj).removeClass("selected");
+					$(obj).find(".tag").removeClass(t);
+					$(obj).data("isSelected",false);
+					$(obj).find(".tagcon").html("");
+				}	
+			}
+			$("#gradeList").on("touchstart",".list-group-item",function(){
+				var temp = $(this).find(".tag");
+				selected(this,temp.attr("alt"));
+			});
+		});
+	</script>
+</body>
+</html>

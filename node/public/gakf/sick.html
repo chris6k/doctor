@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>住院病人</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script  type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="container">
+		<a ms-href="sickDetail.html?id={{el.id}}" style="display: block;" ms-repeat-el="d">
+			<div class="panel panel-default my-panel" style="margin-top: 10px;">
+			  <div class="panel-heading " style="background: #fff;">
+			  	<div class="row">
+			  		<div class="col-xs-6 title text-right">{{el.bed_id}}号床</div>
+			  		<div class="col-xs-6 title">{{el.name}}</div>
+			  	</div>
+			  </div>
+			  <div class="panel-body">
+			  	<div class="row">
+			  		<div class="col-xs-7">手术类型：{{el.operate_type}}</div>
+			  		<div class="col-xs-1"></div>
+			  		<div class="col-xs-4">住院：{{el.day}}天</div>
+			  	</div>
+			  	<div class="row">
+			  		<div class="col-xs-12">评级：{{el.care_level}}</div>
+			  	</div>
+			  </div>
+			</div>
+		</a>
+		
+		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+		  <div class="container">
+		    <a href="javascript:void(0)" id="addSick">
+		    	<span class="glyphicon glyphicon-plus-sign text left"></span>
+		    </a>
+		    <span class="glyphicon glyphicon-qrcode text right" ></span>
+		  </div>
+		</nav>
+	</div>
+	<script type="text/javascript">
+	require(["avalon"],function(){
+			avalon.ready(function() {
+				var data = [
+					{
+						id:"1",
+			            name:"陈思田",
+			            age:"18",
+			            gender:"男",
+			            operate_type:"创伤手术",
+			            care_level:"高危",
+			            bed_id:"27",
+			            in_day:"2015-6-13",
+			            out_day:"2015-6-15",
+			            day:3,
+			            doctor_name: "张小娟"
+					},
+					{
+						id:"2",
+			            name:"陈田",
+			            age:"18",
+			            gender:"男",
+			            operate_type:"创伤手术",
+			            care_level:"高危",
+			            bed_id:"02",
+			            in_day:"2015-6-13",
+			            out_day:"2015-6-15",
+			            day:3,
+			            doctor_name: "张小娟"
+					},{
+						id:"3",
+			            name:"陈田",
+			            age:"18",
+			            gender:"男",
+			            operate_type:"创伤手术",
+			            care_level:"高危",
+			            bed_id:"03",
+			            in_day:"2015-6-13",
+			            out_day:"2015-6-15",
+			            day:3,
+			            doctor_name: "张小娟"
+					},
+				];
+
+				$.ajax({ 
+					type:"get",
+					url: "/doctor/sicks?doctor_id="+RC.parseOptions(window.location.href).doctor_id,
+					dataType: "json", 
+					success: function(obj){
+						data = obj.data;
+		    		},
+		    		error:function(){
+
+		    		}
+				}); 
+			    avalon.define({
+			          $id: "test",
+			          d:data
+			    });
+			    avalon.scan();
+			    $("#addSick").on("touchstart",function(){
+			    	$(this).attr("href","addSick.html?doctor_id="+RC.parseOptions(window.location.href).doctor_id);
+			    })
+			})
+		})
+	</script>
+</body>
+</html>

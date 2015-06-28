@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>题库</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script data-main="static/js/main" type="text/javascript" src="./static/js/require.js"></script>
+	
+</head>
+<body>
+	<div class="page-header">
+				<span class="glyphicon glyphicon-edit homeIcon"></span>
+				<span class="homeTitle">测试题</span>
+	</div>
+	<div class="container" id="question">
+		<form id="qForm" method="post" action="" onsubmit="return false;">
+			<ul class="list-group" id="questionCon">
+			  
+			</ul>
+			<input id="answerList" type="hidden" value="">
+			<div class="row">
+				<div class="col-xs-12">
+					<button type="button" id="next" class="btn btn-default btn-lg" disabled style="width:100%">下一题</button>
+				</div>
+			</div>
+		</form>
+	</div>	
+	<script id="test" type="text/html">
+		<li class="list-group-item active"><span id="itemTitle" alt={{id}}>1</span>、{{title}}</li>
+		{{each items as v i}}
+			  <li class="list-group-item">
+			  	<div class="radio">
+		  	        <label>
+		  	          <input type="radio" name="answer" alt={{v.index}}>
+		  	          {{v.index}}、{{v.title}}
+		  	        </label>
+		  	      </div>
+			  </li>
+		{{/each}}
+	</script>
+	<script type="text/javascript">
+		var data = [
+			{	
+				id:"11",
+				title:"您的主要收入来源",
+				items:[
+				{index:"A",title:"无固定收入"},
+				{index:"B",title:"无固定收入"},
+				{index:"C",title:"无固定收入"},
+				{index:"D",title:"无固定收入"}
+				]
+			},{
+				id:"12",
+				title:"题目2",
+				items:[
+				{index:"A",title:"无固定收入"},
+				{index:"B",title:"无固定收入"},
+				{index:"C",title:"无固定收入"},
+				{index:"D",title:"无固定收入"}
+				]
+			}
+		]
+		require(["question"],function(qu){
+			qu.createItem(data[0]);
+			var answerData = [],islast = false;
+			$("#next").on("touchstart",function(){
+				var index = +$("#itemTitle").html();
+
+				if(!islast){
+					answerData.push(qu.getAnser());
+				}
+				if(index < data.length){
+					index++;
+					qu.createItem(data[index-1]);
+					$("#itemTitle").html(index);
+				}
+				if(index == data.length){
+					if(!$('input:radio[name="answer"]:checked').length){
+						$("#next").html("提交");
+					}else{
+						if(!islast)islast = true;
+						//ajax 
+						$.ajax({ 
+							type:"post",
+							url: "actionUrl", 
+							dataType: "json", 
+							data:answerData,
+							success: function(){
+					        	//jump score page
+				    		},
+				    		error:function(){
+
+				    		}
+						});
+					}
+				}
+			});
+		});
+
+	</script>

@@ -26,7 +26,10 @@ router.get('/info', function (req, res, next) {
 
 router.post('/create', function (req, res, next) {
     var sick = JSON.parse(req.param('sick'));
+    console.error(sick);
     req.models.sick.create(sick, function (err, data) {
+
+         console.error(err);
         if (err) {
             res.json(result(false, 'save failed', {}));
         } else {

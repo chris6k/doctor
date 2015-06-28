@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>病人注册</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="container">
+		<div class="spacer50"></div>
+		<form id="regForm" method="post" >
+			
+			<div class="form-group">
+				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="请输入真实姓名" ms-duplex="d.username">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control my-input password" id="password" name="password" placeholder="密码" ms-duplex="d.password"/>
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control my-input repassword" id="repassword" name="login_repwd" placeholder="确认密码"/>
+			</div>
+
+			<div class="spacer30"></div>
+			<div class="form-group">
+				<input type="text" class="form-control my-input user" id="job"  name="doctor_name" placeholder="主治医生" ms-duplex="d.doctor_name">
+			</div>
+			
+			<div class="form-group">
+				<input type="text" class="form-control my-input account" id="job" name="bed_no" placeholder="床号" ms-duplex="d.bed_no">
+			</div>
+
+			<div class="form-group text-center">
+				<button type="submit" ms-submit="save" class="btn btn-primary my-button">注册</button>
+			</div>
+			
+		</form>
+	</div>
+	<script type="text/javascript">
+		require(["validate.form","avalon"],function(reg){
+			var data = {
+		            "username":"",
+		            "password":"",
+		            "doctor_name":"",
+		            "bed_no":"",
+		            "wx_id":""
+				}
+				var vm = avalon.define({
+		          $id: "test",
+		          d:data,
+		          save:function(){
+		          	var d = JSON.stringify(vm.d.$model);
+		          	$.ajax({
+		          		type:"post",
+						url: "/user/reg",
+						dataType: "json", 
+						data:d,
+						success: function(d){
+							console.log(d);
+			    		},
+			    		error:function(){
+
+			    		}
+		          	})
+		          }
+			    });
+			    avalon.scan();
+
+				reg.validate("regForm");
+
+		})
+	</script>
+</body>
+</html>

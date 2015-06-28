@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="container">
+		<div class="page-header text-center ">
+			<div class="spacer15"></div>
+			<div class="header-con" id="header-con">
+				<span class="header l selected" alt="0">我是医生</span>
+				<span class="header r" alt="1">我是病人</span>
+			</div>
+		</div>
+		<form id="signForm" method="post" onsubmit="return false;">
+			<div class="form-group">
+				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="账号" ms-duplex="d.username">
+			</div>
+			<div class="form-group ">
+				<input type="password" class="form-control my-input password" id="password" name="password" placeholder="密码" ms-duplex="d.password"/>
+			</div>
+			<div class="form-group row sign-control">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-3 text-right">
+				 <a href="./register.html" class="register">注册</a>
+				</div>
+				<div class="col-xs-4 text-right">
+				 <a href="#">忘记密码</a>
+				</div>
+			</div>
+			<input type="hidden" id="type" value="doctor" ms-duplex-string="d.type" name="type">
+			<div class="form-group text-right row">
+				<div class="col-xs-11">
+					<button type="submit" class="btn btn-primary my-button" >登录</button>
+				</div>
+			</div>
+			
+		</form>
+		
+	</div>
+	<script type="text/javascript">
+	require(["validate.form","avalon"],function(reg){
+			avalon.ready(function() {
+			
+				var data = {
+		            "username":"",
+		            "password":"",
+		            "type":""
+				}
+				var vm = avalon.define({
+		          $id: "test",
+		          d:data,
+		          save:function(){
+		          	var d = JSON.stringify(vm.d.$model);
+		          	$.ajax({
+		          		type:"post",
+						url: "/user/login",
+						dataType: "json", 
+						data:d,
+						success: function(d){
+							console.log(d);
+			    		},
+			    		error:function(){
+
+			    		}
+		          	})
+		          }
+			    });
+			    avalon.scan();
+
+				$("#header-con").on("touchstart",'.header',function(){
+					$("#header-con").find(".header").removeClass("selected");
+					$(this).addClass("selected");
+					var info = $(this).attr("alt");
+					if(info == 1){
+						$(".register").show();
+						$("#type").val("sick");
+					}else{
+						$(".register").hide();
+						$("#type").val("doctor");
+					}
+				});
+			});
+
+			reg.validate("signForm");
+
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>添加病人</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script  type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="container">
+		<ul class="list-group">
+		  <li class="list-group-item">
+		  	<span>主治医生</span>
+		  	<span class="right" ms-duplex="d.doctor_name">{{d.doctor_name}}</span>
+		  </li>
+		</ul>
+		<div class="spacer10"></div>
+		<ul class="list-group">
+		  <li class="list-group-item gray">
+		  	<span>患者姓名</span>
+		  	<input class="right text-right my-input1 gray" type="text" placeholder="姓名" ms-duplex="d.name" />
+		  </li>
+		  <li class="list-group-item">
+		  	<span>年龄</span>
+		  	<input class="right text-right my-input1" type="text" placeholder="年龄" ms-duplex="d.age"/>
+		  </li>
+		  <li class="list-group-item gray my-collapse" >
+		  	<a href="#sexDom"  data-toggle="collapse" >
+		  		<span>性别</span>
+		  	 	<span class="right detail" class="" >男</span>
+		  	 	<input type="hidden" class="detailInput" value="男" ms-duplex-string="d.gender">
+		  	</a>
+			<div id="sexDom" class="panel-collapse collapse text-center" role="tabpanel" >
+				<div class="secondCon" alt="男">男</div>
+				<div class="secondCon" alt="女">女</div>
+			</div>
+		  </li>
+		  <li class="list-group-item my-collapse">
+		  	<a href="#operate_type"  data-toggle="collapse" >
+			  	<span>手术类型</span>
+			  	<span class="right detail" class="" >创伤手术</span>
+		  	 	<input type="hidden" class="detailInput" value="" ms-duplex-string="d.operate_type">
+		  	</a>
+		  	<div id="operate_type" class="panel-collapse collapse text-center" role="tabpanel" >
+				<div class="secondCon" ms-repeat-el="d.operate_type_arr" ms-attr-alt="{{el}}">{{el}}</div>
+			</div>
+		  </li>
+		  <li class="list-group-item gray my-collapse">
+		  	<a href="#care_level" data-toggle="collapse" >
+			  	<span>护理级别</span>
+			  	<span class="right detail" class="" >高危</span>
+		  	 	<input type="hidden" class="detailInput" value="" ms-duplex-string="d.care_level">
+			</a>
+			<div id="care_level" class="panel-collapse collapse text-center" role="tabpanel" >
+				<div class="secondCon" ms-repeat-el="d.care_level_arr" ms-attr-alt="{{el}}">{{el}}</div>
+			</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>床号</span>
+			<input class="right text-right my-input1" type="text" placeholder="床号" ms-duplex="d.bed_id" />
+		  </li>
+		</ul>
+		<div class="spacer10"></div>
+		<ul class="list-group">
+			<li class="list-group-item">
+		  		<a href="">
+  			  		<span>患者评级</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right  sl8">0分，点击添加</span>
+		  		</a>
+		 	</li>
+		 	<li class="list-group-item">
+		  		<a href="">
+  			  		<span>用药筛查 </span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right  sl8">0项禁忌，点击添加</span>
+		  		</a>
+		 	</li>
+		 	<li class="list-group-item">
+		  		<a href="">
+  			  		<span>诊疗记录  </span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right  sl8">0条记录，点击添加</span>
+		  		</a>
+		 	</li>
+		</ul>
+		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+		  <div class="container text-center" style="height: 42px; line-height: 42px;"> 
+		  	<span style="color:#fff;" ms-click="save">打印床头卡</span>
+		  </div>
+		</nav>
+	</div>
+	<script type="text/javascript">
+	require(["bootstrap","avalon"],function(){
+		
+		avalon.ready(function() {
+			
+			var data = {
+	            "name":"",
+	            "age":"",
+	            "gender":"男",
+	            "doctor_id":+RC.parseOptions(window.location.href).doctor_id,
+	            "operate_type_arr":["创伤手术","截肢手术"],
+	            "operate_type":"创伤手术",
+	            "care_level_arr":["高危"],
+	            "care_level":"高危",
+	            "bed_id":"",
+	            "in_day":"",
+	            "out_day":"",
+	            "doctor_name": "张小娟"
+			}
+			var vm = avalon.define({
+	          $id: "test",
+	          d:data,
+	          save:function(){
+	          	var d = JSON.stringify(vm.d.$model);
+	          	$.ajax({
+	          		type:"post",
+					url: "/sick/create",
+					dataType: "json", 
+					data:{sick:d},
+					success: function(d){
+						alert(d);
+		    		},
+		    		error:function(){
+
+		    		}
+	          	})
+	          }
+		    });
+		    avalon.scan();
+		    $(".my-collapse .secondCon").on("touchstart",function(){
+				var p =$(this).parent().parent();
+				p.find(".detail").html($(this).html());
+				p.find(".detailInput").val($(this).attr("alt"));
+				p.find(".collapse").collapse('hide');
+			});
+		});
+		
+
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>病人详情</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/jquery-1.11.1.min.js"></script>
+	<style type="text/css">
+		.thumbnail{
+			width: 60px;
+			height: 60px;
+			display: inline-block;
+			float: right;
+		}
+		.list-group-item{
+			clear: both;
+		}
+		.headerCon{
+			width: 60px;
+			position: relative;
+		}
+		.fileCon{
+			position: absolute;
+			width: 60px;
+			height: 60px;
+			opacity: 0.01;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="spacer20"></div>
+		<ul class="list-group">
+		  <li class="list-group-item" style="height:80px;line-height: 60px;">
+		  	<span>头像</span>
+		  	<div class="right headerCon" >
+		  		<form action="" method="get">
+		  				<a href="#" class="thumbnail">
+		  			   		<img src="./static/images/header.png" alt="...">
+		  				</a>
+		  				<input class="fileCon" type="file" />
+		  		</form>
+		  	</div>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>名称</span>
+		  	<span class="right">123</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>手机</span>
+		  	<span class="right">1380000000</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>用户等级</span>
+		  	<span class="right">LV1</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>工作年限</span>
+		  	<span class="right">3</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>性别</span>
+		  	<span class="right">女</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>岗位</span>
+			<span class="right">测试</span>
+		  </li>
+		</ul>
+		<div class="alert alert-info" role="alert">
+				  <a href="#" class="alert-link " style="font-size:18px;width: 100%;display: inline-block;">
+				  	进入测评
+				  	<span class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></span></a>
+				</div>
+	</div>
+
+	<script type="text/javascript">
+		$(".fileCon").change(function(){
+				$.ajax({ 
+					contentType : 'application/json',
+					type:"post",
+					url: "<%=path%>/user/${topicTypeId}/getTopics.do", 
+					dataType: "json",
+					success: function(d){
+						$(".fileCon").find("img").attr("url",d);
+		    		},
+		    		error:function(){
+
+		    		}
+				});
+		})
+	</script>
+</body>
+</html>

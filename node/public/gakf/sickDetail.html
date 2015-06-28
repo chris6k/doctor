@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>病人详情</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test">
+
+	<div class="container">
+		<ul class="list-group">
+		  <li class="list-group-item">
+		  	<span>主治医生</span>
+		  	<span class="right">{{d.doctor_name}}</span>
+		  </li>
+		</ul>
+		<div class="spacer10"></div>
+		<ul class="list-group">
+		  <li class="list-group-item gray">
+		  	<span>患者姓名</span>
+		  	<span class="right">{{d.name}}</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>年龄</span>
+		  	<span class="right">{{d.age}}岁</span>
+		  </li>
+		  <li class="list-group-item gray">
+		  	<span>性别</span>
+		  	<span class="right">{{d.gender}}</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>手术类型</span>
+		  	<span class="right">{{d.operate_type}}</span>
+		  </li>
+		  <li class="list-group-item gray">
+		  	<span>护理级别</span>
+		  	<span class="right">{{d.care_level}}</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>床号</span>
+			<span class="right">{{d.bed_id}}</span>
+		  </li>
+		  <li class="list-group-item gray">
+		  	<span>入院日期</span>
+		  	<span class="right">{{d.in_day}}</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>出院日期</span>
+			<span class="right">{{d.out_day}}</span>
+		  </li>
+		</ul>
+		<span style="padding:5px 0px;display: inline-block;">安全用药</span>
+		<ul class="list-group">
+			<li class="list-group-item">
+		  		<a href="">
+  			  		<span>安全用药量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">共4项用药禁忌</span>
+		  		</a>
+		 	</li>
+		 	<li class="list-group-item">
+		  		<a href="">
+  			  		<span>安全用药建议 </span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">共3条建议</span>
+		  		</a>
+		 	</li>
+		</ul>
+		<span style="padding:5px 0px;display: inline-block;">医学量表</span>
+		<ul class="list-group">
+			<li class="list-group-item">
+		  		<a href="">
+  			  		<span>Caprini 量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">高危</span>
+		  		</a>
+		 	</li>
+		 	<li class="list-group-item">
+		  		<a href="">
+  			  		<span>膝关节HSS评分 </span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">点击请填写</span>
+		  		</a>
+		 	</li>
+		</ul>
+		<span style="padding:5px 0px;display: inline-block;">长期登记量表</span>
+
+		<ul class="list-group">
+			<li class="list-group-item">
+		  		<a href="">
+  			  		<span>术前骨科筛查量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">点击请填写</span>
+		  		</a>
+		 	</li>
+		 	<li class="list-group-item">
+		  		<a href="">
+  			  		<span>术前骨科筛查量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">点击请填写</span>
+		  		</a>
+		 	</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+	/* {     id: ID,     name:姓名,     age: 年龄,     gender: 性别[男|女]     username: 用户名,     password: 密码,      bed_id: 床号,     doctor_name: 医生名字,     nurse_name: 护士名字,     doctor_id: 医生ID,      nurse_id: 护士ID，     qr_code: 床头卡,     care_level: 护理级别,     operate_type: 手术类型,     in_day: 入院时间,     out_day: 出院时间,     wx_id: 微信ID,     status: 是否可用[t|f],     drug_s: 推荐药数量,     drug_f: 禁忌药数量 }*/
+
+		require(["avalon"],function(){
+			avalon.ready(function() {
+				var data = {
+					id:"1",
+		            name:"陈思田",
+		            age:"18",
+		            gender:"男",
+		            operate_type:"创伤手术",
+		            care_level:"2",
+		            bed_id:"27",
+		            in_day:"2015-6-13",
+		            out_day:"2015-7-13",
+		            doctor_name: "张小娟"
+				};
+				$.ajax({ 
+					type:"get",
+					url: "/sick/info?id="+RC.parseOptions(window.location.href).id,
+					dataType: "json", 
+					success: function(obj){
+						data = obj.data;
+		    		},
+		    		error:function(){
+
+		    		}
+				}); 
+			    avalon.define({
+			          $id: "test",
+			          d:data
+			    });
+			    avalon.scan();
+			})
+		})
+		
+	</script>
+</body>
+</html>
