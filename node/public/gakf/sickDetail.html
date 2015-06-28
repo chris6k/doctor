@@ -111,7 +111,6 @@
 	/* {     id: ID,     name:姓名,     age: 年龄,     gender: 性别[男|女]     username: 用户名,     password: 密码,      bed_id: 床号,     doctor_name: 医生名字,     nurse_name: 护士名字,     doctor_id: 医生ID,      nurse_id: 护士ID，     qr_code: 床头卡,     care_level: 护理级别,     operate_type: 手术类型,     in_day: 入院时间,     out_day: 出院时间,     wx_id: 微信ID,     status: 是否可用[t|f],     drug_s: 推荐药数量,     drug_f: 禁忌药数量 }*/
 
 		require(["avalon"],function(){
-			avalon.ready(function() {
 				var data = {
 					id:"1",
 		            name:"陈思田",
@@ -140,7 +139,6 @@
 			          d:data
 			    });
 			    avalon.scan();
-			})
 		})
 		
 	</script>

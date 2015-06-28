@@ -47,7 +47,6 @@
 	</div>
 	<script type="text/javascript">
 	require(["validate.form","avalon"],function(reg){
-			avalon.ready(function() {
 			
 				var data = {
 		            "username":"",
@@ -87,7 +86,6 @@
 						$("#type").val("doctor");
 					}
 				});
-			});
 
 			reg.validate("signForm");
 

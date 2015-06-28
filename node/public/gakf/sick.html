@@ -45,8 +45,7 @@
 	</div>
 	<script type="text/javascript">
 	require(["avalon"],function(){
-			avalon.ready(function() {
-				var data = [
+			var data = [
 					{
 						id:"1",
 			            name:"陈思田",
@@ -106,8 +105,9 @@
 			    $("#addSick").on("touchstart",function(){
 			    	$(this).attr("href","addSick.html?doctor_id="+RC.parseOptions(window.location.href).doctor_id);
 			    })
-			})
-		})
+				
+			
+	})
 	</script>
 </body>
 </html>
