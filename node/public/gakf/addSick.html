@@ -64,27 +64,55 @@
 			<input class="right text-right my-input1" type="text" placeholder="床号" ms-duplex="d.bed_id" />
 		  </li>
 		</ul>
-		<div class="spacer10"></div>
+		<span style="padding:5px 0px;display: inline-block;">安全用药</span>
 		<ul class="list-group">
 			<li class="list-group-item">
 		  		<a href="">
-  			  		<span>患者评级</span>
+  			  		<span>安全用药量表</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right  sl8">0分，点击添加</span>
+  					<span class="right orange sl8">共4项用药禁忌</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
 		  		<a href="">
-  			  		<span>用药筛查 </span>
+  			  		<span>安全用药建议 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right  sl8">0项禁忌，点击添加</span>
+  					<span class="right orange sl8">共3条建议</span>
+		  		</a>
+		 	</li>
+		</ul>
+		<span style="padding:5px 0px;display: inline-block;">医学量表</span>
+		<ul class="list-group">
+			<li class="list-group-item">
+		  		<a href="">
+  			  		<span>Caprini 量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">高危</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
 		  		<a href="">
-  			  		<span>诊疗记录  </span>
+  			  		<span>膝关节HSS评分 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right  sl8">0条记录，点击添加</span>
+  					<span class="right orange sl8">点击请填写</span>
+		  		</a>
+		 	</li>
+		</ul>
+		<span style="padding:5px 0px;display: inline-block;">长期登记量表</span>
+
+		<ul class="list-group">
+			<li class="list-group-item">
+		  		<a href="">
+  			  		<span>术前骨科筛查量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">点击请填写</span>
+		  		</a>
+		 	</li>
+		 	<li class="list-group-item">
+		  		<a href="">
+  			  		<span>术前骨科筛查量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8">点击请填写</span>
 		  		</a>
 		 	</li>
 		</ul>
@@ -115,11 +143,11 @@
 	            "out_day":"",
 	            "doctor_name": "张小娟"
 			}
-			var vm = avalon.define({
+			var vmodel = avalon.define({
 	          $id: "test",
 	          d:data,
 	          save:function(){
-	          	var d = JSON.stringify(vm.d.$model);
+	          	var d = JSON.stringify(vmodel.d.$model);
 	          	$.ajax({
 	          		type:"post",
 					url: "/sick/create",
@@ -138,6 +166,21 @@
 	          }
 		    });
 		    avalon.scan();
+		    var id = RC.parseOptions(window.location.href).id;
+		    if(id){
+		    	$.ajax({ 
+					type:"get",
+					url: "/sick/info?id="+id,
+					dataType: "json", 
+					success: function(obj){
+						vmodel.d = obj.content;
+		    		},
+		    		error:function(){
+
+		    		}
+				}); 
+		    }
+		    
 		    $(".my-collapse .secondCon").on("touchstart",function(){
 				var p =$(this).parent().parent();
 				p.find(".detail").html($(this).html());
