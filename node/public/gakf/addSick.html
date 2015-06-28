@@ -141,8 +141,12 @@
 	            "bed_id":"",
 	            "in_day":"",
 	            "out_day":"",
-	            "doctor_name": "张小娟"
+	            "doctor_name": ""
 			}
+			var temp = RC.parseOptions(window.location.href);
+			var id = temp.id,doctor_id = temp.doctor_id;
+
+
 			var vmodel = avalon.define({
 	          $id: "test",
 	          d:data,
@@ -166,7 +170,19 @@
 	          }
 		    });
 		    avalon.scan();
-		    var id = RC.parseOptions(window.location.href).id;
+		    if(doctor_id){
+				$.ajax({ 
+					type:"get",
+					url: "/doctor/info?doctor_id="+doctor_id,
+					dataType: "json", 
+					success: function(obj){
+						vmodel.d.doctor_name = obj.content.doctor_name;
+		    		},
+		    		error:function(){
+
+		    		}
+				}); 
+			}
 		    if(id){
 		    	$.ajax({ 
 					type:"get",
