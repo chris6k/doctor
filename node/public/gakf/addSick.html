@@ -90,15 +90,17 @@
 		</ul>
 		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
 		  <div class="container text-center" style="height: 42px; line-height: 42px;"> 
-		  	<span style="color:#fff;" ms-click="save">打印床头卡</span>
+		  	<div class="col-xs-6">
+		  		<span style="color:#fff;" ms-click="save">保存</span>
+		  	</div>
+		  	<div class="col-xs-6">
+		  		<span style="color:#fff;" ms-click="print">打印床头卡</span>
+		  	</div>
 		  </div>
 		</nav>
 	</div>
 	<script type="text/javascript">
 	require(["bootstrap","avalon"],function(){
-		
-		avalon.ready(function() {
-			
 			var data = {
 	            "name":"",
 	            "age":"",
@@ -124,12 +126,15 @@
 					dataType: "json", 
 					data:{sick:d},
 					success: function(d){
-						alert(d);
+						console.log(d.success);
 		    		},
 		    		error:function(){
 
 		    		}
 	          	})
+	          },
+	          print:function(){
+
 	          }
 		    });
 		    avalon.scan();
@@ -139,9 +144,6 @@
 				p.find(".detailInput").val($(this).attr("alt"));
 				p.find(".collapse").collapse('hide');
 			});
-		});
-		
-
 	});
 	</script>
 </body>
