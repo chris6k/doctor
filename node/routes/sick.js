@@ -25,14 +25,41 @@ router.get('/info', function (req, res, next) {
 });
 
 router.post('/create', function (req, res, next) {
+    //todo check
     var sick = JSON.parse(req.param('sick'));
-    req.models.sick.create(sick, function (err, data) {
-        if (err) {
-            res.json(result(false, 'save failed', {}));
-        } else {
-            res.json(result(true, '', data));
-        }
-    });
+    var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id;
+    if (sick.name && sick.bed_id && doctor_id) {
+        req.models.sick.find({name: sick_name, bed_id: bed_id, doctor_id: doctor_id}, function (err, data) {
+            if (!err && data && data.length > 0) {
+                //merge info
+                sick.doctor_name = data[0].doctor_name;
+                data[0].save(sick, function (err, item) {
+                    if (err) {
+                        res.json(result(false, 'save failed', {}));
+                    } else {
+                        res.json(result(true, '', item));
+                    }
+                });
+            } else {
+                req.models.sick.create(sick, function (err, data) {
+                    if (err) {
+                        res.json(result(false, 'save failed', {}));
+                    } else {
+                        res.json(result(true, '', data));
+                    }
+                });
+            }
+        });
+    } else {
+        req.models.sick.create(sick, function (err, data) {
+            if (err) {
+                res.json(result(false, 'save failed', {}));
+            } else {
+                res.json(result(true, '', data));
+            }
+        });
+    }
+
 });
 
 router.get('/print', function (req, res, next) {

@@ -17,9 +17,6 @@ app.use(orm.express("mysql://guanai:guanai@rdsnsbba6rlncdjwb97bd.mysql.rds.aliyu
             db.sync(function (err) {
                 if (err) {
                     console.error(err);
-                } else {
-                    //TODO
-
                 }
             });
             next();
@@ -93,7 +90,6 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-
 
 
 module.exports = app;

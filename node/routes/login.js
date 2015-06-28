@@ -64,6 +64,7 @@ router.post('/login', function (req, res, next) {
             res.redirect(login_url + "?err=2&wx_id=" + wx_id);
         } else if (data && data.length > 0) {
             if (data[0].status === 't' && (data[0].type === type)) {
+                //todo
                 res.redirect(target_url[type]);
             } else {
                 res.redirect(login_url + "?err=2&wx_id=" + wx_id);
@@ -76,6 +77,7 @@ router.post('/login', function (req, res, next) {
                     data[0].wx_id = wx_id;
                     data[0].save(function (err) {
                         if (!err) {
+                            //todo
                             res.redirect(target_url[type]);
                         } else {
                             res.redirect(login_url + "?err=2&wx_id=" + wx_id);
@@ -95,7 +97,7 @@ router.post('/reg', function (req, res, next) {
     var password = req.param('password');
     var doctor_name = req.param('doctor');
     var bed_no = req.param('bed_no');
-    var wx_id = req.param('wx_id');
+    var wx_id = req.param('wx_id') || '';
     if (!username || !password || !doctor_name || !bed_no || !wx_id) {
         res.redirect(reg_url + "?err=1&wx_id=" + wx_id);
         return;
