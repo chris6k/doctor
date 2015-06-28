@@ -11,7 +11,15 @@ var target_url = {check: '', review: ''};
 
 //获取出院的病人
 router.get('/out_sicks', function (req, res, next) {
-    req.models.sick.find({doctor_id: req.param('doctor_id'), out_day: orm.lte(new Date())}, function (err, data) {
+    var doctor_id = req.param('doctor_id');
+    if (!doctor_id) {
+        res.json(result(false, 'no doctor_id', {}));
+        return;
+    }
+    req.models.sick.find({
+        doctor_id: doctor_id,
+        out_day: orm.lte(new Date())
+    }, function (err, data) {
         if (err) {
             console.error(err);
             res.json(result(false, '', {}));
@@ -23,7 +31,12 @@ router.get('/out_sicks', function (req, res, next) {
 
 //获取该医生所有的病人
 router.get('/sicks', function (req, res, next) {
-    req.models.sick.find({doctor_id: req.param('doctor_id')}, function (err, data) {
+    var doctor_id = req.param('doctor_id');
+    if (!doctor_id) {
+        res.json(result(false, 'no doctor_id', {}));
+        return;
+    }
+    req.models.sick.find({doctor_id: doctor_id}, function (err, data) {
         if (err) {
             console.error(err);
             res.json(result(false, '', {}));
@@ -76,6 +89,7 @@ router.post('/check', function (req, res, next) {
     });
 });
 
+//随访
 router.post('/out_check', function (req, res, next) {
     //生成multiparty对象，并配置下载目标路径
     var form = new multiparty.Form({uploadDir: './public/images/'});
