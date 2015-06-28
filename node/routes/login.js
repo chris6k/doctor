@@ -121,7 +121,7 @@ router.post('/reg', function (req, res, next) {
                 } else {
                     req.models.sick.create({
                         name: name, username: username, password: password,
-                        bed_no: bed_no, wx_id: wx_id, doctor_name: doctor_name,
+                        bed_id: bed_no, wx_id: wx_id, doctor_name: doctor_name,
                         nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id
                     }, function (err, item) {
                         if (err) {

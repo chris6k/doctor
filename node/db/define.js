@@ -17,7 +17,7 @@ var define = function (db, models) {
     });
     //病人信息表
     models.sick = db.define('sick', {
-        name: {type: 'text', required: false},
+        name: {type: 'text', required: true, unique: true},
         age: {type: 'text', required: false},
         gender: {type: 'text', required: false},//m,f
         username: {type: 'text', required: false},
