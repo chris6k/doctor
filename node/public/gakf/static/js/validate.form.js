@@ -32,7 +32,7 @@ define(["jquery","jquery.validate"],function($,va){
 				return source; 
 			}; 
 		},
-		validate:function(form,vm){
+		validate:function(form){
 			this.userName();
 			this.isPhone();
 			this.format();
@@ -120,9 +120,6 @@ define(["jquery","jquery.validate"],function($,va){
 					     else
 					       error.insertAfter(element);
 					   
-				   },
-				   submitHandler:function(){
-				   		vm.save();
 				   }
 				});
 			}
