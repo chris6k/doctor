@@ -1,11 +1,15 @@
 var define = function (db, models) {
+
     //医生表
     models.doctor = db.define('doctor', {
         name: {type: 'string'},
         username: {type: 'string'},
         password: {type: 'string'},
-        nurse_name: {type: 'string'},
         hospital: {type: 'string'},
+        nurse_id: {type: 'integer'},
+        nurse_name: {type: 'string'},
+        doctor_id: {type: 'integer'},
+        doctor_name: {type: 'string'},
         type: {type: 'string'},//doctor nurse
         mobile: {type: 'string', required: false},
         wx_id: {type: 'string', required: false},
@@ -76,28 +80,41 @@ var define = function (db, models) {
         table_type: {type: 'string', required: false, unique: true},
         value: {type: 'string', required: false}
     });
+    //查房信息
     models.sickcheck = db.define('sickcheck', {
         sick_id: {type: 'integer'},
         doctor_id: {type: 'string'},
-        nurse_id: {type: 'string', required: false},
         day: {type: 'date'},
+        title: {type: 'title'},
         description: {type: 'object'},
         pics: {type: 'object'}
     });
+    //病人回访表
     models.sickreview = db.define('sickreview', {
         sick_id: {type: 'integer'},
         doctor_id: {type: 'string'},
-        day: Date,
-        description: {type: 'string'}
+        day: {type: 'date'},
+        title: {type: 'title'},
+        description: {type: 'object'},
+        pics: {type: 'object'}
     });
-    models.ask = db.define('ask', {
-        name: {type: 'string'},
-        avatar: {type: 'string'},
-        type: {type: 'string'},
-        time: Date,
-        message: {type: 'string'},
-        pic: {type: 'string'}
+
+    models.message_session = db.define('message_session', {
+        day: {type: 'date'},
+        status: {type: 'string', defaultValue: 'n'},//d-- 删除 n-- 正常
+        sick_id: {type: 'integer'}
     });
+    //提问表
+    models.message = db.define('message', {
+        session_id: {type: 'integer'},
+        day: {type: 'date'},
+        title: {type: 'string'},
+        content: {type: 'string'},
+        pics: {type: 'object'},
+        speaker: {type: 'string'},
+        speaker_id: {type: 'integer'}
+    });
+    //药物表
     models.drug = db.define('drug', {
         name: {type: 'string'},
         type: {type: 'string'},

@@ -31,12 +31,15 @@ var login = require('./routes/login');
 var doctor = require('./routes/doctor');
 var sick = require('./routes/sick');
 var checklist = require('./routes/checklist');
+var answer = require('./routes/answer');
+
 app.use('/', routes);
 //app.use('/users', users);
 app.use('/user', login);
 app.use('/doctor', doctor);
 app.use('/sick', sick);
 app.use('/checklist', checklist);
+app.use('/answer', answer);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
