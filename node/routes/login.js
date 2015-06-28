@@ -1,20 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var result = require('./result');
 var request = require("request");
 
-var token = 'guanai',
-    appid = 'wx9b2bbce36613b66e',
-    secret = 'b4c3079540dd4b57269a09b5e2d36dc0';
+var appid = 'wx9b2bbce36613b66e', secret = 'b4c3079540dd4b57269a09b5e2d36dc0';
 
 
-//TODO
-var login_url = '';
-var target_url = {sick: '', doctor: ''};
-var reg_url = '';
+var login_url = '/gakf/login.html';
+var target_url = {sick: '/gakf/sickDetail.html', doctor: '/gakf/sick.html'};
+var reg_url = '/gakf/register.html';
 
 var getOpenId = function (req, res, code) {
-    var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
+    var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret="
+        + secret + "&code=" + code + "&grant_type=authorization_code";
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var data = JSON.parse(body);
@@ -54,8 +51,8 @@ router.post('/login', function (req, res, next) {
     var username = req.param('username');
     var password = req.param('password');
     var type = req.param('type');
-    var wx_id = req.param('wx_id');
-    if (!username || !password || !type || !wx_id) {
+    var wx_id = req.param('wx_id') || '';
+    if (!username || !password || !type) {
         res.redirect(login_url + "?err=1&wx_id=" + wx_id);
         return;
     }
@@ -98,7 +95,7 @@ router.post('/reg', function (req, res, next) {
     var doctor_name = req.param('doctor');
     var bed_no = req.param('bed_no');
     var wx_id = req.param('wx_id') || '';
-    if (!username || !password || !doctor_name || !bed_no || !wx_id) {
+    if (!username || !password || !doctor_name || !bed_no) {
         res.redirect(reg_url + "?err=1&wx_id=" + wx_id);
         return;
     }
