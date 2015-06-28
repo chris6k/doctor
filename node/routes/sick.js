@@ -25,7 +25,6 @@ router.get('/info', function (req, res, next) {
 });
 
 router.post('/create', function (req, res, next) {
-    //todo check
     var sick = JSON.parse(req.param('sick'));
     var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id;
     if (sick.name && sick.bed_id && doctor_id) {

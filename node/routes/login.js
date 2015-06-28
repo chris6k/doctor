@@ -122,7 +122,7 @@ router.post('/reg', function (req, res, next) {
                     req.models.sick.create({
                         name: name, username: username, password: password,
                         bed_no: bed_no, wx_id: wx_id, doctor_name: doctor_name,
-                        nurse_name: doctor.nurse_name, doctor_id: doctor.id, nurse_id: doctor.nurse_id
+                        nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id
                     }, function (err, item) {
                         if (err) {
                             res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
