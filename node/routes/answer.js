@@ -59,7 +59,11 @@ router.post('/speak', function (req, res, next) {
             }
 
             if (!session_id) {
-                req.models.message_session.create({day: new Date(), sick_id: id}, function (err, item) {
+                req.models.message_session.create({
+                    day: new Date(),
+                    sick_id: id,
+                    doctor_id: doctor_id
+                }, function (err, item) {
                     req.models.message.create({
                         session_id: item.id,
                         day: new Date(),
