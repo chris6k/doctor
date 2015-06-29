@@ -65,7 +65,7 @@
 	    avalon.scan();
 	    $.ajax({ 
 			type:"get",
-			url: "/sick/info?id="+RC.parseOptions(window.location.href).id,
+			url: "sick/doctor?sick_id="+RC.parseOptions(window.location.href).id,
 			dataType: "json", 
 			success: function(obj){
 				vmodel.d = $.extend(data,obj.content);
