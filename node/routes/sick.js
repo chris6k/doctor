@@ -100,4 +100,25 @@ router.get('sickdrug', function (req, res, next) {
 });
 
 
+router.get('doctor', function (req, res, next) {
+    var sick_id = req.param('sick_id');
+    if (!sick_id) {
+        res.json(result(false, 'no sick id', {}));
+    } else {
+        req.models.sick.get(sick_id, function (err, sick) {
+            if (err) {
+                res.json(result(false, 'get sick info err', {}));
+            } else {
+                req.models.doctor.get(sick.doctor_id, function (err, doctor) {
+                    if (err) {
+                        res.json(result(false, 'get doctor info err'), {});
+                    } else {
+                        res.json(result(true, '', doctor));
+                    }
+                });
+            }
+        });
+    }
+});
+
 module.exports = router;

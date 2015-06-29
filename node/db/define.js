@@ -14,7 +14,8 @@ var define = function (db, models) {
         mobile: {type: 'text', required: false},
         wx_id: {type: 'text', required: false},
         status: {type: 'text', defaultValue: 't'},
-        avatar: {type: 'text', size: 256}
+        avatar: {type: 'text', size: 256},
+        title: {type: 'title', required: false}
     });
     //病人信息表
     models.sick = db.define('sick', {
