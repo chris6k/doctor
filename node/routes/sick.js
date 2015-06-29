@@ -100,7 +100,7 @@ router.get('/doctor', function (req, res, next) {
         res.json(result(false, 'no sick id', {}));
     } else {
         req.models.sick.get(sick_id, function (err, sick) {
-            console.infi("sick=>" + sick);
+            console.info("sick=>" + sick);
             if (err || !sick || !sick.doctor_id) {
                 res.json(result(false, 'get sick info err', {}));
             } else {
