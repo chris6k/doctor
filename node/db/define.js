@@ -105,7 +105,8 @@ var define = function (db, models) {
         day: {type: 'date'},
         status: {type: 'text', defaultValue: 'n'},//d-- 删除 n-- 正常
         doctor_id: {type: 'integer'},
-        sick_id: {type: 'integer'}
+        sick_id: {type: 'integer'},
+        message: {type: 'object'}
     });
     //提问表
     models.message = db.define('message', {

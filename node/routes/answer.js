@@ -59,19 +59,21 @@ router.post('/speak', function (req, res, next) {
             }
 
             if (!session_id) {
+                var msg = {
+                    day: new Date(),
+                    title: title,
+                    content: content,
+                    speaker: name,
+                    speaker_id: id
+                };
                 req.models.message_session.create({
                     day: new Date(),
                     sick_id: id,
-                    doctor_id: doctor_id
+                    doctor_id: doctor_id,
+                    message: msg
                 }, function (err, item) {
-                    req.models.message.create({
-                        session_id: item.id,
-                        day: new Date(),
-                        title: title,
-                        content: content,
-                        speaker: name,
-                        speaker_id: id
-                    }, function (err, items) {
+                    msg.session_id = item.id;
+                    req.models.message.create(msg, function (err) {
                         if (err) {
                             res.redirect(source_url[type] + "?err=2");
                         } else {

@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var result = require('./result');
-
 router.get('/sickstatus', function (req, res, next) {
     req.models.sickstatus.find({type: req.param('type'), sick_id: req.param('sick_id')}, function (err, data) {
         if (err) {
@@ -77,17 +76,12 @@ router.get('/print', function (req, res, next) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
-            if (!sick.qr_code) {
-                //TODO
-                res.json(result(false, '没有二维码，搞毛线', {}));
-            } else {
-                res.json(result(true, '', sick));
-            }
+            res.json(result(true, '', sick));
         }
     })
 });
 
-router.get('sickdrug', function (req, res, next) {
+router.get('/sickdrug', function (req, res, next) {
     var sick_id = req.param('sick_id');
     req.models.sickdrug.find({sick_id: sick_id}, function (err, data) {
         if (err) {
@@ -100,7 +94,7 @@ router.get('sickdrug', function (req, res, next) {
 });
 
 
-router.get('doctor', function (req, res, next) {
+router.get('/doctor', function (req, res, next) {
     var sick_id = req.param('sick_id');
     if (!sick_id) {
         res.json(result(false, 'no sick id', {}));
