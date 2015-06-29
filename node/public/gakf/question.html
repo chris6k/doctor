@@ -6,14 +6,18 @@
 	<title>患者提问</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
-<body>
+<body ms-controller="test">
 	<div class="">
 		<div class="panel panel-default my-panel" style="margin: 0px;">
 		  <div class="panel-body">
-		  	<div class="h5" style="margin-top:0px;">于清平</div>
+		  	<div class="h5" style="margin-top:0px;">{{d.name}}</div>
 		  	<div>
-		  		<span>医生您好，出院以后不知道为什么我的腿这几天 有些发肿，请问这是正常的吗？</span>
+		  		<span>{{d.message}}</span>
 		  	</div>
 		  	<div class=" my-imgcon">
 		  		<div class="col-xs-6">
@@ -36,9 +40,123 @@
 			    </div>
 			  </div>
 		</nav>
-		<div class="navCon text-center">
-				<span>无过敏记录</span>
+		<div class="navCon">
+			<ul class="list-group">
+			  <li class="list-group-item">
+			  	<span>主治医生</span>
+			  	<span class="right">{{d.doctor_name}}</span>
+			  </li>
+			</ul>
+			<div class="spacer10"></div>
+			<ul class="list-group">
+			  <li class="list-group-item gray">
+			  	<span>患者姓名</span>
+			  	<span class="right">{{d.name}}</span>
+			  </li>
+			  <li class="list-group-item">
+			  	<span>年龄</span>
+			  	<span class="right">{{d.age}}岁</span>
+			  </li>
+			  <li class="list-group-item gray">
+			  	<span>性别</span>
+			  	<span class="right">{{d.gender}}</span>
+			  </li>
+			  <li class="list-group-item">
+			  	<span>手术类型</span>
+			  	<span class="right">{{d.operate_type}}</span>
+			  </li>
+			  <li class="list-group-item gray">
+			  	<span>护理级别</span>
+			  	<span class="right">{{d.care_level}}</span>
+			  </li>
+			  <li class="list-group-item">
+			  	<span>床号</span>
+				<span class="right">{{d.bed_id}}</span>
+			  </li>
+			  <li class="list-group-item gray">
+			  	<span>入院日期</span>
+			  	<span class="right">{{d.in_day}}</span>
+			  </li>
+			  <li class="list-group-item">
+			  	<span>出院日期</span>
+				<span class="right">{{d.out_day}}</span>
+			  </li>
+			</ul>
 		</div>
 	</div>
+	<script type="text/javascript">
+// 		/answer/session?sick_id=&doctor_id=&page_no=&page_size=
+// 病人界面就传sick_id 医生界面就传doctor_id page_no和page_size用来翻页，不传默认是10条
+// age: "20"
+// bed_id: "10"
+// care_level: null
+// day: "2012-05-09T16:00:00.000Z"
+// doctor_id: 1
+// doctor_name: "alice"
+// drug_f: 0
+// drug_s: 0
+// gender: "gg"
+// hospital: null
+// id: 8
+// in_day: "2012-06-11T16:00:00.000Z"
+// level: null
+// message: 222222222222222230000
+// mobile: null
+// name: "meilin"
+// nurse_id: null
+// nurse_name: "kun"
+// operate_type: null
+// out_day: "2012-06-13T16:00:00.000Z"
+// password: "111111"
+// qr_code: null
+// sick_id: 8
+// status: "t"
+// username: "meilin"
+// wx_id: "11"
+		
+		require(["avalon"],function(){
+			var data = {};
+			var url = "",temp = RC.parseOptions(window.location.href),id = temp.id,doctor_id = temp.doctor_id;
+			if(id){
+				url = "/answer/session?sick_id="+id;
+				sickurl = "/sick/info?id="+id;
+			}
+			if(doctor_id){
+				url = "/answer/session?doctor_id="+doctor_id;
+			}
+			var vmodel = avalon.define({
+		          $id: "test",
+		          d:data
+		    });
+		    avalon.scan();
+			$.ajax({ 
+				type:"get",
+				url: url,
+				dataType: "json", 
+				success: function(obj){
+					vmodel.d = obj.content;
+					// if(id){
+					// 	$.ajax({ 
+					// 		type:"get",
+					// 		url: sickurl,
+					// 		dataType: "json", 
+					// 		success: function(obj){
+					// 			//var dd  = vmodel.d.$model[0];
+					// 			//vmodel.d.$model = $.extend(dd,obj.content);
+								
+				 //    		},
+				 //    		error:function(){
+
+				 //    		}
+					// 	}); 
+					// }
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+		 	
+		});
+	</script>
 </body>
 </html>

@@ -6,48 +6,115 @@
 	<title>医患沟通</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
-<body>
-	<div class="container">
-		<div class="spacer10"></div>
-		<div class="text-center">
-			<span class="titleBg">上午 10:20</span>
-		</div>
-		<div class="panel panel-default my-panel">
-		  <div class="panel-body">
-		  	<div class="h5" style="margin-top:0px;">随访提醒</div>
-		  	<div>
-		  		<span>您的病人张杰】手术出院已经有42天，请您进行随访。</span>
-		  	</div>
-		  </div>
-		</div>
-		<div class="text-center">
-			<span class="titleBg">下午 10:20</span>
-		</div>
-		<div class="panel panel-default my-panel">
-		  <div class="panel-body">
-		  	<div class="h5" style="margin-top:0px;">患者提问</div>
-		  	<span>5月21日</span>
-		  	<div class=" my-imgcon">
-		  		<div class="col-xs-6">
-		  			<img src="./static/images/1.jpg">
-		  		</div>
-		  		<div class="col-xs-6">
-		  			<img src="./static/images/1.jpg">
-		  		</div>
-		  	</div>
-		  	<div>
-		  		<span>[于清平] 医生您好，出院以后不知道为什么我的腿这几天 有些发肿，请问这是正常的吗？</span>
-		  	</div>
-		  	<div class="my-line"></div>
-		  	<div>
-		  		<a href="question.html">
-  			  		<span class="h5">阅读全文  </span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-		  		</a>
-		 	</div>
-		  </div>
-		</div>
+<body ms-controller="test">
+	<div class="container"  id="questionCon">
+		
+
 	</div>
+	<script type="text/html" id="test">
+	{{each d as v i}}
+		{{if i ==0}}
+			<div class="spacer10"></div>
+		{{/if}}
+		{{if v.message}}
+		<div>
+			<div class="text-center">
+				<span class="titleBg">{{v.day}}</span>
+			</div>
+			<div class="panel panel-default my-panel">
+			  <div class="panel-body">
+			  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
+			  	<div>
+			  		<span>{{v.message}}</span>
+			  	</div>
+			  </div>
+			</div>
+		</div>
+		{{/if}}
+		{{if v.message}}
+			<div class="text-center">
+				<span class="titleBg">{{v.day}}</span>
+			</div>
+			<div class="panel panel-default my-panel">
+			  <div class="panel-body">
+			  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
+			  	<span>{{v.day}}</span>
+			  	<div class=" my-imgcon">
+			  		<div class="col-xs-6">
+			  			<img src="./static/images/1.jpg">
+			  		</div>
+			  		<div class="col-xs-6">
+			  			<img src="./static/images/1.jpg">
+			  		</div>
+			  	</div>
+			  	<div>
+			  		<span>[{{name}}] {{v.message}}</span>
+			  	</div>
+			  	<div class="my-line"></div>
+			  	<div>
+			  		<a href="question.html?id={{v.sick_id}}">
+	  			  		<span class="h5">阅读全文  </span>
+	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+			  		</a>
+			 	</div>
+			  </div>
+			</div>
+		{{/if}}
+
+		{{/each}}
+	</script>
+	<script type="text/javascript">
+		require(["template"],function(template){
+			var data = {};
+			var url = "",temp = RC.parseOptions(window.location.href),id = temp.id,doctor_id = temp.doctor_id;
+			if(id){
+				url = "/answer/session?sick_id="+id;
+				sickurl = "/sick/info?id="+id;
+			}
+			if(doctor_id){
+				url = "/answer/session?doctor_id="+doctor_id;
+			}
+			
+			$.ajax({ 
+				type:"get",
+				url: url,
+				dataType: "json", 
+				success: function(obj){
+					data.d= obj.content;
+					if(id){
+						$.ajax({ 
+							type:"get",
+							url: sickurl,
+							dataType: "json", 
+							success: function(obj){
+								var dd = $.extend(data,obj.content);
+								var tpl = $("#test").html();
+								var render = template.compile(tpl);
+								
+								//匹配json内容
+							    var html = render(dd);
+							    //输入模板
+							    $("#questionCon").html(html);
+								
+				    		},
+				    		error:function(){
+
+				    		}
+						}); 
+					}
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+		 	
+		});
+
+	</script>
 </body>
 </html>

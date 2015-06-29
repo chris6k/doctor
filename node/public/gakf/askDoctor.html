@@ -9,7 +9,6 @@
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
-
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<style type="text/css">
 	.my-media img{
@@ -65,7 +64,7 @@
 	    avalon.scan();
 	    $.ajax({ 
 			type:"get",
-			url: "sick/doctor?sick_id="+RC.parseOptions(window.location.href).id,
+			url: "/sick/doctor?sick_id="+RC.parseOptions(window.location.href).id,
 			dataType: "json", 
 			success: function(obj){
 				vmodel.d = $.extend(data,obj.content);
