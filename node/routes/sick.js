@@ -14,7 +14,7 @@ router.get('/sickstatus', function (req, res, next) {
 
 router.get('/info', function (req, res, next) {
     req.models.sick.get(req.param('id'), function (err, data) {
-        if (err) {
+        if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
@@ -60,7 +60,7 @@ router.post('/create', function (req, res, next) {
         });
     } else {
         req.models.sick.create(sick, function (err, data) {
-            if (err) {
+            if (err || !data) {
                 res.json(result(false, 'save failed', {}));
             } else {
                 res.json(result(true, '', data));
@@ -72,7 +72,7 @@ router.post('/create', function (req, res, next) {
 router.get('/print', function (req, res, next) {
     var id = req.param('id');
     req.models.sick.get(id, function (err, sick) {
-        if (err) {
+        if (err || !sick) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
@@ -84,7 +84,7 @@ router.get('/print', function (req, res, next) {
 router.get('/sickdrug', function (req, res, next) {
     var sick_id = req.param('sick_id');
     req.models.sickdrug.find({sick_id: sick_id}, function (err, data) {
-        if (err) {
+        if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
@@ -100,11 +100,12 @@ router.get('/doctor', function (req, res, next) {
         res.json(result(false, 'no sick id', {}));
     } else {
         req.models.sick.get(sick_id, function (err, sick) {
-            if (err) {
+            console.infi("sick=>" + sick);
+            if (err || !sick || !sick.doctor_id) {
                 res.json(result(false, 'get sick info err', {}));
             } else {
                 req.models.doctor.get(sick.doctor_id, function (err, doctor) {
-                    if (err) {
+                    if (err || !doctor) {
                         res.json(result(false, 'get doctor info err'), {});
                     } else {
                         res.json(result(true, '', doctor));

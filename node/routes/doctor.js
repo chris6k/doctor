@@ -13,7 +13,7 @@ var target_url = {check: '', review: ''};
 router.get('/info', function (req, res, next) {
     var doctor_id = req.param('doctor_id');
     req.models.doctor.get(doctor_id, function (err, item) {
-        if (err) {
+        if (err || !item) {
             res.json(result(false, err.msg, {}));
         } else {
             res.json(result(true, '', item));
@@ -32,7 +32,7 @@ router.get('/out_sicks', function (req, res, next) {
         doctor_id: doctor_id,
         out_day: orm.lte(new Date())
     }, function (err, data) {
-        if (err) {
+        if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
@@ -49,7 +49,7 @@ router.get('/sicks', function (req, res, next) {
         return;
     }
     req.models.sick.find({doctor_id: doctor_id}, function (err, data) {
-        if (err) {
+        if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {

@@ -23,7 +23,7 @@ router.get('/session', function (req, res, next) {
             if (err) {
                 res.json(result(false, '', {}));
             } else {
-                res.json(result(ture, '', data));
+                res.json(result(true, '', data));
             }
         });
 });
