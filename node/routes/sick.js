@@ -26,8 +26,18 @@ router.get('/info', function (req, res, next) {
 
 router.post('/create', function (req, res, next) {
     var sick = JSON.parse(req.param('sick'));
-    var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id;
-    if (sick.name && sick.bed_id && doctor_id) {
+    var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id, sick_id = sick.id;
+    if (sick_id && sick_id > 0) {
+        req.models.sick.get(sick_id, function (err, item) {
+            item.save(sick, function (err) {
+                if (err) {
+                    res.json(result(false, err.msg, {}));
+                } else {
+                    res.json(result(true, '', item));
+                }
+            });
+        });
+    } else if (sick.name && sick.bed_id && doctor_id) {
         req.models.sick.find({name: sick_name, bed_id: bed_id, doctor_id: doctor_id}, function (err, data) {
             if (!err && data && data.length > 0) {
                 //merge info
@@ -89,5 +99,26 @@ router.get('sickdrug', function (req, res, next) {
     });
 });
 
+
+router.get('doctor', function (req, res, next) {
+    var sick_id = req.param('sick_id');
+    if (!sick_id) {
+        res.json(result(false, 'no sick id', {}));
+    } else {
+        req.models.sick.get(sick_id, function (err, sick) {
+            if (err) {
+                res.json(result(false, 'get sick info err', {}));
+            } else {
+                req.models.doctor.get(sick.doctor_id, function (err, doctor) {
+                    if (err) {
+                        res.json(result(false, 'get doctor info err'), {});
+                    } else {
+                        res.json(result(true, '', doctor));
+                    }
+                });
+            }
+        });
+    }
+});
 
 module.exports = router;

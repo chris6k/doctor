@@ -5,6 +5,28 @@ var result = require('./result');
 var source_url = {sick: '', doctor: ''};
 var target_url = {sick: '', doctor: ''};
 
+router.get('/session', function (req, res, next) {
+    var sick_id = req.param('sick_id');
+    var doctor_id = req.param('doctor_id');
+    var pageNo = req.param('page_no') || 0, pageSize = req.param('page_size') || 10;
+    console.info('sick_id=' + sick_id + ",doctor_id=" + doctor_id
+        + ",page_no=" + pageNo + ",pageSize=" + pageSize);
+    var query = {};
+    if (sick_id) {
+        query.sick_id = sick_id;
+    }
+    if (doctor_id) {
+        query.doctor_id = doctor_id;
+    }
+    req.models.message_session.find(query).order("-id").limit(pageSize).offset(pageNo * pageSize)
+        .run(function (err, data) {
+            if (err) {
+                res.json(result(false, '', {}));
+            } else {
+                res.json(result(ture, '', data));
+            }
+        });
+});
 
 router.post('/speak', function (req, res, next) {
     //生成multiparty对象，并配置下载目标路径
@@ -37,7 +59,11 @@ router.post('/speak', function (req, res, next) {
             }
 
             if (!session_id) {
-                req.models.message_session.create({day: new Date(), sick_id: id}, function (err, item) {
+                req.models.message_session.create({
+                    day: new Date(),
+                    sick_id: id,
+                    doctor_id: doctor_id
+                }, function (err, item) {
                     req.models.message.create({
                         session_id: item.id,
                         day: new Date(),

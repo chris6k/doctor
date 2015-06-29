@@ -13,7 +13,9 @@ var define = function (db, models) {
         type: {type: 'text'},//doctor nurse
         mobile: {type: 'text', required: false},
         wx_id: {type: 'text', required: false},
-        status: {type: 'text', defaultValue: 't'}
+        status: {type: 'text', defaultValue: 't'},
+        avatar: {type: 'text', size: 256},
+        title: {type: 'title', required: false}
     });
     //病人信息表
     models.sick = db.define('sick', {
@@ -98,10 +100,11 @@ var define = function (db, models) {
         description: {type: 'object'},
         pics: {type: 'object'}
     });
-
+    //会话表
     models.message_session = db.define('message_session', {
         day: {type: 'date'},
         status: {type: 'text', defaultValue: 'n'},//d-- 删除 n-- 正常
+        doctor_id: {type: 'integer'},
         sick_id: {type: 'integer'}
     });
     //提问表
