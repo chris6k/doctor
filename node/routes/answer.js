@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var result = require('./result');
 //TODO
-var source_url = {sick: '', doctor: ''};
-var target_url = {sick: '', doctor: ''};
+var source_url = {sick: '/gakf/askDoctor.html', doctor: '/gakf/question.html'};
+var target_url = {sick: '/gakf/askDoctor.html', doctor: '/gakf/question.html'};
 
 router.get('/session', function (req, res, next) {
     var sick_id = req.param('sick_id');
