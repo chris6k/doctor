@@ -35,7 +35,7 @@ router.get('/session', function (req, res, next) {
     req.models.message_session.find(query).order("-id").limit(pageSize).offset(pageNo * pageSize)
         .run(function (err, data) {
             if (err) {
-                res.json(result(false, '', {}));
+                res.json(result(false, '', err));
             } else {
                 res.json(result(true, '', data));
             }
