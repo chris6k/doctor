@@ -7,8 +7,8 @@ var target_url = {sick: '/gakf/askDoctor.html', doctor: '/gakf/question.html'};
 
 router.get('/message', function (req, res, next) {
     var session_id = req.param('session_id');
-    var page_no = req.param('page_no') || 0;
-    var page_size = req.param('page_no') || 10;
+    var pageNo = req.param('page_no') || 0;
+    var pageSize = req.param('page_no') || 10;
     req.models.message.find({session_id: 'session_id'}).order("-id")
         .limit(pageSize).offset(pageNo * pageSize).run(function (err, data) {
             if (err) {
