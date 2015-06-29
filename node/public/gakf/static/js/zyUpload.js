@@ -20,7 +20,7 @@
 					height           : "400px",  					// 宽度
 					itemWidth        : "82px",                     // 文件项的宽度
 					itemHeight       : "82px",                     // 文件项的高度
-					url              : "/upload/UploadAction",  	// 上传文件的路径
+					url              : "/answer/speak",  	// 上传文件的路径
 					multiple         : true,  						// 是否可以多个文件上传
 					dragDrop         : true,  						// 是否可以拖动上传文件
 					del              : true,  						// 是否可以删除文件
@@ -53,7 +53,7 @@
 				if(para.dragDrop){
 					// 创建带有拖动的html
 					html += '<form id="uploadForm" action="'+para.url+'" method="post" enctype="multipart/form-data">';
-					html += '	<div class="upload_box">';
+					html += '	<div class="upload_box"><input type="hidden" ms-duplex-string="d.content"/>';
 					html += '		<div class="upload_main">';
 					html += '			<div class="upload_choose">';
 	            	html += '				<div class="convent_choice">';
@@ -84,14 +84,16 @@
 					
 					// 创建不带有拖动的html
 					html += '<form id="uploadForm" action="'+para.url+'" method="post" enctype="multipart/form-data">';
-					html += '	<div class="upload_box">';
+					html += '	<div class="upload_box"><input type="hidden" name="content" ms-duplex-string="d.content"/>';
+					html += '	<input type="hidden" name="sick_id" ms-duplex-string="d.sick_id"/>';
+					html += '	<input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>';
 					html += '		<div class="upload_main single_main">';
 		            html += '			<div class="status_bar">';
 		            html += '				<div id="status_info" class="info f12">选中0张文件，共0B。</div>';
 		            html += '				<div class="btns">';
 		            html += '					<input id="fileImage" type="file" size="30" name="fileselect[]" '+multiple+'>';
 		           // html += '					<div class="webuploader_pick">选择文件</div>';
-		            html += '					<div class="upload_btn">开始上传</div>';
+		            html += '					<div class="upload_btn">发送</div>';
 		            html += '				</div>';
 		            html += '			</div>';
 		            html += '			<div id="preview" class="upload_preview">';

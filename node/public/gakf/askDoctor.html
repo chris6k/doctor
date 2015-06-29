@@ -8,6 +8,7 @@
 
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<style type="text/css">
@@ -20,7 +21,7 @@
 	}
 	</style>
 </head>
-<body>
+<body ms-controller="test">
 	<div class="">
 		<div class="panel">
 			<div class="panel-body my-media">
@@ -33,21 +34,48 @@
 				</div>
 				<div class="content">
 					<div class="spacer15"></div>
-					主治医生：<span class="orange">王小会</span> <br/>
-					浙江第一人民医院，主任医生
+					主治医生：<span class="orange">{{d.doctor_name}}</span> <br/>
+					{{d.doctor_desc}}
 				</div>
 			</div>
 		</div>
 		
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea class="my-textarea" placeholder="请输入求助内容"></textarea>
+				<textarea class="my-textarea" placeholder="请输入求助内容" ms-duplex-string="d.content"></textarea>
 				<div id="demo" class="demo"></div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
-	require(["upload"],function(){
+	//session(可缺省)， sick_id,doctor_id,name, title, content 
+
+	require(["upload","avalon"],function(){
+		var data = {
+			'doctor_name':"王小会",
+			'doctor_desc':'浙江第一人民医院，主任医生',
+			'content':'',
+			'sick_id':'1'
+		}
+		
+	    var vmodel = avalon.define({
+	          $id: "test",
+	          d:data
+	    });
+	    avalon.scan();
+	    $.ajax({ 
+			type:"get",
+			url: "/sick/info?id="+RC.parseOptions(window.location.href).id,
+			dataType: "json", 
+			success: function(obj){
+				vmodel.d = $.extend(data,obj.content);
+    		},
+    		error:function(){
+
+    		}
+		}); 
+
+
 
 	});
 	</script>
