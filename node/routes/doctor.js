@@ -82,7 +82,7 @@ router.post('/check', function (req, res, next) {
             console.log('parse files: ' + filesTmp);
             var pic = [];
             for (var i = 0; i < files.inputFile.length; i++) {
-                pic[i] = files.inputFile[i].path;
+                pic[i] = files.file[i].path;
             }
 
             req.models.sickcheck.create({
@@ -125,7 +125,7 @@ router.post('/out_check', function (req, res, next) {
             console.log('parse files: ' + filesTmp);
             var pic = [];
             for (var i = 0; i < files.inputFile.length; i++) {
-                pic[i] = files.inputFile[i].path;
+                pic[i] = files.file[i].path;
             }
 
             req.models.sickreview.create({
