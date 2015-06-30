@@ -43,6 +43,7 @@ var sick = require('./routes/sick');
 var checklist = require('./routes/checklist');
 var answer = require('./routes/answer');
 var loginCheck = require('./routes/loginCheck');
+var imageUpload = require("./routes/imageUpload");
 
 app.use(loginCheck);
 // app.use(function (req, res, next) {
@@ -61,6 +62,7 @@ app.use('/doctor', doctor);
 app.use('/sick', sick);
 app.use('/checklist', checklist);
 app.use('/answer', answer);
+app.use('/image', imageUpload);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
