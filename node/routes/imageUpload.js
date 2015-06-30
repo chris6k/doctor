@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var result = require("./result");
+var multiparty = require("multiparty");
 
 router.post("/upload", function (req, res, next) {
     //生成multiparty对象，并配置下载目标路径

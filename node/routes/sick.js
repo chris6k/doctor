@@ -102,7 +102,7 @@ router.get('/doctor', function (req, res, next) {
         req.models.sick.get(sick_id, function (err, sick) {
             console.info("sick=>" + sick);
             if (err || !sick || !sick.doctor_id) {
-                res.json(result(false, 'get sick info err', {}));
+                res.json(result(false, 'get sick info err', err));
             } else {
                 req.models.doctor.get(sick.doctor_id, function (err, doctor) {
                     if (err || !doctor) {
