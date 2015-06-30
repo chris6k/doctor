@@ -14,7 +14,7 @@ router.post("/upload", function (req, res, next) {
         } else {
             var filesTmp = JSON.stringify(files, null, 2);
             console.log('parse files: ' + filesTmp);
-            pic = files.inputFile[0].path;
+            pic = files.file[0].path;
             res.json(result(true, '', pic));
         }
     });
