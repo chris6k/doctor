@@ -64,7 +64,7 @@
 	            	html += '				</div>';
 					html += '				<span id="fileDragArea" class="upload_drag_area">或者将文件拖到此处</span>';
 					html += '			</div>';
-		            html += '			<div class="status_bar">';
+		            html += '			<div class="status_bar" style="display:none;">';
 		            html += '				<div id="status_info" class="info">选中0张文件，共0B。</div>';
 		            html += '				<div class="btns">';
 		            //html += '					<div class="webuploader_pick">继续选择</div>';
@@ -76,7 +76,7 @@
 					html += '		<div class="upload_submit">';
 					html += '			<button type="button" id="fileSubmit" class="upload_submit_btn">确认上传文件</button>';
 					html += '		</div>';
-					html += '		<div id="uploadInf" class="upload_inf"></div>';
+					html += '		<div id="uploadInf" class="upload_inf" style="display:none;"></div>';
 					html += '	</div>';
 					html += '</form>';
 				}else{
@@ -84,11 +84,9 @@
 					
 					// 创建不带有拖动的html
 					html += '<form id="uploadForm" action="'+para.url+'" method="post" enctype="multipart/form-data">';
-					html += '	<div class="upload_box"><input type="hidden" name="content" ms-duplex-string="d.content"/>';
-					html += '	<input type="hidden" name="sick_id" ms-duplex-string="d.sick_id"/>';
-					html += '	<input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>';
+					html += '	<div class="upload_box">';
 					html += '		<div class="upload_main single_main">';
-		            html += '			<div class="status_bar">';
+		            html += '			<div class="status_bar" style="display:none;">';
 		            html += '				<div id="status_info" class="info f12">选中0张文件，共0B。</div>';
 		            html += '				<div class="btns">';
 		            html += '					<input id="fileImage" type="file" size="30" name="fileselect[]" '+multiple+'>';
@@ -109,7 +107,7 @@
 					html += '		<div class="upload_submit">';
 					html += '			<button type="button" id="fileSubmit" class="upload_submit_btn">确认上传文件</button>';
 					html += '		</div>';
-					html += '		<div id="uploadInf" class="upload_inf"></div>';
+					html += '		<div id="uploadInf" class="upload_inf" style="display:none;"></div>';
 					html += '	</div>';
 					html += '</form>';
 				}
@@ -268,6 +266,8 @@
 							} else {
 								// 走到这里说明文件html已经组织完毕，要把html添加到预览区
 								funAppendPreviewHtml(html);
+								// ajax submit
+								$("#fileSubmit").click();
 							}
 						};
 						
@@ -320,10 +320,12 @@
 					onDelete: function(file, files) {
 						// 移除效果
 						$("#uploadList_" + file.index).fadeOut();
+
 						// 重新设置统计栏信息
 						self.funSetStatusInfo(files);
 						console.info("剩下的文件");
 						console.info(files);
+						//delete img by img name
 					},
 					onProgress: function(file, loaded, total) {
 						var eleProgress = $("#uploadProgress_" + file.index), percent = (loaded / total * 100).toFixed(2) + '%';
@@ -335,8 +337,12 @@
 					onSuccess: function(file, response) {
 						$("#uploadProgress_" + file.index).hide();
 						$("#uploadSuccess_" + file.index).show();
-						$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+						//$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
 						// 根据配置参数确定隐不隐藏上传成功的文件
+						//上传成功修改页面信息 --
+
+						console.log("返回信息");
+
 						if(para.finishDel){
 							// 移除效果
 							$("#uploadList_" + file.index).fadeOut();

@@ -34,28 +34,44 @@
 				<div class="content">
 					<div class="spacer15"></div>
 					主治医生：<span class="orange">{{d.doctor_name}}</span> <br/>
-					{{d.doctor_desc}}
+					{{d.title}}
 				</div>
 			</div>
 		</div>
 		
 		<div class="row">
-			<div class="col-xs-12">
-				<textarea class="my-textarea" placeholder="请输入求助内容" ms-duplex-string="d.content"></textarea>
-				<div id="demo" class="demo"></div>
-			</div>
+			<form action="/answer/speak" method="post" id="askFrom">
+				<div class="col-xs-12">
+					<textarea class="my-textarea" placeholder="请输入求助内容" ms-duplex-string="d.content"></textarea>
+					<input type="hidden" name="sick_id" ms-duplex-string="d.sick_id"/>
+					<input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>
+					<input type="hidden" name="content" ms-duplex-string="d.content"/>
+				</div>
+				<div class="col-xs-12">
+					<div id="demo" class="demo"></div>
+				</div>
+			</form>
 		</div>
 	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" id="askDoctor">
+			    	<span style="color:#fff;" >发送</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
 	<script type="text/javascript">
 	//session(可缺省)， sick_id,doctor_id,name, title, content 
 
 	require(["upload","avalon"],function(){
 		var data = {
-			'doctor_name':"王小会",
-			'doctor_desc':'浙江第一人民医院，主任医生',
-			'content':'',
-			'sick_id':'1'
-		}
+			sick_id:RC.parseOptions(window.location.href).id,
+			content:""
+		};
 		
 	    var vmodel = avalon.define({
 	          $id: "test",
@@ -73,7 +89,9 @@
 
     		}
 		}); 
-
+	    $("#askDoctor").on("touchstart",function(){
+	    	$("#askFrom").submit();
+	    })
 
 
 	});

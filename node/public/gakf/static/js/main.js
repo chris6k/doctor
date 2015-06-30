@@ -13,7 +13,8 @@ require.config({
         'zyUpload':['jquery'],
         'zyFile':['jquery'],
         'upload':['css!../css/zyUpload.css','jquery','zyUpload','zyFile'],
-        'avalon':["jquery"]
+        'avalon':["jquery"],
+        'template':['jquery']
     },
 	paths: {
 		"jquery": "jquery-1.11.1.min",
