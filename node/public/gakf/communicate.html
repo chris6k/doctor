@@ -32,7 +32,35 @@
 		{{if i ==0}}
 			<div class="spacer10"></div>
 		{{/if}}
-		{{if v.message}}
+		{{if v.message.day}}
+					<div class="text-center">
+						<span class="titleBg">{{v.day}}</span>
+					</div>
+					<div class="panel panel-default my-panel">
+					  <div class="panel-body">
+					  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
+					  	<span>{{v.day}}</span>
+					  	<div class=" my-imgcon">
+					  		<div class="col-xs-6">
+					  			<img src="./static/images/1.jpg">
+					  		</div>
+					  		<div class="col-xs-6">
+					  			<img src="./static/images/1.jpg">
+					  		</div>
+					  	</div>
+					  	<div>
+					  		<span>[{{name}}] {{v.message}}</span>
+					  	</div>
+					  	<div class="my-line"></div>
+					  	<div>
+					  		<a href="question.html?id={{v.sick_id}}">
+			  			  		<span class="h5">阅读全文  </span>
+			  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+					  		</a>
+					 	</div>
+					  </div>
+					</div>
+		{{else}}
 		<div>
 			<div class="text-center">
 				<span class="titleBg">{{v.day}}</span>
@@ -46,35 +74,7 @@
 			  </div>
 			</div>
 		</div>
-		{{/if}}
-		{{if v.message.pics}}
-			<div class="text-center">
-				<span class="titleBg">{{v.day}}</span>
-			</div>
-			<div class="panel panel-default my-panel">
-			  <div class="panel-body">
-			  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
-			  	<span>{{v.day}}</span>
-			  	<div class=" my-imgcon">
-			  		<div class="col-xs-6">
-			  			<img src="./static/images/1.jpg">
-			  		</div>
-			  		<div class="col-xs-6">
-			  			<img src="./static/images/1.jpg">
-			  		</div>
-			  	</div>
-			  	<div>
-			  		<span>[{{name}}] {{v.message}}</span>
-			  	</div>
-			  	<div class="my-line"></div>
-			  	<div>
-			  		<a href="question.html?id={{v.sick_id}}">
-	  			  		<span class="h5">阅读全文  </span>
-	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-			  		</a>
-			 	</div>
-			  </div>
-			</div>
+			
 		{{/if}}
 
 		{{/each}}
@@ -124,7 +124,14 @@
 	    		}
 			}); 
 		 	$("#askDoctor").on("touchstart",function(){
-		    	$(this).attr("href","askDoctor.html?doctor_id="+RC.parseOptions(window.location.href).doctor_id);
+		 		var params = "",temp = RC.parseOptions(window.location.href);
+		 		if(temp.doctor_id){
+		 			params = "?doctor_id="+temp.doctor_id;
+		 		}else if(temp.id){
+		 			params = "?id="+temp.id;
+		 		}
+
+		    	$(this).attr("href","askDoctor.html"+params);
 		    })
 		});
 
