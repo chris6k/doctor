@@ -81,8 +81,10 @@ router.post('/check', function (req, res, next) {
         } else {
             console.log('parse files: ' + filesTmp);
             var pic = [];
-            for (var i = 0; i < files.inputFile.length; i++) {
-                pic[i] = files.file[i].path;
+            for(var key in files) {
+                for (var file in files[key]) {
+                    pic.push(file.path);
+                }
             }
 
             req.models.sickcheck.create({
