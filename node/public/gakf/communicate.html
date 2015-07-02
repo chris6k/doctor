@@ -41,12 +41,11 @@
 					  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
 					  	<span>{{v.day}}</span>
 					  	<div class=" my-imgcon">
+					  		{{each v.message.pics as vv j}}
 					  		<div class="col-xs-6">
-					  			<img src="./static/images/1.jpg">
+					  			<img src={{vv}}>
 					  		</div>
-					  		<div class="col-xs-6">
-					  			<img src="./static/images/1.jpg">
-					  		</div>
+					  		{{/each}}
 					  	</div>
 					  	<div>
 					  		<span>[{{name}}] {{v.message}}</span>
@@ -97,13 +96,26 @@
 				dataType: "json", 
 				success: function(obj){
 					data.d= obj.content;
+					var pics  = [];
+					for(var i=0;i<obj.content.length;i++){
+						var co = obj.content[i];
+						if((typeof co.message) == "object"){
+							if(co.message.pics){
+							pics = co.message.pics.split(",");
+							co.message.pics = pics;
+							}
+						}
+					}
 					if(id){
 						$.ajax({ 
 							type:"get",
 							url: sickurl,
 							dataType: "json", 
 							success: function(obj){
+								
+
 								var dd = $.extend(data,obj.content);
+
 								var tpl = $("#test").html();
 								var render = template.compile(tpl);
 								

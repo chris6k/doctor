@@ -51,6 +51,7 @@
 				var html= '';
 				
 				if(para.dragDrop){
+
 					// 创建带有拖动的html
 					html += '<form id="uploadForm" action="'+para.url+'" method="post" enctype="multipart/form-data">';
 					html += '	<div class="upload_box"><input type="hidden" ms-duplex-string="d.content"/>';
@@ -340,8 +341,15 @@
 						//$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
 						// 根据配置参数确定隐不隐藏上传成功的文件
 						//上传成功修改页面信息 --
+						var pic = $("#pics"),res = JSON.parse(response);
+						if(!pic.val()){
+							pic.val(res.content);
+						}else{
+							var arr = pic.val().split(",");
+							arr.push(res.content);
+							pic.val(arr.join(","));
+						}
 
-						console.log("返回信息");
 
 						if(para.finishDel){
 							// 移除效果

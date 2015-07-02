@@ -14,12 +14,8 @@ router.post("/upload", function (req, res, next) {
         } else {
             var filesTmp = JSON.stringify(files, null, 2);
             console.log('parse files: ' + filesTmp);
-            var pic = [];
-            for(var key in files) {
-                for (var file in files[key]) {
-                    pic.push(file.path);
-                }
-            }
+            var pic = files.fileList[0].path;
+            pic = pic.replace(/public/, "");
             res.json(result(true, '', pic));
         }
     });
