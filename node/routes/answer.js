@@ -3,7 +3,7 @@ var router = express.Router();
 var result = require('./result');
 //TODO
 var source_url = {sick: '/gakf/askDoctor.html', doctor: '/gakf/question.html'};
-var target_url = {sick: '/gakf/askDoctor.html', doctor: '/gakf/question.html'};
+var target_url = {sick: '/gakf/communicate.html', doctor: '/gakf/question.html'};
 
 router.get('/message', function (req, res, next) {
     var session_id = req.param('session_id');
@@ -60,7 +60,7 @@ router.post('/speak', function (req, res, next) {
     }
     if (err) {
         console.log('parse image error: ' + err);
-        res.redirect(source_url[type] + "?err=1");
+        res.redirect(source_url[type] + "?err=1&id=" + id);
     } else {
 
         if (!session_id) {
@@ -81,9 +81,9 @@ router.post('/speak', function (req, res, next) {
                 msg.session_id = item.id;
                 req.models.message.create(msg, function (err) {
                     if (err) {
-                        res.redirect(source_url[type] + "?err=2");
+                        res.redirect(source_url[type] + "?err=2&id=" + id);
                     } else {
-                        res.redirect(target_url[type]);
+                        res.redirect(target_url[type] + "?id=" + id);
                     }
                 });
             });
@@ -98,9 +98,9 @@ router.post('/speak', function (req, res, next) {
                 pics: pic
             }, function (err, item) {
                 if (err) {
-                    res.redirect(source_url[type] + "?err=2");
+                    res.redirect(source_url[type] + "?err=2&id=" + id);
                 } else {
-                    res.redirect(target_url[type]);
+                    res.redirect(target_url[type] + "?id=" + id);
                 }
             });
         }
