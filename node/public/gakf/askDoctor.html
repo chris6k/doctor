@@ -33,7 +33,8 @@
 				</div>
 				<div class="content">
 					<div class="spacer15"></div>
-					主治医生：<span class="orange">{{d.doctor_name}}</span> <br/>
+					主治医生：<span class="orange">{{d.doctor_name}}</span> 
+					<div class="spacer5"></div>
 					{{d.title}}
 				</div>
 			</div>
@@ -45,7 +46,7 @@
 					<textarea class="my-textarea" placeholder="请输入求助内容" ms-duplex-string="d.content"></textarea>
 					<input type="hidden" name="sick_id" ms-duplex-string="d.sick_id"/>
 					<input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>
-					<input type="hidden" name="content" ms-duplex-string="d.content"/>
+					<input type="hidden" name="pics" id="pics"/>
 				</div>
 				<div class="col-xs-12">
 					<div id="demo" class="demo"></div>
