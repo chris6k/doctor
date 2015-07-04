@@ -63,6 +63,9 @@ router.post('/speak', function (req, res, next) {
         res.redirect(source_url[type] + "?err=1&id=" + id);
     } else {
 
+        req.models[type].get(id, function(err, info){
+            name = name || info.name;
+            doctor_id = doctor_id || info.doctor_id || info.id;
         if (!session_id) {
             var msg = {
                 day: new Date(),
@@ -72,6 +75,7 @@ router.post('/speak', function (req, res, next) {
                 speaker_id: id,
                 pics: pic
             };
+
             req.models.message_session.create({
                 day: new Date(),
                 sick_id: id,
@@ -79,6 +83,7 @@ router.post('/speak', function (req, res, next) {
                 message: msg
             }, function (err, item) {
                 if (err) {
+                    console.error(err);
                     res.redirect(source_url[type] + "?err=3&id=" + id);
                     return;
                 }
@@ -107,7 +112,10 @@ router.post('/speak', function (req, res, next) {
                     res.redirect(target_url[type] + "?id=" + id);
                 }
             });
-        }
+        }  
+        });
+
+        
     }
 
 
