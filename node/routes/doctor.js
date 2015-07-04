@@ -60,17 +60,15 @@ router.get('/sicks', function (req, res, next) {
 
 //查房
 router.post('/check', function (req, res, next) {
-    //生成multiparty对象，并配置下载目标路径
-    var form = new multiparty.Form({uploadDir: './public/images/'});
-    //下载后处理
-    form.parse(req, function (err, fields, files) {
-        var filesTmp = JSON.stringify(files, null, 2);
-        var sick_id, doctor_id, description, title;
+    
+        
+        var sick_id, doctor_id, description, title, pic;
         try {
-            sick_id = fields['sick_id'];
-            doctor_id = fields['doctor_id'];
-            title = fields['title'];
-            description = fields['description'];
+            sick_id = req.param('sick_id');
+            doctor_id = req.param('doctor_id');
+            title = req.param('title');
+            description = req.param('description');
+            pic = req.param('pics');
         } catch (e) {
             console.error(e);
             err = e;
@@ -80,16 +78,10 @@ router.post('/check', function (req, res, next) {
             res.redirect(source_url.check + "?err=1");
         } else {
             console.log('parse files: ' + filesTmp);
-            var pic = [];
-            for(var key in files) {
-                for (var file in files[key]) {
-                    pic.push(file.path);
-                }
-            }
-
+            
             req.models.sickcheck.create({
                 title: title,
-                sick_id: sick_id, doctor_id: doctor_id, day: new Date(), description: JSON.parse(description), pics: pic
+                sick_id: sick_id, doctor_id: doctor_id, day: new Date(), description: description, pics: pic
             }, function (err, item) {
                 if (err) {
                     console.error(err);
@@ -100,7 +92,7 @@ router.post('/check', function (req, res, next) {
             });
 
         }
-    });
+    
 });
 
 //随访
@@ -145,6 +137,25 @@ router.post('/out_check', function (req, res, next) {
         }
     });
 
+});
+
+router.get("/checkList", function(req, res, next){
+    var sick_id = req.param("sick_id");
+    var doctor_id = req.param("doctor_id");
+    var query = {};
+    if (sick_id) {
+        query.sick_id = sick_id;
+    } 
+    if (doctor_id) {
+        query.doctor_id = doctor_id;
+    }
+    req.models.sickcheck.find(query, function(err, data) {
+        if (err) {
+            res.json(result(false,"get sickcheck err", err));
+        } else {
+            res.json(result(true,'',data));
+        }
+    });
 });
 
 
