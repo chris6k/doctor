@@ -5,8 +5,8 @@ var weixin_biz = function (app) {
     weixin.configurate({
         app: app,
         token: 'guanai',
-        appid: 'wx9b2bbce36613b66e',
-        secret: 'b4c3079540dd4b57269a09b5e2d36dc0'
+        appid: 'wxaf3a162fe7e04d37',//'wx9b2bbce36613b66e',
+        secret: '2166e5441e7412dc7ebd4111635db0b7'//'b4c3079540dd4b57269a09b5e2d36dc0'
     });
 
     // 监听文本消息
