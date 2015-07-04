@@ -106,7 +106,8 @@ var define = function (db, models) {
         status: {type: 'text', defaultValue: 'n'},//d-- 删除 n-- 正常
         doctor_id: {type: 'integer'},
         sick_id: {type: 'integer'},
-        message: {type: 'object'}
+        message: {type: 'object'},
+        type: {type: 'text'}
     });
     //提问表
     models.message = db.define('message', {
@@ -116,7 +117,8 @@ var define = function (db, models) {
         content: {type: 'text'},
         pics: {type: 'object'},
         speaker: {type: 'text'},
-        speaker_id: {type: 'integer'}
+        speaker_id: {type: 'integer'},
+        type: {type: 'text'}
     });
     //药物表
     models.drug = db.define('drug', {

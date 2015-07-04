@@ -20,6 +20,7 @@ var getOpenId = function (req, res, code) {
             res.cookie('open_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: true});
             req.models.doctor.find({wx_id: openid}, function (err, data) {
                 if (err) {
+                    console.error(err);
                     res.redirect(login_url + "?wx_id=" + openid + "&cb=" + cb);
                 } else {
                     if (data && data.length > 0) {
@@ -36,6 +37,7 @@ var getOpenId = function (req, res, code) {
                 }
             });
         } else {
+            console.error(error);
             res.redirect(login_url);
         }
     });
@@ -45,6 +47,8 @@ router.get('/callback', function (req, res, next) {
     var code = req.param("CODE");
     if (code) {
         getOpenId(req, res, code);
+    } else {
+        next();
     }
 });
 

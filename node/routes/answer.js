@@ -52,8 +52,8 @@ router.post('/speak', function (req, res, next) {
         content = req.param('content');
         title = req.param('title');
         pic = req.param('pics');
-        id = doctor || sick_id;
-        type = doctor ? "doctor" : "sick";
+        id = doctor_id || sick_id;
+        type = doctor_id ? "doctor" : "sick";
     } catch (e) {
         console.error(e);
         err = e;
@@ -73,14 +73,16 @@ router.post('/speak', function (req, res, next) {
                 content: content,
                 speaker: name,
                 speaker_id: id,
-                pics: pic
+                pics: pic,
+                type:type
             };
 
             req.models.message_session.create({
                 day: new Date(),
                 sick_id: id,
                 doctor_id: doctor_id,
-                message: msg
+                message: msg,
+                type:type
             }, function (err, item) {
                 if (err) {
                     console.error(err);
