@@ -64,6 +64,7 @@ var weixin_biz = function (app) {
     weixin.on('subscribeEventMsg', function (data) {
         console.log('>>>>>>>>> subscribeEventMsg emit >>>>>>>>>');
         console.log(data);
+        var articles = [];
         articles[0] = {
             title: "欢迎使用XXX",
             description: "使用入门",
@@ -91,6 +92,7 @@ var weixin_biz = function (app) {
     weixin.on("scanEventMsg", function (data) {
         console.log('>>>>>>>>> scanEventMsg emit >>>>>>>>>');
         console.log(data);
+        var articles = [];
         articles[0] = {
             title: "欢迎使用XXX",
             description: "使用入门",
