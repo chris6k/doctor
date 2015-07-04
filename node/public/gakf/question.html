@@ -15,19 +15,15 @@
 	<div class="">
 		<div class="panel panel-default my-panel" style="margin: 0px;">
 		  <div class="panel-body">
-		  	<div class="h5" style="margin-top:0px;">{{d.name}}</div>
+		  	<div class="h4" style="margin-top:0px;">{{d.speaker}}</div>
 		  	<div>
-		  		<span>{{d.message}}</span>
+		  		<span>{{d.content}}</span>
 		  	</div>
-		  	<div class=" my-imgcon">
-		  		<div class="col-xs-6">
-		  			<img src="./static/images/1.jpg">
-		  		</div>
-		  		<div class="col-xs-6">
-		  			<img src="./static/images/1.jpg">
+		  	<div class=" my-imgcon" >
+		  		<div class="col-xs-6" ms-repeat-el="d.picsArr">
+		  			<img ms-src="{{el}}">
 		  		</div>
 		  	</div>
-		  	
 		  </div>
 		</div>
 		<nav class="navbar navbar-default my-nav my-nav-top">
@@ -75,26 +71,41 @@
 			  </li>
 			  <li class="list-group-item gray">
 			  	<span>入院日期</span>
-			  	<span class="right">{{d.in_day}}</span>
+			  	<span class="right">{{d.in_day | date("yyyy年MM月dd日"}}</span>
 			  </li>
 			  <li class="list-group-item">
 			  	<span>出院日期</span>
-				<span class="right">{{d.out_day}}</span>
+				<span class="right">{{d.out_day | date("yyyy年MM月dd日"}}</span>
 			  </li>
 			</ul>
 		</div>
 	</div>
+	<form action="/answer/speak" method="post" id="askFrom" ms-visible="d.type != 'doctor'">
+		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+		  <div class="container text-center" style="height: 42px; line-height: 42px;">
+		    <div class="row">
+		    	<div class="col-xs-9" style="padding-right: 0px;">
+					<input type="text" name="content" style="width: 100%;vertical-align: middle;line-height: 30px;">
+
+		    	</div>
+		    	<div class="col-xs-3">
+		    		<a href="javascript:void(0)" id="replay">
+				    	<span style="color:#fff;">发送</span>
+				    </a>
+		    	</div>
+		    </div>
+		  </div>
+		  <input type="hidden" name="sick_id" ms-duplex-string="d.speaker_id"/>
+		  <input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>
+		  <input type="hidden" name="pics" id="pics" ms-duplex-string="d.pics"/>
+		  <input type="hidden" name="title" value="医生回复" />
+		</nav>
+	</form>
 	<script type="text/javascript">
-		require(["avalon"],function(){
+		require(["store","avalon"],function(store){
 			var data = {};
-			var url = "",temp = RC.parseOptions(window.location.href),id = temp.id,doctor_id = temp.doctor_id;
-			if(id){
-				url = "/answer/session?sick_id="+id;
-				sickurl = "/sick/info?id="+id;
-			}
-			if(doctor_id){
-				url = "/answer/session?doctor_id="+doctor_id;
-			}
+			var url = "",temp = store.get("user");
+			// /answer/message?session_id=1
 			var vmodel = avalon.define({
 		          $id: "test",
 		          d:data
@@ -102,31 +113,39 @@
 		    avalon.scan();
 			$.ajax({ 
 				type:"get",
-				url: url,
+				url: "/answer/message?session_id="+RC["parseOptions"](window.location.href).session_id,
 				dataType: "json", 
 				success: function(obj){
-					vmodel.d = obj.content;
-					// if(id){
-					// 	$.ajax({ 
-					// 		type:"get",
-					// 		url: sickurl,
-					// 		dataType: "json", 
-					// 		success: function(obj){
-					// 			//var dd  = vmodel.d.$model[0];
-					// 			//vmodel.d.$model = $.extend(dd,obj.content);
-								
-				 //    		},
-				 //    		error:function(){
+					var obj = {"success":true,"msg":"","content":[{"session_id":18,"day":"2015-07-03T16:00:00.000Z","title":"患者提问","content":"ddadfas","pics":"/images/osOjvKwyqggKhjpH6NbWkDTN.png,/images/osOjvKwyqggKhjpH6NbWkDTN.png","speaker":"meilin","speaker_id":8,"id":13,"type":"doctor"}]};
+					var d = obj.content[0];
 
-				 //    		}
-					// 	}); 
-					// }
+					if(d.pics){
+						pics = d.pics.split(",");
+						d.picsArr = pics;
+					}
+					//vmodel.d = d;
+
+					$.ajax({ 
+						type:"get",
+						url: "/sick/info?id="+d.speaker_id,
+						dataType: "json", 
+						success: function(obj){
+							//var dd  = vmodel.d.$model[0];
+							vmodel.d = $.extend(d,obj.content);
+							
+			    		},
+			    		error:function(){
+
+			    		}
+					}); 
 	    		},
 	    		error:function(){
 
 	    		}
 			}); 
-		 	
+		 	 $("#replay").on("touchstart",function(){
+		    	$("#askFrom").submit();
+		    })
 		});
 	</script>
 </body>
