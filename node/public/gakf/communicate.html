@@ -86,16 +86,15 @@
 		require(["template","store"],function(template,store){
 			template.helper('dateFormat', RC["dateFormat"]);
 			var data = {},user = store.get("user");
-			var url = "",temp = RC.parseOptions(window.location.href),id = temp.id,doctor_id = temp.doctor_id;
 			if(user.type == "sick"){
-				url = "/answer/session?sick_id="+id;
-				sickurl = "/sick/info?id="+id;
+				url = "/answer/session?sick_id="+user.id;
+				sickurl = "/sick/info?id="+user.id;
 				 var html = render($("#nav"),"");
 				 //输入模板
 				 $("body").append(html);
 			}
-			if(doctor_id){
-				url = "/answer/session?doctor_id="+doctor_id;
+			if(user.type =="doctor"){
+				url = "/answer/session?doctor_id="+user.id;
 			}
 			function render(dom,data){
 				var dd = data;
