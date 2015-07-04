@@ -22,7 +22,7 @@ router.get('/info', function (req, res, next) {
                 if (err) {
                     res.json(result(true, '', data));        
                 } else {
-                    data.doctor_title = doctor.title;
+                    data.title = doctor.title;
                     res.json(result(true, '', data));
                 }
             });
