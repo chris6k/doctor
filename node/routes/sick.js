@@ -18,7 +18,15 @@ router.get('/info', function (req, res, next) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
-            res.json(result(true, '', data));
+            req.models.doctor.get(data.doctor_id, function(err, doctor) {
+                if (err) {
+                    res.json(result(true, '', data));        
+                } else {
+                    data.doctor_title = doctor.title;
+                    res.json(result(true, '', data));
+                }
+            });
+            
         }
     });
 });
