@@ -27,7 +27,8 @@ require.config({
         "zyFile":"zyFile",
         "zyUpload":"zyUpload",
         "avalon":"avalon",
-        "resource":"resource"
+        "resource":"resource",
+        "store":"store.min"
 	}
 });
 

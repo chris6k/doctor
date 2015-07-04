@@ -1,4 +1,4 @@
-define(["jquery","jquery.validate"],function($,va){
+define(["jquery","jquery.validate","store"],function($,va,store){
 	return {
 		userName:function(){
 			$.validator.addMethod("userName", function(value, element) {
@@ -36,6 +36,7 @@ define(["jquery","jquery.validate"],function($,va){
 			this.userName();
 			this.isPhone();
 			this.format();
+			var formName = form;
 			if(form == "signForm"){
 				$("#signForm").validate({
 					errorElement:"em",
@@ -59,7 +60,32 @@ define(["jquery","jquery.validate"],function($,va){
 			                required: "请输入密码",
 			                minlength: $.format("密码不能小于{0}个字符")
 			            }
-					}
+					},
+					submitHandler:function(form){
+						$.ajax({ 
+							type:"post",
+							url: "/user/login",
+							dataType: "json", 
+							data:$("#"+formName).serialize(),
+							success: function(d){
+								if(d.success){
+									store.set('user', { type:d.msg.type,id: d.msg.id });
+					        		if(d.msg.url){
+					        			url =  d.msg.url;
+					        		}else{
+					        			if(d.msg.type == "sick"){
+					        				url = "/gakf/sickDetail.html";
+					        			}else if(d.msg.type == "doctor"){
+					        				url = "/gakf/sick.html";
+					        			}
+					        		}
+					        		window.location.href = url;
+								}
+				    		},
+				    		error:function(e){
+				    		}
+						});
+			        }    
 				});
 			}
 			if(form == "regForm"){
@@ -120,7 +146,32 @@ define(["jquery","jquery.validate"],function($,va){
 					     else
 					       error.insertAfter(element);
 					   
-				   }
+				   },
+				   submitHandler:function(form){
+			            $.ajax({ 
+							type:"post",
+							url: "/user/reg",
+							dataType: "json", 
+							data:$("#"+formName).serialize(),
+							success: function(d){
+								if(d.success){
+									store.set('user', { type:d.msg.type,id: d.msg.id });
+					        		if(d.msg.url){
+					        			url =  d.msg.url;
+					        		}else{
+					        			if(d.msg.type == "sick"){
+					        				url = "/gakf/sickDetail.html";
+					        			}else if(d.msg.type == "doctor"){
+					        				url = "/gakf/sick.html";
+					        			}
+					        		}
+					        		window.location.href = url;
+								}
+				    		},
+				    		error:function(e){
+				    		}
+						});
+			       }  
 				});
 			}
 		}

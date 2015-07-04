@@ -44,8 +44,8 @@
 		</nav>
 	</div>
 	<script type="text/javascript">
-	require(["avalon"],function(){
-			var data = [];
+	require(["store","avalon"],function(store){
+			var data = [],doctor_id = store.get("user").id;
 		   	var vmodel = avalon.define({
 		          $id: "test",
 		          d:data
@@ -53,7 +53,7 @@
 		    avalon.scan();
 		   $.ajax({ 
 				type:"get",
-				url: "/doctor/sicks?doctor_id="+RC.parseOptions(window.location.href).doctor_id,
+				url: "/doctor/sicks?doctor_id="+doctor_id,
 				dataType: "json", 
 				success: function(obj){
 					vmodel.d = obj.content;
@@ -63,8 +63,8 @@
 	    		}
 			}); 
 		    $("#addSick").on("touchstart",function(){
-		    	$(this).attr("href","addSick.html?doctor_id="+RC.parseOptions(window.location.href).doctor_id);
-		    })
+		    	$(this).attr("href","addSick.html?doctor_id="+doctor_id);
+		    });
 	})
 	</script>
 </body>

@@ -24,12 +24,12 @@
 		{{/if}}
 		{{if v.message.day}}
 					<div class="text-center">
-						<span class="titleBg">{{v.day}}</span>
+						<span class="titleBg">{{v.message.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
 					</div>
 					<div class="panel panel-default my-panel">
 					  <div class="panel-body">
-					  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
-					  	<span>{{v.day}}</span>
+					  	<div class="h5" style="margin-top:0px;">{{v.message.title}}</div>
+					  	<span>{{v.message.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
 					  	<div class=" my-imgcon">
 					  		{{each v.message.pics as vv j}}
 					  		<div class="col-xs-6">
@@ -38,11 +38,11 @@
 					  		{{/each}}
 					  	</div>
 					  	<div>
-					  		<span>[{{name}}] {{v.message.content}}</span>
+					  		<span>[{{v.message.speaker}}] {{v.message.content}}</span>
 					  	</div>
 					  	<div class="my-line"></div>
 					  	<div>
-					  		<a href="question.html?id={{v.message.id}}">
+					  		<a href="question.html?session_id={{v.id}}">
 			  			  		<span class="h5">阅读全文  </span>
 			  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
 					  		</a>
@@ -52,7 +52,7 @@
 		{{else}}
 		<div>
 			<div class="text-center">
-				<span class="titleBg">{{v.day}}</span>
+				<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
 			</div>
 			<div class="panel panel-default my-panel">
 			  <div class="panel-body">
@@ -83,10 +83,11 @@
 		</nav>
 	</script>
 	<script type="text/javascript">
-		require(["template"],function(template){
-			var data = {};
+		require(["template","store"],function(template,store){
+			template.helper('dateFormat', RC["dateFormat"]);
+			var data = {},user = store.get("user");
 			var url = "",temp = RC.parseOptions(window.location.href),id = temp.id,doctor_id = temp.doctor_id;
-			if(id){
+			if(user.type == "sick"){
 				url = "/answer/session?sick_id="+id;
 				sickurl = "/sick/info?id="+id;
 				 var html = render($("#nav"),"");
@@ -116,30 +117,18 @@
 					var pics  = [];
 					for(var i=0;i<obj.content.length;i++){
 						var co = obj.content[i];
-						if((typeof co.message) == "object"){
+						if(co.message && (typeof co.message) == "object"){
 							if(co.message.pics){
 							pics = co.message.pics.split(",");
 							co.message.pics = pics;
 							}
 						}
 					}
-					if(id){
-						$.ajax({ 
-							type:"get",
-							url: sickurl,
-							dataType: "json", 
-							success: function(obj){
-								var dd = $.extend(data,obj.content);
-								//匹配json内容
-							    var html = render($("#test"),dd);
-							    //输入模板
-							    $("#questionCon").html(html);
-				    		},
-				    		error:function(){
-
-				    		}
-						}); 
-					}
+					//var dd = $.extend(data,obj.content);
+					//匹配json内容
+				    var html = render($("#test"),data);
+				    //输入模板
+				    $("#questionCon").html(html);
 	    		},
 	    		error:function(){
 

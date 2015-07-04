@@ -47,6 +47,7 @@
 					<input type="hidden" name="sick_id" ms-duplex-string="d.sick_id"/>
 					<input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>
 					<input type="hidden" name="pics" id="pics"/>
+					<input type="hidden" name="title" value="患者提问" />
 				</div>
 				<div class="col-xs-12">
 					<div id="demo" class="demo"></div>
@@ -68,9 +69,9 @@
 	<script type="text/javascript">
 	//session(可缺省)， sick_id,doctor_id,name, title, content 
 
-	require(["upload","avalon"],function(){
+	require(["store","upload","avalon"],function(store){
 		var data = {
-			sick_id:RC.parseOptions(window.location.href).id,
+			sick_id:store.get("user").id,
 			content:""
 		};
 		
@@ -81,7 +82,7 @@
 	    avalon.scan();
 	    $.ajax({ 
 			type:"get",
-			url: "/sick/doctor?sick_id="+RC.parseOptions(window.location.href).id,
+			url: "/sick/doctor?sick_id="+data.sick_id,
 			dataType: "json", 
 			success: function(obj){
 				vmodel.d = $.extend(data,obj.content);
