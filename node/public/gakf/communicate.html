@@ -16,17 +16,7 @@
 		
 
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
-	  <div class="container text-center" style="height: 42px; line-height: 42px;">
-	    <div class="row">
-	    	<div class="col-xs-12">
-	    		<a href="javascript:void(0)" id="askDoctor">
-			    	<span style="color:#fff;">询问医生</span>
-			    </a>
-	    	</div>
-	    </div>
-	  </div>
-	</nav>
+	
 	<script type="text/html" id="test">
 	{{each d as v i}}
 		{{if i ==0}}
@@ -48,11 +38,11 @@
 					  		{{/each}}
 					  	</div>
 					  	<div>
-					  		<span>[{{name}}] {{v.message}}</span>
+					  		<span>[{{name}}] {{v.message.content}}</span>
 					  	</div>
 					  	<div class="my-line"></div>
 					  	<div>
-					  		<a href="question.html?id={{v.sick_id}}">
+					  		<a href="question.html?id={{v.message.id}}">
 			  			  		<span class="h5">阅读全文  </span>
 			  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
 					  		</a>
@@ -77,6 +67,20 @@
 		{{/if}}
 
 		{{/each}}
+
+	</script>
+	<script type="text/html" id="nav">
+		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+		  <div class="container text-center" style="height: 42px; line-height: 42px;">
+		    <div class="row">
+		    	<div class="col-xs-12">
+		    		<a href="javascript:void(0)" id="askDoctor">
+				    	<span style="color:#fff;">询问医生</span>
+				    </a>
+		    	</div>
+		    </div>
+		  </div>
+		</nav>
 	</script>
 	<script type="text/javascript">
 		require(["template"],function(template){
@@ -85,9 +89,22 @@
 			if(id){
 				url = "/answer/session?sick_id="+id;
 				sickurl = "/sick/info?id="+id;
+				 var html = render($("#nav"),"");
+				 //输入模板
+				 $("body").append(html);
 			}
 			if(doctor_id){
 				url = "/answer/session?doctor_id="+doctor_id;
+			}
+			function render(dom,data){
+				var dd = data;
+
+				var tpl = dom.html();
+				var render = template.compile(tpl);
+				
+				//匹配json内容
+			    var html = render(dd);
+			    return html;
 			}
 			
 			$.ajax({ 
@@ -112,18 +129,11 @@
 							url: sickurl,
 							dataType: "json", 
 							success: function(obj){
-								
-
 								var dd = $.extend(data,obj.content);
-
-								var tpl = $("#test").html();
-								var render = template.compile(tpl);
-								
 								//匹配json内容
-							    var html = render(dd);
+							    var html = render($("#test"),dd);
 							    //输入模板
 							    $("#questionCon").html(html);
-								
 				    		},
 				    		error:function(){
 
