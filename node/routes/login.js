@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require("request");
 
-var appid = 'wx9b2bbce36613b66e', secret = 'b4c3079540dd4b57269a09b5e2d36dc0';
+var appid = 'wxaf3a162fe7e04d37', secret = '2166e5441e7412dc7ebd4111635db0b7';
 
 
 var login_url = '/gakf/login.html';
