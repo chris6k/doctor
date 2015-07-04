@@ -9,7 +9,7 @@ router.get('/message', function (req, res, next) {
     var session_id = req.param('session_id');
     var pageNo = req.param('page_no') || 0;
     var pageSize = req.param('page_no') || 10;
-    req.models.message.find({session_id: 'session_id'}).order("-id")
+    req.models.message.find({session_id: session_id}).order("-id")
         .limit(pageSize).offset(pageNo * pageSize).run(function (err, data) {
             if (err) {
                 res.json(result(false, '', err));
@@ -78,6 +78,10 @@ router.post('/speak', function (req, res, next) {
                 doctor_id: doctor_id,
                 message: msg
             }, function (err, item) {
+                if (err) {
+                    res.redirect(source_url[type] + "?err=3&id=" + id);
+                    return;
+                }
                 msg.session_id = item.id;
                 req.models.message.create(msg, function (err) {
                     if (err) {
