@@ -133,46 +133,42 @@ router.post('/check', function (req, res, next) {
 
 //随访
 router.post('/out_check', function (req, res, next) {
-    //生成multiparty对象，并配置下载目标路径
-    var form = new multiparty.Form({uploadDir: './public/images/'});
-    //下载后处理
-    form.parse(req, function (err, fields, files) {
-        var filesTmp = JSON.stringify(files, null, 2);
-        var sick_id, doctor_id, description, title;
+    var sick_id, doctor_id, description, title, pic, hasErr;
         try {
-            sick_id = fields['sick_id'];
-            doctor_id = fields['doctor_id'];
-            title = fields['title'];
-            description = fields['description'];
+            sick_id = req.param('sick_id');
+            doctor_id = req.param('doctor_id');
+            title = req.param('title');
+            description = req.param('description');
+            pic = req.param('pics');
+            if (!(pic instanceof Array)) {
+                var temp = [];
+                temp.push(pic);
+                pic=temp;
+            }
+            console.log("description=" + description + ", pics=" + pic);
         } catch (e) {
             console.error(e);
-            err = e;
+            hasErr = e;
         }
-        if (err) {
-            console.log('parse image error: ' + err);
-            res.redirect(source_url.review + "?err=1");
+        if (hasErr) {
+            console.log('parse param error: ' + hasErr);
+            res.redirect(source_url.review + "?err=1sick_id=" + sick_id + "&doctor_id=" + doctor_id);
         } else {
-            console.log('parse files: ' + filesTmp);
-            var pic = [];
-            for (var i = 0; i < files.inputFile.length; i++) {
-                pic[i] = files.file[i].path;
-            }
-
-            req.models.sickreview.create({
+            var sc = {
                 title: title,
-                sick_id: sick_id, doctor_id: doctor_id, day: new Date(), description: JSON.parse(description), pics: pic
-            }, function (err, item) {
+                sick_id: sick_id, doctor_id: doctor_id, day: new Date(), description: description, pics: pic
+            };
+            console.log('sc=' + JSON.stringify(sc));
+            req.models.sickreview.create(sc, function (err, item) {
                 if (err) {
                     console.error(err);
-                    res.redirect(source_url.review + "?err=1");
+                    res.redirect(source_url.review + "?err=1&sick_id=" + sick_id + "&doctor_id=" + doctor_id);
                 } else {
-                    res.redirect(target_url.review);
+                    res.redirect(target_url.review + "?sick_id=" + sick_id + "&doctor_id=" + doctor_id);
                 }
             });
 
         }
-    });
-
 });
 
 router.get("/checkList", function(req, res, next){
