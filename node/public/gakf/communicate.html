@@ -114,15 +114,6 @@
 				success: function(obj){
 					data.d= obj.content;
 					var pics  = [];
-					for(var i=0;i<obj.content.length;i++){
-						var co = obj.content[i];
-						if(co.message && (typeof co.message) == "object"){
-							if(co.message.pics){
-							pics = co.message.pics.split(",");
-							co.message.pics = pics;
-							}
-						}
-					}
 					//var dd = $.extend(data,obj.content);
 					//匹配json内容
 				    var html = render($("#test"),data);

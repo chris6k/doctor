@@ -16,43 +16,43 @@
 		
 
 	</div>
-	
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" id="askDoctor">
+			    	<span style="color:#fff;">添加诊疗记录</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
 	<script type="text/html" id="test">
 	{{each d as v i}}
 		{{if i ==0}}
 			<div class="spacer10"></div>
 		{{/if}}
-		{{if v.message.day}}
-					<div class="text-center">
-						<span class="titleBg">{{v.message.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
-					</div>
+		{{if v.day}}
 					<div class="panel panel-default my-panel">
 					  <div class="panel-body">
-					  	<div class="h5" style="margin-top:0px;">{{v.message.title}}</div>
-					  	<span>{{v.message.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
+					  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
+					  	<span>{{v.day | dateFormat:'yyyy年 MM月 dd日'}}</span>
 					  	<div class=" my-imgcon">
-					  		{{each v.message.pics as vv j}}
-					  		<div class="col-xs-6">
-					  			<img src={{vv}}>
-					  		</div>
+					  		{{each v.pics as vv j}}
+						  		<div class="col-xs-6">
+						  			<img src={{vv}}>
+						  		</div>
 					  		{{/each}}
 					  	</div>
 					  	<div>
-					  		<span>[{{v.message.speaker}}] {{v.message.content}}</span>
+					  		<span>{{v.description}}</span>
 					  	</div>
-					  	<div class="my-line"></div>
-					  	<div>
-					  		<a href="question.html?session_id={{v.id}}">
-			  			  		<span class="h5">阅读全文  </span>
-			  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-					  		</a>
-					 	</div>
 					  </div>
 					</div>
 		{{else}}
 		<div>
 			<div class="text-center">
-				<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
+				<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日'}}</span>
 			</div>
 			<div class="panel panel-default my-panel">
 			  <div class="panel-body">
@@ -69,33 +69,10 @@
 		{{/each}}
 
 	</script>
-	<script type="text/html" id="nav">
-		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
-		  <div class="container text-center" style="height: 42px; line-height: 42px;">
-		    <div class="row">
-		    	<div class="col-xs-12">
-		    		<a href="javascript:void(0)" id="askDoctor">
-				    	<span style="color:#fff;">添加诊疗记录</span>
-				    </a>
-		    	</div>
-		    </div>
-		  </div>
-		</nav>
-	</script>
 	<script type="text/javascript">
 		require(["template","store"],function(template,store){
 			template.helper('dateFormat', RC["dateFormat"]);
-			var data = {},user = store.get("user");
-			if(user.type == "sick"){
-				url = "/answer/session?sick_id="+user.id;
-				sickurl = "/sick/info?id="+user.id;
-				 var html = render($("#nav"),"");
-				 //输入模板
-				 $("body").append(html);
-			}
-			if(user.type =="doctor"){
-				url = "/answer/session?doctor_id="+user.id;
-			}
+			var user = RC.parseOptions(window.location.href),data = {};
 			function render(dom,data){
 				var dd = data;
 
@@ -109,21 +86,11 @@
 			
 			$.ajax({ 
 				type:"get",
-				url: url,
+				url: "/doctor/checkList?doctor_id="+user.doctor_id+"&sick_id"+user.sick_id,
 				dataType: "json", 
 				success: function(obj){
 					data.d= obj.content;
 					var pics  = [];
-					for(var i=0;i<obj.content.length;i++){
-						var co = obj.content[i];
-						if(co.message && (typeof co.message) == "object"){
-							if(co.message.pics){
-							pics = co.message.pics.split(",");
-							co.message.pics = pics;
-							}
-						}
-					}
-					//var dd = $.extend(data,obj.content);
 					//匹配json内容
 				    var html = render($("#test"),data);
 				    //输入模板
@@ -134,14 +101,8 @@
 	    		}
 			}); 
 		 	$("#askDoctor").on("touchstart",function(){
-		 		var params = "",temp = RC.parseOptions(window.location.href);
-		 		if(temp.doctor_id){
-		 			params = "?doctor_id="+temp.doctor_id;
-		 		}else if(temp.id){
-		 			params = "?id="+temp.id;
-		 		}
-
-		    	$(this).attr("href","askDoctor.html"+params);
+		 		var params = "?doctor_id="+user.doctor_id+"&sick_id="+user.sick_id;
+		    	$(this).attr("href","addCheck.html"+params);
 		    })
 		});
 

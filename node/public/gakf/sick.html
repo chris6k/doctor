@@ -13,7 +13,7 @@
 </head>
 <body ms-controller="test">
 	<div class="container">
-		<a ms-href="addSick.html?id={{el.id}}" style="display: block;" ms-repeat-el="d">
+		<a ms-href="sickDetail.html?id={{el.id}}" style="display: block;" ms-repeat-el="d">
 			<div class="panel panel-default my-panel" style="margin-top: 10px;">
 			  <div class="panel-heading " style="background: #fff;">
 			  	<div class="row">
@@ -24,8 +24,7 @@
 			  <div class="panel-body">
 			  	<div class="row">
 			  		<div class="col-xs-7">手术类型：{{el.operate_type}}</div>
-			  		<div class="col-xs-1"></div>
-			  		<div class="col-xs-4">住院：{{el.day}}天</div>
+			  		<div class="col-xs-5">住院：{{el.in_dur}}天</div>
 			  	</div>
 			  	<div class="row">
 			  		<div class="col-xs-12">评级：{{el.care_level}}</div>
@@ -53,7 +52,7 @@
 		    avalon.scan();
 		   $.ajax({ 
 				type:"get",
-				url: "/doctor/sicks?doctor_id="+doctor_id,
+				url: "/doctor/in_sicks?doctor_id="+doctor_id,
 				dataType: "json", 
 				success: function(obj){
 					vmodel.d = obj.content;

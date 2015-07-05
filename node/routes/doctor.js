@@ -6,8 +6,8 @@ var multiparty = require('multiparty');
 var util = require('util');
 var fs = require('fs');
 //Todo
-var source_url = {check: '/gakf/addCheck.html', review: ''};
-var target_url = {check: '/gakf/check.html', review: ''};
+var source_url = {check: '/gakf/addCheck.html', review: '/gakf/sickDetail.html'};
+var target_url = {check: '/gakf/check.html', review: '/gakf/flowSick.html'};
 
 //根据ID获取医生信息
 router.get('/info', function (req, res, next) {

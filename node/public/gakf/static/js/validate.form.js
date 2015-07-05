@@ -114,6 +114,9 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						bed_no:{
 							required: true
+						},
+						hospital:{
+							required: true
 						}
 
 					},
@@ -138,6 +141,9 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 			            },
 			            bed_no:{
 							required: "请输入床号"
+						},
+			            hospital:{
+							required: "请输入医院"
 						}
 					},
 					errorPlacement: function(error, element) {
@@ -155,14 +161,13 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							data:$("#"+formName).serialize(),
 							success: function(d){
 								if(d.success){
-									store.set('user', { type:d.msg.type,id: d.msg.id });
-					        		if(d.msg.url){
-					        			url =  d.msg.url;
+									var dd = d.content;
+									store.set('user', { type:dd.type,id: dd.id ,doctor_id:dd.doctor_id});
+					        		if(dd.url){
+					        			url =  dd.url;
 					        		}else{
-					        			if(d.msg.type == "sick"){
-					        				url = "/gakf/sickDetail.html";
-					        			}else if(d.msg.type == "doctor"){
-					        				url = "/gakf/sick.html";
+					        			if(dd.type == "sick"){
+					        				url = "/gakf/inpatientInfo.html";
 					        			}
 					        		}
 					        		window.location.href = url;
