@@ -115,50 +115,33 @@ router.post('/reg', function (req, res, next) {
     var password = req.param('password');
     var doctor_name = req.param('doctor');
     var bed_no = req.param('bed_no');
-    var wx_id = req.param('wx_id') || '';
-    if (!username || !password || !doctor_name || !bed_no) {
-        res.redirect(reg_url + "?err=1&wx_id=" + wx_id);
+    var hospital = req.param('hospital');
+    var wx_id = req.cookies.wx_id;
+    if (!username || !password || !doctor_name || !hospital) {
+        res.redirect(reg_url + "?err=1");
         return;
     }
 
-    req.models.doctor.find({name: doctor_name}, function (err, doctor) {
+    req.models.doctor.find({name: doctor_name, hospital:hospital}, function (err, doctor) {
         if (err || !doctor || doctor.length == 0) {
             res.json(result(false, 'get doctor err', err));
             // res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
         } else {
-            req.models.sick.find({bed_id: bed_no, doctor_name: doctor_name, name: name}, function (err, sick) {
+            
+            req.models.sick.create({
+                name: name, username: username, password: password,
+                bed_id: bed_no, wx_id: wx_id, doctor_name: doctor_name,
+                nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id
+            }, function (err, item) {
                 if (err) {
                     res.json(result(false, 'err', err));
                     // res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
-                } else if (sick && sick.length > 0) {
-                    sick[0].username = username;
-                    sick[0].password = password;
-                    sick[0].wx_id = wx_id;
-                    sick[0].save(function (err) {
-                        if (err) {
-                            res.json(result(false, 'err', err));
-                            // res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
-                        } else {
-                            res.json(result(true, '', loginResp('sick', sick[0].id, '')));
-                            // res.redirect(target_url.sick + "?wx_id=" + wx_id + "&sick_id=" + sick[0].id);
-                        }
-                    });
                 } else {
-                    req.models.sick.create({
-                        name: name, username: username, password: password,
-                        bed_id: bed_no, wx_id: wx_id, doctor_name: doctor_name,
-                        nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id
-                    }, function (err, item) {
-                        if (err) {
-                            res.json(result(false, 'err', err));
-                            // res.redirect(reg_url + "?err=2&wx_id=" + wx_id);
-                        } else {
-                            res.json(result(true, '', loginResp('sick', item.id, '')));
-                            // res.redirect(target_url.sick + "?wx_id=" + wx_id + "&sick_id=" + item.id);
-                        }
-                    });
+                    res.json(result(true, '', loginResp('sick', item.id, '', item.doctor_id)));
+                    // res.redirect(target_url.sick + "?wx_id=" + wx_id + "&sick_id=" + item.id);
                 }
             });
+               
         }
     });
 
