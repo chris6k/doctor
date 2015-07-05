@@ -7,7 +7,7 @@ var util = require('util');
 var fs = require('fs');
 //Todo
 var source_url = {check: '', review: ''};
-var target_url = {check: '', review: ''};
+var target_url = {check: '/gakf/check.html', review: ''};
 
 //根据ID获取医生信息
 router.get('/info', function (req, res, next) {
@@ -62,27 +62,33 @@ router.get('/sicks', function (req, res, next) {
 router.post('/check', function (req, res, next) {
     
         
-        var sick_id, doctor_id, description, title, pic;
+        var sick_id, doctor_id, description, title, pic, hasErr;
         try {
             sick_id = req.param('sick_id');
             doctor_id = req.param('doctor_id');
             title = req.param('title');
             description = req.param('description');
             pic = req.param('pics');
+            if (!(pic instanceof Array)) {
+                var temp = [];
+                temp.push(pic);
+                pic=temp;
+            }
+            console.log("description=" + description + ", pics=" + pic);
         } catch (e) {
             console.error(e);
-            err = e;
+            hasErr = e;
         }
-        if (err) {
-            console.log('parse image error: ' + err);
+        if (hasErr) {
+            console.log('parse param error: ' + hasErr);
             res.redirect(source_url.check + "?err=1");
         } else {
-            console.log('parse files: ' + filesTmp);
-            
-            req.models.sickcheck.create({
+            var sc = {
                 title: title,
                 sick_id: sick_id, doctor_id: doctor_id, day: new Date(), description: description, pics: pic
-            }, function (err, item) {
+            };
+            console.log('sc=' + JSON.stringify(sc));
+            req.models.sickcheck.create(sc, function (err, item) {
                 if (err) {
                     console.error(err);
                     res.redirect(source_url.check + "?err=1");
