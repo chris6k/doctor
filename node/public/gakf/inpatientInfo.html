@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
-	<title>询问医生</title>
+	<title>住院信息</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 
 	<script type="text/javascript" src="./static/js/require.js"></script>
@@ -20,136 +20,19 @@
 	}
 	</style>
 </head>
-<body ms-controller="test">
-	<div class="">
-		<div class="panel">
-			<div class="panel-body my-media">
-				<div class="left">
-					<img class="media-object" src="./static/images/doc.jpg" alt="...">
-				</div>
-				<div class="right">
-					<div class="spacer15"></div>
-					<span class=" glyphicon glyphicon-chevron-right gray_arrow"></span>
-				</div>
-				<div class="content">
-					<div class="spacer15"></div>
-					主治医生：<span class="orange">{{d.doctor_name}}</span> 
-					<div class="spacer5"></div>
-					{{d.title}}
-				</div>
-			</div>
-		</div>
-		<div class="spacer10"></div>
-		<ul class="list-group">
-		  <li class="list-group-item gray">
-		  	<span>患者姓名</span>
-		  	<span class="right">{{d.name}}</span>
-		  </li>
-		  <li class="list-group-item">
-		  	<span>年龄</span>
-		  	<span class="right">{{d.age}}岁</span>
-		  </li>
-		  <li class="list-group-item gray">
-		  	<span>性别</span>
-		  	<span class="right">{{d.gender}}</span>
-		  </li>
-		  <li class="list-group-item">
-		  	<span>手术类型</span>
-		  	<span class="right">{{d.operate_type}}</span>
-		  </li>
-		  <li class="list-group-item gray">
-		  	<span>护理级别</span>
-		  	<span class="right">{{d.care_level}}</span>
-		  </li>
-		  <li class="list-group-item">
-		  	<span>床号</span>
-			<span class="right">{{d.bed_id}}</span>
-		  </li>
-		  <li class="list-group-item gray">
-		  	<span>入院日期</span>
-		  	<span class="right">{{ d.in_day | date("yyyy年MM月dd日")}}</span>
-		  </li>
-		  <li class="list-group-item">
-		  	<span>出院日期</span>
-			<span class="right">{{d.out_day | date("yyyy年MM月dd日")}}</span>
-		  </li>
-		</ul>
-		<span style="padding:5px 15px;display: inline-block;">安全用药</span>
-		<ul class="list-group">
-			<li class="list-group-item">
-		  		<a href="">
-  			  		<span>安全用药量表</span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">共4项用药禁忌</span>
-		  		</a>
-		 	</li>
-		 	<li class="list-group-item">
-		  		<a href="">
-  			  		<span>安全用药建议 </span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">共3条建议</span>
-		  		</a>
-		 	</li>
-		</ul>
-		<span style="padding:5px 15px;display: inline-block;">医学量表</span>
-		<ul class="list-group">
-			<li class="list-group-item">
-		  		<a href="">
-  			  		<span>Caprini 量表</span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">高危</span>
-		  		</a>
-		 	</li>
-		 	<li class="list-group-item">
-		  		<a href="">
-  			  		<span>膝关节HSS评分 </span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">点击请填写</span>
-		  		</a>
-		 	</li>
-		</ul>
-		<span style="padding:5px 15px;display: inline-block;">长期登记量表</span>
-
-		<ul class="list-group">
-			<li class="list-group-item">
-		  		<a href="">
-  			  		<span>术前骨科筛查量表</span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">点击请填写</span>
-		  		</a>
-		 	</li>
-		 	<li class="list-group-item">
-		  		<a href="">
-  			  		<span>术前骨科筛查量表</span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">点击请填写</span>
-		  		</a>
-		 	</li>
-		</ul>
-		
-	</div>
+<body>
+	
 	
 	<script type="text/javascript">
 
-	require(["store","upload","avalon"],function(store){
-		var data={},id=store.get("user").id;
+	require(["store"],function(store){
+		var data={},user=store.get("user");
 				
-			    var vmodel = avalon.define({
-			          $id: "test",
-			          d:data
-			    });
-			    avalon.scan();
-			    $.ajax({ 
-					type:"get",
-					url: "/sick/info?id="+id,
-					dataType: "json", 
-					success: function(obj){
-						vmodel.d = obj.content;
-		    		},
-		    		error:function(){
-
-		    		}
-			}); 
+		if(user.type == "doctor"){
+			window.location.href = "/gakf/sick.html";
+		}else{
+			window.location.href = "/gakf/inpatientSick.html";
+		}
 
 
 	});

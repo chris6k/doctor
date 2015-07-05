@@ -1,32 +1,72 @@
-add<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
 	<title>添加诊断纪录</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
-
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
-<body>
+<body ms-controller="test">
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12">
-				<div class="spacer10"></div>
-				<textarea class="my-textarea"></textarea>
-				<input type="hidden" name="pics" id="pics"/>
-			</div>
+			<form action="/doctor/check" method="post" id="askFrom">
+				<div class="col-xs-12">
+					<div class="spacer10"></div>
+					<textarea class="my-textarea" name="description"></textarea>
+					<input type="hidden" name="pics" id="pics"/>
+					<input type="hidden" name="sick_id" ms-duplex-string="d.sick_id"/>
+					<input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>
+					<input type="hidden" name="title" value="查房" />
+				</div>
+			</form>
 			<div class="col-xs-12">
 				<div id="demo" class="demo"></div>
 			</div>
 		</div>
 	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" id="askDoctor">
+			    	<span style="color:#fff;" >保存</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
 	<script type="text/javascript">
-	require(["upload"],function(){
+	require(["store","upload","avalon"],function(store){
+		var user = RC["parseOptions"](window.location.href);
+		var data = {
+			sick_id:user.sick_id,
+			doctor_id:user.doctor_id
+		};
+		
+	    var vmodel = avalon.define({
+	          $id: "test",
+	          d:data
+	    });
+	    avalon.scan();
 
+	 //    $.ajax({ 
+		// 	type:"get",
+		// 	url: "/sick/doctor?sick_id="+data.sick_id,
+		// 	dataType: "json", 
+		// 	success: function(obj){
+		// 		vmodel.d = $.extend(data,obj.content);
+  //   		},
+  //   		error:function(){
+
+  //   		}
+		// }); 
+		$("#askDoctor").on("touchstart",function(){
+	    	$("#askFrom").submit();
+	    })
 	});
 	</script>
 </body>

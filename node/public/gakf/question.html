@@ -20,7 +20,7 @@
 		  		<span>{{d.content}}</span>
 		  	</div>
 		  	<div class=" my-imgcon" >
-		  		<div class="col-xs-6" ms-repeat-el="d.picsArr">
+		  		<div class="col-xs-6" ms-repeat-el="d.pics">
 		  			<img ms-src="{{el}}">
 		  		</div>
 		  	</div>
@@ -97,7 +97,7 @@
 		  </div>
 		  <input type="hidden" name="sick_id" ms-duplex-string="d.speaker_id"/>
 		  <input type="hidden" name="doctor_id" ms-duplex-string="d.doctor_id"/>
-		  <input type="hidden" name="pics" id="pics" ms-duplex-string="d.pics"/>
+		  <input type="hidden" name="pics" id="pics" ms-duplex-string="d.picStr"/>
 		  <input type="hidden" name="title" value="医生回复" />
 		</nav>
 	</form>
@@ -117,22 +117,14 @@
 				dataType: "json", 
 				success: function(obj){
 					// var obj = obj||{"success":true,"msg":"","content":[{"session_id":18,"day":"2015-07-03T16:00:00.000Z","title":"患者提问","content":"ddadfas","pics":"/images/osOjvKwyqggKhjpH6NbWkDTN.png,/images/osOjvKwyqggKhjpH6NbWkDTN.png","speaker":"meilin","speaker_id":8,"id":13,"type":"doctor"}]};
-					var d = obj.content[0];
-
-					if(d.pics){
-						pics = d.pics.split(",");
-						d.picsArr = pics;
-					}
-					//vmodel.d = d;
-
+					data = $.extend(data,obj.content[0]);
+					data.picStr = data.pics.join(",");
 					$.ajax({ 
 						type:"get",
-						url: "/sick/info?id="+d.speaker_id,
+						url: "/sick/info?id="+data.speaker_id,
 						dataType: "json", 
 						success: function(obj){
-							//var dd  = vmodel.d.$model[0];
-							vmodel.d = $.extend(d,obj.content);
-							
+							vmodel.d =  $.extend(data,obj.content);
 			    		},
 			    		error:function(){
 

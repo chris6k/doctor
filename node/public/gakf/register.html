@@ -28,21 +28,26 @@
 
 			<div class="spacer30"></div>
 			<div class="form-group">
-				<input type="text" class="form-control my-input user" id="job"  name="doctor" placeholder="主治医生" >
+				<input type="text" class="form-control my-input account"  name="hospital" placeholder="医院" >
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control my-input user"  name="doctor" placeholder="主治医生" >
 			</div>
 			
 			<div class="form-group">
-				<input type="text" class="form-control my-input account" id="job" name="bed_no" placeholder="床号" >
+				<input type="text" class="form-control my-input account" name="bed_no" placeholder="床号" >
 			</div>
 
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-primary my-button">注册</button>
 			</div>
 			<input type="hidden" name="wx_id" value="11">
+			<input type="hidden" name="name" id="name" value="">
 		</form>
 	</div>
 	<script type="text/javascript">
 		require(["validate.form"],function(reg){
+				$("#name").val($("#username").val());
 				reg.validate("regForm");
 		})
 	</script>

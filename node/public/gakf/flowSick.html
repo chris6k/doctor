@@ -23,7 +23,7 @@
 				  </div>
 				  <div class="panel-body">
 				  	<div class="row">
-				  		<div class="col-xs-12">距下次随访还有 {{el.day}}天 </div>
+				  		<div class="col-xs-12">距下次随访还有 {{el.out_dur}}天 </div>
 				  	</div>
 				  </div>
 			</div>
@@ -31,64 +31,31 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-	require(["avalon"],function(){
-				var data = [
-					{
-						id:"1",
-			            name:"陈思田",
-			            age:"18",
-			            gender:"男",
-			            operate_type:"创伤手术",
-			            care_level:"2",
-			            bed_id:"27",
-			            in_day:"2015-6-13",
-			            out_day:"2015-6-15",
-			            day:3,
-			            doctor_name: "张小娟"
-					},
-					{
-						id:"2",
-			            name:"陈田",
-			            age:"18",
-			            gender:"男",
-			            operate_type:"创伤手术",
-			            care_level:"2",
-			            bed_id:"02",
-			            in_day:"2015-6-13",
-			            out_day:"2015-6-15",
-			            day:3,
-			            doctor_name: "张小娟"
-					},{
-						id:"3",
-			            name:"陈田",
-			            age:"18",
-			            gender:"男",
-			            operate_type:"创伤手术",
-			            care_level:"2",
-			            bed_id:"03",
-			            in_day:"2015-6-13",
-			            out_day:"2015-6-15",
-			            day:3,
-			            doctor_name: "张小娟"
-					},
-				];
-
-				$.ajax({ 
-					type:"get",
-					url: "/doctor/sicks?doctor_id="+RC.parseOptions(window.location.href).doctor_id,
-					dataType: "json", 
-					success: function(obj){
-						data = obj.data;
-		    		},
-		    		error:function(){
-
-		    		}
-				}); 
-			    avalon.define({
+	require(["store","avalon"],function(store){
+				var data = [];
+				//
+				var temp = store.get("user"),id="";
+				if(temp.type =="doctor"){
+					id = temp.id;
+				}else {
+					id = temp.doctor_id;
+				}
+			    var vmodel =avalon.define({
 			          $id: "test",
 			          d:data
 			    });
 			    avalon.scan();
+				$.ajax({ 
+					type:"get",
+					url: "/doctor/out_sicks?doctor_id="+id,
+					dataType: "json", 
+					success: function(obj){
+						vmodel.d = obj.content;
+		    		},
+		    		error:function(){
+
+		    		}
+				});
 		})
 	</script>
 </body>
