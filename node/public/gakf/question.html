@@ -116,7 +116,7 @@
 				url: "/answer/message?session_id="+RC["parseOptions"](window.location.href).session_id,
 				dataType: "json", 
 				success: function(obj){
-					var obj = obj||{"success":true,"msg":"","content":[{"session_id":18,"day":"2015-07-03T16:00:00.000Z","title":"患者提问","content":"ddadfas","pics":"/images/osOjvKwyqggKhjpH6NbWkDTN.png,/images/osOjvKwyqggKhjpH6NbWkDTN.png","speaker":"meilin","speaker_id":8,"id":13,"type":"doctor"}]};
+					// var obj = obj||{"success":true,"msg":"","content":[{"session_id":18,"day":"2015-07-03T16:00:00.000Z","title":"患者提问","content":"ddadfas","pics":"/images/osOjvKwyqggKhjpH6NbWkDTN.png,/images/osOjvKwyqggKhjpH6NbWkDTN.png","speaker":"meilin","speaker_id":8,"id":13,"type":"doctor"}]};
 					var d = obj.content[0];
 
 					if(d.pics){
