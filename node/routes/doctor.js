@@ -61,7 +61,7 @@ router.get('/in_sicks', function (req, res, next) {
             res.json(result(false, '', {}));
         } else {
             for (var i = 0; i< data.length; i++) {
-                data[i].out_dur = data[i].out_duration();
+                data[i].in_dur = data[i].in_duration();
             }
             res.json(result(true, '', data));
         }

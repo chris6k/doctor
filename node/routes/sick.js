@@ -36,13 +36,17 @@ router.post('/create', function (req, res, next) {
     var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id, sick_id = sick.id;
     if (sick_id && sick_id > 0) {
         req.models.sick.get(sick_id, function (err, item) {
-            item.save(sick, function (err) {
-                if (err) {
-                    res.json(result(false, err.msg, {}));
-                } else {
-                    res.json(result(true, '', item));
-                }
-            });
+            if (err) {
+                res.json(result(false,err.msg,err));
+            } else {
+                item.save(sick, function (err) {
+                    if (err) {
+                        res.json(result(false, err.msg, {}));
+                    } else {
+                        res.json(result(true, '', item));
+                    }
+                });
+            }
         });
     } else if (sick.name && sick.bed_id && doctor_id) {
         req.models.sick.find({name: sick_name, bed_id: bed_id, doctor_id: doctor_id}, function (err, data) {
