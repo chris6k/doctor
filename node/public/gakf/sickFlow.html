@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>随访信息</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="container"  id="questionCon">
+		
+
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" id="askDoctor">
+			    	<span style="color:#fff;">发起随访</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/html" id="test">
+	{{each d as v i}}
+		{{if i ==0}}
+			<div class="spacer10"></div>
+		{{/if}}
+		{{if v.day}}
+					<div class="text-center">
+						<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日'}} 出院第 1 天</span>
+					</div>
+					<div class="panel panel-default my-panel">
+					  <div class="panel-body">
+					  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
+					  	<span>{{v.day | dateFormat:'yyyy年 MM月 dd日'}}</span>
+					  	<div class=" my-imgcon">
+					  		{{each v.pics as vv j}}
+						  		<div class="col-xs-6">
+						  			<img src={{vv}}>
+						  		</div>
+					  		{{/each}}
+					  	</div>
+					  	<div>
+					  		<span>{{v.description}}</span>
+					  	</div>
+					  </div>
+					</div>
+		{{else}}
+		<div>
+			<div class="text-center">
+				<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日'}}</span>
+			</div>
+			<div class="panel panel-default my-panel">
+			  <div class="panel-body">
+			  	<div class="h5" style="margin-top:0px;">{{v.title}}</div>
+			  	<div>
+			  		<span>{{v.message}}</span>
+			  	</div>
+			  </div>
+			</div>
+		</div>
+			
+		{{/if}}
+
+		{{/each}}
+
+	</script>
+	<script type="text/javascript">
+		require(["template","store"],function(template,store){
+			template.helper('dateFormat', RC["dateFormat"]);
+			var user = RC.parseOptions(window.location.href),data = {};
+			function render(dom,data){
+				var dd = data;
+
+				var tpl = dom.html();
+				var render = template.compile(tpl);
+				
+				//匹配json内容
+			    var html = render(dd);
+			    return html;
+			}
+			
+			$.ajax({ 
+				type:"get",
+				url: "/doctor/outCheckList?doctor_id="+user.doctor_id+"&sick_id="+user.sick_id,
+				dataType: "json", 
+				success: function(obj){
+					data.d= obj.content;
+					var pics  = [];
+					//匹配json内容
+				    var html = render($("#test"),data);
+				    //输入模板
+				    $("#questionCon").html(html);
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+		 	$("#askDoctor").on("touchstart",function(){
+		 		var params = "?doctor_id="+user.doctor_id+"&sick_id="+user.sick_id;
+		    	$(this).attr("href","addFlow.html"+params);
+		    })
+		});
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>随访信息</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script  type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="container">
+
+			<a ms-href="sickDetail.html?id={{el.id}}&isout=true" style="display: block;" ms-repeat-el="d">
+			<div class="panel panel-default my-panel" style="margin-top: 10px;"  >
+				  <div class="panel-heading " style="background: #fff;">
+				  	<div class="row">
+				  		<div class="col-xs-6 title text-right">{{el.bed_id}}号床</div>
+				  		<div class="col-xs-6 title">{{el.name}}</div>
+				  	</div>
+				  </div>
+				  <div class="panel-body">
+				  	<div class="row">
+				  		<div class="col-xs-12">已经出院 {{el.out_dur}}天 </div>
+				  	</div>
+				  </div>
+			</div>
+			</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+	require(["store","avalon"],function(store){
+				var data = [];
+				//
+				var temp = store.get("user"),id="";
+				if(temp.type =="doctor"){
+					id = temp.id;
+				}else {
+					id = temp.doctor_id;
+				}
+			    var vmodel =avalon.define({
+			          $id: "test",
+			          d:data
+			    });
+			    avalon.scan();
+				$.ajax({ 
+					type:"get",
+					url: "/doctor/out_sicks?doctor_id="+id,
+					dataType: "json", 
+					success: function(obj){
+						vmodel.d = obj.content;
+		    		},
+		    		error:function(){
+
+		    		}
+				});
+		})
+	</script>
+</body>
+</html>

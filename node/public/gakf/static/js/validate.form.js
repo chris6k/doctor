@@ -62,6 +62,8 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 			            }
 					},
 					submitHandler:function(form){
+
+						$("#name").val($("#username").val());
 						$.ajax({ 
 							type:"post",
 							url: "/user/login",
@@ -69,13 +71,14 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							data:$("#"+formName).serialize(),
 							success: function(d){
 								if(d.success){
-									store.set('user', { type:d.msg.type,id: d.msg.id });
-					        		if(d.msg.url){
-					        			url =  d.msg.url;
+									var d = d.content || d.msg;
+									store.set('user', { type:d.type,id: d.id });
+					        		if(d.url){
+					        			url =  d.url;
 					        		}else{
-					        			if(d.msg.type == "sick"){
+					        			if(d.type == "sick"){
 					        				url = "/gakf/sickDetail.html";
-					        			}else if(d.msg.type == "doctor"){
+					        			}else if(d.type == "doctor"){
 					        				url = "/gakf/sick.html";
 					        			}
 					        		}

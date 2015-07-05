@@ -107,10 +107,22 @@
 		 	</li>
 		</ul>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible">
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="d.isout">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
+	    		<a ms-href="/gakf/flow.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}&isout={{d.isout}}">
+			    	<span style="color:#fff;">随访</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="!d.isout">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+
 	    		<a ms-href="/gakf/check.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}">
 			    	<span style="color:#fff;" >查房</span>
 			    </a>
@@ -120,7 +132,7 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-				var data={isvisible:false},temp=store.get("user"),id;
+				var data={isvisible:false,isout:Boolean(RC.parseOptions(window.location.href).isout)||false},temp=store.get("user"),id;
 				if(temp.type=="sick"){
 					id = temp.id;
 				}else if(temp.type == "doctor"){

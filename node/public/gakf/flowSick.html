@@ -10,52 +10,18 @@
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
-<body ms-controller="test">
-	<div class="container">
-
-			<a ms-href="sickDetail.html?id={{el.id}}" style="display: block;" ms-repeat-el="d">
-			<div class="panel panel-default my-panel" style="margin-top: 10px;"  >
-				  <div class="panel-heading " style="background: #fff;">
-				  	<div class="row">
-				  		<div class="col-xs-6 title text-right">{{el.bed_id}}号床</div>
-				  		<div class="col-xs-6 title">{{el.name}}</div>
-				  	</div>
-				  </div>
-				  <div class="panel-body">
-				  	<div class="row">
-				  		<div class="col-xs-12">距下次随访还有 {{el.out_dur}}天 </div>
-				  	</div>
-				  </div>
-			</div>
-			</a>
-		</div>
-	</div>
+<body>
+	
 	<script type="text/javascript">
-	require(["store","avalon"],function(store){
+	require(["store"],function(store){
 				var data = [];
 				//
 				var temp = store.get("user"),id="";
 				if(temp.type =="doctor"){
-					id = temp.id;
+					window.location.href = "/gakf/doctorFlow.html";
 				}else {
-					id = temp.doctor_id;
+					window.location.href = "/gakf/flow.html";
 				}
-			    var vmodel =avalon.define({
-			          $id: "test",
-			          d:data
-			    });
-			    avalon.scan();
-				$.ajax({ 
-					type:"get",
-					url: "/doctor/out_sicks?doctor_id="+id,
-					dataType: "json", 
-					success: function(obj){
-						vmodel.d = obj.content;
-		    		},
-		    		error:function(){
-
-		    		}
-				});
 		})
 	</script>
 </body>

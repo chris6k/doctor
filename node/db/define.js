@@ -97,7 +97,7 @@ var define = function (db, models) {
         doctor_id: {type: 'text'},
         day: {type: 'date'},
         title: {type: 'text'},
-        description: {type: 'object'},
+        description: {type: 'text'},
         pics: {type: 'object'}
     });
     //会话表
