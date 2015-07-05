@@ -89,7 +89,7 @@ var define = function (db, models) {
         day: {type: 'date'},
         title: {type: 'text'},
         description: {type: 'text'},
-        pics: {type: 'text'}
+        pics: {type: 'object'}
     });
     //病人回访表
     models.sickreview = db.define('sickreview', {
