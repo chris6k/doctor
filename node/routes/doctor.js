@@ -44,6 +44,29 @@ router.get('/out_sicks', function (req, res, next) {
     });
 });
 
+//获取入院的病人
+router.get('/in_sicks', function (req, res, next) {
+    var doctor_id = req.param('doctor_id');
+    if (!doctor_id) {
+        res.json(result(false, 'no doctor_id', {}));
+        return;
+    }
+    req.models.sick.find({
+        doctor_id: doctor_id,
+        out_day: orm.gte(new Date())
+    }, function (err, data) {
+        if (err || !data) {
+            console.error(err);
+            res.json(result(false, '', {}));
+        } else {
+            for (var i = 0; i< data.length; i++) {
+                data[i].out_dur = data[i].out_duration();
+            }
+            res.json(result(true, '', data));
+        }
+    });
+});
+
 //获取该医生所有的病人
 router.get('/sicks', function (req, res, next) {
     var doctor_id = req.param('doctor_id');
