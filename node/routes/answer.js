@@ -84,7 +84,7 @@ router.post('/speak', function (req, res, next) {
 
             req.models.message_session.create({
                 day: new Date(),
-                sick_id: id,
+                sick_id: sick_id||'',
                 doctor_id: doctor_id,
                 message: msg,
                 type:type
