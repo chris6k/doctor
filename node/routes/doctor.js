@@ -154,6 +154,7 @@ router.post('/out_check', function (req, res, next) {
 router.get("/checkList", function(req, res, next){
     var sick_id = req.param("sick_id");
     var doctor_id = req.param("doctor_id");
+    var pageNo = req.param("pageNo") || 0, pageSize = req.param("pageSize") || 10;
     var query = {};
     if (sick_id) {
         query.sick_id = sick_id;
@@ -161,7 +162,27 @@ router.get("/checkList", function(req, res, next){
     if (doctor_id) {
         query.doctor_id = doctor_id;
     }
-    req.models.sickcheck.find(query, function(err, data) {
+    req.models.sickcheck.find(query).order("-id").limit(pageSize).offset(pageSize*pageNo).run(function(err, data) {
+        if (err) {
+            res.json(result(false,"get sickcheck err", err));
+        } else {
+            res.json(result(true,'',data));
+        }
+    });
+});
+
+router.get("/outCheckList", function(req, res, next){
+    var sick_id = req.param("sick_id");
+    var doctor_id = req.param("doctor_id");
+    var pageNo = req.param("pageNo") || 0, pageSize = req.param("pageSize") || 10;
+    var query = {};
+    if (sick_id) {
+        query.sick_id = sick_id;
+    } 
+    if (doctor_id) {
+        query.doctor_id = doctor_id;
+    }
+    req.models.sickreview.find(query).order("-id").limit(pageSize).offset(pageSize*pageNo).run(function(err, data) {
         if (err) {
             res.json(result(false,"get sickcheck err", err));
         } else {
