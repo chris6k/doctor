@@ -36,6 +36,9 @@ router.get('/out_sicks', function (req, res, next) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
+            for (var i = 0; i< data.length; i++) {
+                data[i].out_dur = data[i].out_duration();
+            }
             res.json(result(true, '', data));
         }
     });
@@ -53,6 +56,9 @@ router.get('/sicks', function (req, res, next) {
             console.error(err);
             res.json(result(false, '', {}));
         } else {
+            for (var i = 0; i< data.length; i++) {
+                data[i].in_dur = data[i].in_duration();
+            }
             res.json(result(true, '', data));
         }
     });
