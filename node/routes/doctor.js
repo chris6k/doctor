@@ -53,7 +53,7 @@ router.get('/in_sicks', function (req, res, next) {
     }
     req.models.sick.find({
         doctor_id: doctor_id,
-        out_day: orm.gte(new Date())
+        in_day: orm.lte(new Date())
     }, function (err, data) {
         if (err || !data) {
             console.error(err);
