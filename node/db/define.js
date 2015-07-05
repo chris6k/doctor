@@ -56,7 +56,7 @@ var define = function (db, models) {
                     return 0;
                 }
                 var today = new Date();
-                var data3 = today.getTime - this.out_day.getTime;
+                var data3 = today.getTime() - this.out_day.getTime();
                 return Math.floor(data3 / (24 * 3600 * 1000));
             }
         }
