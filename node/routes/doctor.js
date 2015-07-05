@@ -6,7 +6,7 @@ var multiparty = require('multiparty');
 var util = require('util');
 var fs = require('fs');
 //Todo
-var source_url = {check: '', review: ''};
+var source_url = {check: '/gakf/addCheck.html', review: ''};
 var target_url = {check: '/gakf/check.html', review: ''};
 
 //根据ID获取医生信息
@@ -111,7 +111,7 @@ router.post('/check', function (req, res, next) {
         }
         if (hasErr) {
             console.log('parse param error: ' + hasErr);
-            res.redirect(source_url.check + "?err=1");
+            res.redirect(source_url.check + "?err=1sick_id=" + sick_id + "&doctor_id=" + doctor_id);
         } else {
             var sc = {
                 title: title,
@@ -121,9 +121,9 @@ router.post('/check', function (req, res, next) {
             req.models.sickcheck.create(sc, function (err, item) {
                 if (err) {
                     console.error(err);
-                    res.redirect(source_url.check + "?err=1");
+                    res.redirect(source_url.check + "?err=1&sick_id=" + sick_id + "&doctor_id=" + doctor_id);
                 } else {
-                    res.redirect(target_url.check);
+                    res.redirect(target_url.check + "?sick_id=" + sick_id + "&doctor_id=" + doctor_id);
                 }
             });
 
