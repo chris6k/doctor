@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var request = require("request");
 var result = require("./result");
-var appid = 'wxaf3a162fe7e04d37', secret = '2166e5441e7412dc7ebd4111635db0b7';
-
+var appid = 'wx9b2bbce36613b66e', secret = 'b4c3079540dd4b57269a09b5e2d36dc0';
+var urlMap = {"1":"/gakf/flowSick.html", "2":"/gakf/communicate.html", "3":"/gakf/inpatientInfo.html"};
 
 var login_url = '/gakf/login.html';
 var target_url = {sick: '/gakf/sickDetail.html'};
@@ -12,30 +12,35 @@ var reg_url = '/gakf/register.html';
 var getOpenId = function (req, res, code) {
     var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret="
         + secret + "&code=" + code + "&grant_type=authorization_code";
-    var cb = req.param("cb");
+    console.log("cb_key=" + req.cookies.cb_key);
+    var cb = urlMap[req.cookies.cb_key];
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var data = JSON.parse(body);
             var openid = data.openid;
-            res.cookie('open_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: true});
-            req.models.doctor.find({wx_id: openid}, function (err, data) {
-                if (err) {
-                    console.error(err);
-                    res.redirect(login_url + "?wx_id=" + openid + "&cb=" + cb);
-                } else {
-                    if (data && data.length > 0) {
-                        res.redirect(decodeURIComponent(cb) + "?wx_id=" + openid + "&doctor_id=" + data[0].id);
+            if (openid) {
+                res.cookie('wx_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                req.models.doctor.find({wx_id: openid}, function (err, data) {
+                    if (err) {
+                        console.error(err);
+                        res.redirect(login_url + "?wx_id=" + openid + "&cb=" + decodeURIComponent(cb));
                     } else {
-                        req.models.user.find({wx_id: openid}, function (err, data) {
-                            if (err || !data || data.length == 0) {
-                                res.redirect(login_url + "?wx_id=" + openid);
-                            } else {
-                                res.redirect(target_url.sick + "?wx_id=" + openid + "&sick_id=" + data[0].id);
-                            }
-                        });
+                        if (data && data.length > 0) {
+                            res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.redirect(cb + "?wx_id=" + openid + "&doctor_id=" + data[0].id);
+                        } else {
+                            req.models.sick.find({wx_id: openid}, function (err, data) {
+                                if (err || !data || data.length == 0) {
+                                    res.redirect(login_url + "?wx_id=" + openid);
+                                } else {
+                                    res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                                    res.redirect(target_url.sick + "?wx_id=" + openid + "&sick_id=" + data[0].id);
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         } else {
             console.error(error);
             res.redirect(login_url);
@@ -44,7 +49,7 @@ var getOpenId = function (req, res, code) {
 };
 
 router.get('/callback', function (req, res, next) {
-    var code = req.param("CODE");
+    var code = req.param("code");
     if (code) {
         getOpenId(req, res, code);
     } else {
@@ -52,8 +57,8 @@ router.get('/callback', function (req, res, next) {
     }
 });
 
-var loginResp = function(type, id, url) {
-    return {type:type, id:id, url:url};
+var loginResp = function(type, id, url, doctor_id) {
+    return {type:type, id:id, url:url, doctor_id: doctor_id};
 }
 
 router.post('/login', function (req, res, next) {
@@ -73,7 +78,7 @@ router.post('/login', function (req, res, next) {
             // res.redirect(login_url + "?err=2&wx_id=" + wx_id);
         } else if (data && data.length > 0) {
             if (data[0].status === 't') {
-                res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''))));
+                res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
                 // res.redirect(target_url[type] || decodeURIComponent(cb));
             } else {
                 res.json(result(false, 'user status is f', {}));
@@ -88,7 +93,7 @@ router.post('/login', function (req, res, next) {
                     data[0].wx_id = wx_id;
                     data[0].save(function (err) {
                         if (!err) {
-                            res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''))));
+                            res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
                             // res.redirect(target_url[type] || decodeURIComponent(cb));
                         } else {
                            res.json(result(false,"bind wx_id err",err));

@@ -52,6 +52,11 @@ router.post('/speak', function (req, res, next) {
         content = req.param('content');
         title = req.param('title');
         pic = req.param('pics');
+        if (!(pic instanceof Array)) {
+            var temp = [];
+            temp.push(pic);
+            pic=temp;
+        }
         id = doctor_id || sick_id;
         type = doctor_id ? "doctor" : "sick";
     } catch (e) {
