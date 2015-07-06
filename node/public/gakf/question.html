@@ -80,7 +80,7 @@
 			</ul>
 		</div>
 	</div>
-	<form action="/answer/speak" method="post" id="askFrom" ms-visible="d.type != 'doctor'">
+	<form action="/answer/speak" method="post" id="askFrom" ms-visible="d.type != 'doctor' && d.localType =='doctor' ">
 		<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
 		  <div class="container text-center" style="height: 42px; line-height: 42px;">
 		    <div class="row">
@@ -103,8 +103,8 @@
 	</form>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			var data = {};
 			var url = "",temp = store.get("user");
+			var data = {localType:temp.type};
 			// /answer/message?session_id=1
 			var vmodel = avalon.define({
 		          $id: "test",
