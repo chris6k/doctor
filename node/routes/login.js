@@ -153,15 +153,18 @@ router.post('/reg', function (req, res, next) {
                     res.json(result(false, 'err', err));
                     // res.redirect(reg_url + '?err=2&wx_id=' + wx_id);
                 } else {
-                    req.models.sickRequest.create({doctorId:doctor[0].id, sickId:item.id}, function(err, sickRequest) {
+                    console.error('create succ');
+                    req.models.sickRequest.create({doctorId:doctor[0].id, sickId:item.id, lastUpdate:new Date()}, function(err, sickRequest) {
                         if (err) {
+                            console.error('send request failed');
                             res.json(result(false, 'err', err));
                         } else {
+                            console.error('send request success');
                             if (doctor[0].wx_id) {
                                 //todo weixin notify
                             }
-                            res.cookie(type + '_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('type', type, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('sick_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
                             res.cookie('status', 'u', {expires: new Date(Date.now() + 900000), httpOnly: true});
                             res.json(result(true, '', loginResp('sick', item.id, '', item.doctor_id)));       
                         }
