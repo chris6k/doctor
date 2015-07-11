@@ -99,6 +99,10 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							required:true,
 							userName:true
 						},
+						name:{
+							required:true,
+							userName:true
+						},
 						user_mobile:{
 							required:true,
 							isMobile:true
@@ -112,7 +116,7 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 	                		 minlength: 6,
 	                		 equalTo: "#password"
 						},
-						doctor_name:{
+						doctor_id:{
 							 required: true
 						},
 						bed_no:{
@@ -120,12 +124,21 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						hospital:{
 							required: true
+						},
+						area:{
+							required: true
+						},
+						room:{
+							required: true
 						}
 
 					},
 					messages:{
 						username:{
 							required:"请输入用户名"
+						},
+						name:{
+							required:"请输入真实姓名"
 						},
 						user_mobile:{
 							required:"请输入正确电话号码"
@@ -139,15 +152,22 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 			                minlength: "确认密码不能小于{0}个字符",
 			                equalTo: "两次输入密码不一致吆"
 			            },
-			            doctor_name:{
-			            	required:"请输入主治医生"
+			            doctor_id:{
+			            	required:"请选择主治医生"
 			            },
 			            bed_no:{
 							required: "请输入床号"
 						},
 			            hospital:{
-							required: "请输入医院"
+							required: "请选择医院"
+						},
+						area:{
+							required: "请选择病区"
+						},
+						room:{
+							required: "请选择科室"
 						}
+
 					},
 					errorPlacement: function(error, element) {
 				     	if (element.attr("name") == "phone_vali")
@@ -174,6 +194,8 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 					        			}
 					        		}
 					        		window.location.href = url;
+								}else{
+									alert(d.msg);
 								}
 				    		},
 				    		error:function(e){

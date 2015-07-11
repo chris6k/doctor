@@ -157,7 +157,7 @@ form em.error { width: 200px; margin-left: 10px; color: red; }
 .page-header .header.l { border-top-left-radius: 18px; border-bottom-left-radius: 18px; }
 .page-header .header.r { border-top-right-radius: 18px; border-bottom-right-radius: 18px; border-left: 0px; }
 
-.my-input { height: 36px; border-radius: 18px; border-color: #75174b; width: 260px; margin: auto; padding-left: 46px; }
+.my-input { height: 36px; border-radius: 18px; border-color: #75174b; width: 260px; margin: auto; padding-left: 46px; background-color: transparent; }
 .my-input.user { background: url(../images/user.png) no-repeat 16px center; }
 .my-input.password { background: url(../images/lock.png) no-repeat 16px center; }
 .my-input.repassword { background: url(../images/relock.png) no-repeat 16px center; }

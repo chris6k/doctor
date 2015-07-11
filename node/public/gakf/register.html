@@ -11,13 +11,16 @@
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
-<body >
+<body ms-controller="test">
 	<div class="container">
 		<div class="spacer50"></div>
 		<form id="regForm" method="post" action="/user/reg">
 			
 			<div class="form-group">
-				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="请输入真实姓名" />
+				<input type="text" class="form-control my-input user" id="username" name="username" placeholder="用户名" />
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control my-input user" id="name" name="name" placeholder="真实姓名" />
 			</div>
 			<div class="form-group">
 				<input type="password" class="form-control my-input password" id="password" name="password" placeholder="密码" />
@@ -28,10 +31,29 @@
 
 			<div class="spacer30"></div>
 			<div class="form-group">
-				<input type="text" class="form-control my-input account"  name="hospital" placeholder="医院" >
+
+				<select  class="form-control my-input "  id="hospital" name="hospital" ms-change="change($event)">
+					<option value = "" >选择医院</option>
+					<option ms-repeat-el="d.hospital" ms-attr-value="{{el.name}}" >{{el.name}}</option>
+				</select>
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control my-input user"  name="doctor" placeholder="主治医生" >
+				<select  class="form-control my-input" id="area" name="area" ms-change="change($event)">
+					<option value = "" >选择病区</option>
+					<option ms-repeat-el="d.area" ms-attr-value="{{el}}">{{el}}</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<select  class="form-control my-input" id="room" name="room" ms-change="change($event)">
+					<option value = "" >选择科室</option>
+					<option ms-repeat-el="d.room" ms-attr-value="{{el}}">{{el}}</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<select  class="form-control my-input" id="doctor"  name="doctor_id" ms-change="change($event)">
+					<option value = "" >主治医生</option>
+					<option ms-repeat-el="d.doctor" ms-attr-value="{{el.id}}">{{el.name}}</option>
+				</select>
 			</div>
 			
 			<div class="form-group">
@@ -42,12 +64,86 @@
 				<button type="submit" class="btn btn-primary my-button">注册</button>
 			</div>
 			<input type="hidden" name="wx_id" value="11">
-			<input type="hidden" name="name" id="name" value="">
 		</form>
 	</div>
 	<script type="text/javascript">
-		require(["validate.form"],function(reg){
+		require(["validate.form","avalon"],function(reg){
 				reg.validate("regForm");
+				var data = {
+					hospital:[],
+					list:[],
+					area:[],
+					room:[],
+					doctor:[]
+				},  vmodel ,list;
+
+				$.ajax({ 
+				type:"get",
+				url: "/doctor/hospital",
+				dataType: "json", 
+				success: function(obj){
+					 data.hospital = obj.content;
+					vmodel = avalon.define({
+				          $id: "test",
+				          d:data,
+				          change:function(e){
+				          	 var id = e.target.id;
+				          	 var name = $("#"+id+" option:selected").val();
+				          	 if(id == "hospital"){
+				        		 vmodel.d.area = []; 
+				        		 
+								$.ajax({ 
+									type:"get",
+									url: "/doctor/hospitalDoctor?name="+name,
+									dataType: "json", 
+									success: function(obj){
+									 list = obj.content; 
+
+					          		 getValue("name",name,"area");
+									},
+									error:function(){
+
+									}
+								});
+
+				          	 }
+				          	 if(id == "area"){
+				          	 	 vmodel.d.room = []; 
+				          		 getValue("area",name,"room");
+				          	 }
+				          	 if(id == "room"){
+				          	 	 vmodel.d.doctor = []; 
+				          		 getDoctor("room",name,"doctor",["doctor_name","doctor_id"]);
+				          	 } 
+				          }
+				    });
+				    avalon.scan();
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+
+				function getValue (name,value,key){
+					for(var i=0;i<list.length;i++){
+	          		 	if(list[i][name] == value){
+	          		 		vmodel.d[key].push(list[i][key]);
+	          		 	}
+	          		 }
+				};
+				function getDoctor(name,value,key,pram){
+					for(var i=0;i<list.length;i++){
+	          		 	if(list[i][name] == value){
+	          		 		var temp ={
+	          		 			name:list[i][pram[0]],
+	          		 			id:list[i][pram[1]]
+
+	          		 		}
+	          		 		vmodel.d[key].push(temp);
+	          		 	}
+	          		 }
+				}
+				 
 		})
 	</script>
 </body>

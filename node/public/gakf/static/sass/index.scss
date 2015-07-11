@@ -77,7 +77,8 @@ form em.error{width: 200px;margin-left: 10px; color: red;}
 	  border-color: #75174b;
 	  width: 260px;
 	  margin: auto;
-		  padding-left: 46px;
+	  padding-left: 46px;
+	  background-color: transparent;
 	  &.user{
 	  	  background: url(../images/user.png) no-repeat 16px center;
 	  }
