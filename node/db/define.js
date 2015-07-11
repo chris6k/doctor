@@ -16,7 +16,7 @@ var define = function (db, models) {
             }
         }
     });
-    model.sickRequest.sync();
+    models.sickRequest.sync();
     models.hospital = db.define('hospital', {
         name: {type: 'text', required:true, unique: true}
     });
