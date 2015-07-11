@@ -104,14 +104,14 @@ router.post('/check', function (req, res, next) {
                 temp.push(pic);
                 pic=temp;
             }
-            console.log("description=" + description + ", pics=" + pic);
+            console.log('description=' + description + ', pics=' + pic);
         } catch (e) {
             console.error(e);
             hasErr = e;
         }
         if (hasErr) {
             console.log('parse param error: ' + hasErr);
-            res.redirect(source_url.check + "?err=1sick_id=" + sick_id + "&doctor_id=" + doctor_id);
+            res.redirect(source_url.check + '?err=1sick_id=' + sick_id + '&doctor_id=' + doctor_id);
         } else {
             var sc = {
                 title: title,
@@ -121,9 +121,9 @@ router.post('/check', function (req, res, next) {
             req.models.sickcheck.create(sc, function (err, item) {
                 if (err) {
                     console.error(err);
-                    res.redirect(source_url.check + "?err=1&sick_id=" + sick_id + "&doctor_id=" + doctor_id);
+                    res.redirect(source_url.check + '?err=1&sick_id=' + sick_id + '&doctor_id=' + doctor_id);
                 } else {
-                    res.redirect(target_url.check + "?sick_id=" + sick_id + "&doctor_id=" + doctor_id);
+                    res.redirect(target_url.check + '?sick_id=' + sick_id + '&doctor_id=' + doctor_id);
                 }
             });
 
@@ -145,14 +145,14 @@ router.post('/out_check', function (req, res, next) {
                 temp.push(pic);
                 pic=temp;
             }
-            console.log("description=" + description + ", pics=" + pic);
+            console.log('description=' + description + ', pics=' + pic);
         } catch (e) {
             console.error(e);
             hasErr = e;
         }
         if (hasErr) {
             console.log('parse param error: ' + hasErr);
-            res.redirect(source_url.review + "?err=1sick_id=" + sick_id + "&doctor_id=" + doctor_id);
+            res.redirect(source_url.review + '?err=1sick_id=' + sick_id + '&doctor_id=' + doctor_id);
         } else {
             var sc = {
                 title: title,
@@ -162,19 +162,19 @@ router.post('/out_check', function (req, res, next) {
             req.models.sickreview.create(sc, function (err, item) {
                 if (err) {
                     console.error(err);
-                    res.redirect(source_url.review + "?err=1&sick_id=" + sick_id + "&doctor_id=" + doctor_id);
+                    res.redirect(source_url.review + '?err=1&sick_id=' + sick_id + '&doctor_id=' + doctor_id);
                 } else {
-                    res.redirect(target_url.review + "?sick_id=" + sick_id + "&doctor_id=" + doctor_id);
+                    res.redirect(target_url.review + '?sick_id=' + sick_id + '&doctor_id=' + doctor_id);
                 }
             });
 
         }
 });
 
-router.get("/checkList", function(req, res, next){
-    var sick_id = req.param("sick_id");
-    var doctor_id = req.param("doctor_id");
-    var pageNo = req.param("pageNo") || 0, pageSize = req.param("pageSize") || 10;
+router.get('/checkList', function(req, res, next){
+    var sick_id = req.param('sick_id');
+    var doctor_id = req.param('doctor_id');
+    var pageNo = req.param('pageNo') || 0, pageSize = req.param('pageSize') || 10;
     var query = {};
     if (sick_id) {
         query.sick_id = sick_id;
@@ -182,33 +182,59 @@ router.get("/checkList", function(req, res, next){
     if (doctor_id) {
         query.doctor_id = doctor_id;
     }
-    req.models.sickcheck.find(query).order("-id").limit(pageSize).offset(pageSize*pageNo).run(function(err, data) {
+    req.models.sickcheck.find(query).order('-id').limit(pageSize).offset(pageSize*pageNo).run(function(err, data) {
         if (err) {
-            res.json(result(false,"get sickcheck err", err));
+            res.json(result(false,'get sickcheck err', err));
         } else {
             res.json(result(true,'',data));
         }
     });
 });
 
-router.get("/outCheckList", function(req, res, next){
-    var sick_id = req.param("sick_id");
-    var doctor_id = req.param("doctor_id");
-    var pageNo = req.param("pageNo") || 0, pageSize = req.param("pageSize") || 10;
+router.get('/outCheckList', function(req, res, next){
+    var sick_id = req.param('sick_id');
+    var doctor_id = req.param('doctor_id');
+    var pageNo = req.param('pageNo') || 0, pageSize = req.param('pageSize') || 10;
     var query = {};
     if (sick_id) {
         query.sick_id = sick_id;
-    } 
+} 
     if (doctor_id) {
         query.doctor_id = doctor_id;
     }
-    req.models.sickreview.find(query).order("-id").limit(pageSize).offset(pageSize*pageNo).run(function(err, data) {
+    req.models.sickreview.find(query).order('-id').limit(pageSize).offset(pageSize*pageNo).run(function(err, data) {
         if (err) {
-            res.json(result(false,"get sickcheck err", err));
+            res.json(result(false,'get sickcheck err', err));
         } else {
             res.json(result(true,'',data));
         }
     });
+});
+
+router.get('/hospital', function(req, res, next){
+    req.models.hospital.find({}, function(err, data){
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            res.json(result(true, '', data));
+        }
+    });
+});
+
+router.get('/hospitalDoctor', function(req, res, next) {
+    var name = req.param('name');
+    if (!name) {
+        console.info('empty name');
+        res.json(result(false, 'empty name', {}));
+    } else {
+        req.models.hospitalDoctor.find({'name': name}).order('area').order('room').run(function(err, data) {
+            if (err) {
+                res.json(result(false, 'err', err));
+            } else {
+                res.json(result(true, '', data));
+            }
+        });
+    }
 });
 
 

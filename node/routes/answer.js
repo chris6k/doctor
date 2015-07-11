@@ -3,7 +3,7 @@ var router = express.Router();
 var result = require('./result');
 //TODO
 var source_url = {sick: '/gakf/askDoctor.html', doctor: '/gakf/question.html'};
-var target_url = {sick: '/gakf/communicate.html', doctor: '/gakf/question.html'};
+var target_url = {sick: '/gakf/communicate.html', doctor: '/gakf/communicate.html'};
 
 router.get('/message', function (req, res, next) {
     var session_id = req.param('session_id');

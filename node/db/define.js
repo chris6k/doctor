@@ -1,9 +1,37 @@
 var define = function (db, models) {
     db.settings.set('instance.cache', false);
+    //医生申请表
+    models.sickRequest = db.define('sick_request', {
+        sickId: {type: 'integer', required: true},
+        doctorId: {type: 'integer', required: true},
+        lastUpdate:{type: 'date', time:true, required: true},
+        status:{type: 'text', required:true, defaultValue: 'f'} //t,f
+    }, {
+        hook:{
+            beforeSave:function(){
+                this.lastUpdate = new Date();
+            },
+            beforeCreate:function(){
+                this.lastUpdate = new Date();
+            }
+        }
+    });
+    models.hospital = db.define('hospital', {
+        name: {type: 'text', required:true, unique: true}
+    });
+    models.hospital.sync();
+    models.hospitalDoctor = db.define('hospital_doctor', {
+        name: {type: 'text', required: true},
+        area: {type: 'text', required: true},//病区
+        room: {type: 'text', required: true},//科室
+        doctor_id: {type: 'integer', required: true},
+        doctor_name: {type: 'text', required: true}
+    });
+    models.hospitalDoctor.sync();
     //医生表
     models.doctor = db.define('doctor', {
         name: {type: 'text'},
-        username: {type: 'text'},
+        username: {type: 'text', unique: true},
         password: {type: 'text'},
         hospital: {type: 'text'},
         nurse_id: {type: 'integer'},
@@ -15,15 +43,16 @@ var define = function (db, models) {
         wx_id: {type: 'text', required: false},
         status: {type: 'text', defaultValue: 't'},
         avatar: {type: 'text', size: 256},
-        title: {type: 'text', required: false}
+        title: {type: 'text', required: false},
+
     });
     //病人信息表
     models.sick = db.define('sick', {
-        name: {type: 'text', required: true, unique: true},
+        name: {type: 'text', required: true},
         age: {type: 'text', required: false},
         gender: {type: 'text', required: false},//m,f
-        username: {type: 'text', required: false},
-        password: {type: 'text', required: false},
+        username: {type: 'text', required: true, unique: true},
+        password: {type: 'text', required: true},
         hospital: {type: 'text', required: false},
         bed_id: {type: 'text', required: false},
         doctor_name: {type: 'text', required: false},
@@ -38,7 +67,7 @@ var define = function (db, models) {
         in_day: {type: 'date', required: false},
         out_day: {type: 'date', required: false},
         wx_id: {type: 'text', required: false},
-        status: {type: 'text', defaultValue: 't'},
+        status: {type: 'text', defaultValue: 'u'},//t,f,u
         drug_s: {type: 'integer', defaultValue: 0, required: false},
         drug_f: {type: 'integer', defaultValue: 0, required: false}
     }, {

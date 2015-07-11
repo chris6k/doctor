@@ -46,15 +46,6 @@ var loginCheck = require('./routes/loginCheck');
 var imageUpload = require("./routes/imageUpload");
 
 app.use(loginCheck);
-// app.use(function (req, res, next) {
-//     var open_id = req.cookies.open_id;
-//     if (!open_id) {
-//         res.redirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaf3a162fe7e04d37&redirect_uri=http%3A%2F%2Fguanaikangfu.com%2Fuser%2Fcallback&response_type=code&scope=snsapi_base#wechat_redirect");
-//     } else {
-//         next();
-//     }
-// });
-
 app.use('/', routes);
 //app.use('/users', users); 
 app.use('/user', login);

@@ -19,6 +19,8 @@
     "promise": "^7.0.3",
     "request": "^2.58.0",
     "serve-favicon": "~2.2.1",
+    "tufu": "^0.1.1",
+    "wechat": "^2.0.1",
     "weixin-apis": "^1.5.2"
   }
 }
