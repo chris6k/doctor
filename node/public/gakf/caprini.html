@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>Caprini 量表</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+</head>
+<body ms-controller="test">
+	<div class="" id="gradeList">
+		<span style="margin: 10px;display: inline-block;">{{d.summary}}</span>
+		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
+			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
+			<ul class="list-group " ms-if="el.type == 'checkbox'">
+			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+			<ul class="list-group " ms-if="el.type == 'input'" >
+			  <li class="list-group-item " ms-repeat-el="el.keys" >
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<input type="text" value="" style="width:100%" class="inputvalue" placeholder="请输入" ms-blur="blur" >
+			  	</div>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a ms-href="">
+			    	<span style="color:#fff;">保存</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/javascript">
+		require(["store","avalon"],function(store){
+			function selected(obj,type){
+				var t = "yellowtag",type = !type?0:type;
+				if(!$(obj).data("isSelected")){
+					$(obj).addClass("selected");
+					$(obj).find(".tag").addClass(t);
+					$(obj).find(".tagcon").html("+"+type+"分");
+					$(obj).data("isSelected",true);
+				}else{
+					$(obj).removeClass("selected");
+					$(obj).find(".tag").removeClass(t);
+					$(obj).data("isSelected",false);
+					$(obj).find(".tagcon").html("");
+				}	
+			}
+			$("#gradeList").on("touchstart",".checkbox",function(){
+				var temp = $(this).find(".tag");
+				selected(this,temp.attr("alt"));
+			});
+
+			var data = {
+				title:"量表标题",
+				summary:"",
+				items:[{
+				 title:"如果您往前一个月内发生过下面的情况，请每项计1分:",
+				 summary:"", 
+				 type:"checkbox", 
+				 keys:[{key:"正处于41-60岁",value:"1"},
+				 	   {key:"这次住院要做个时间小于45分钟的手术",value:"1"},
+				 	   {key:"若要做的手术，时间大于2小时",value:"1"},
+				 	   {key:"一个月内层做过时间大于45分钟的其他手术",value:"1"},
+				 	   {key:"静脉曲张",value:"1"},
+				 	   {key:"得过炎症性肠病，如克罗恩病、溃疡性结肠炎",value:"1"},
+				 	   {key:"下肢水肿",value:"1"},
+				 	   {key:"体重超标（BMI指数大于25）",value:"1"},
+				 	   {key:"急性心肌梗塞",value:"1"},
+				 	   {key:"充血性心力衰竭",value:"1"}
+				 	   ], 
+				 value:[],
+				 scored:true,
+				 checkedStyle:"dot"
+				},
+				{
+				 title:"如果您往前一个月内发生过下面的情况，请每项计2分：",
+				 summary:"", 
+				 type:"checkbox", 
+				 keys:[{key:"正处于61-74岁",value:"2"},
+				 	   {key:"得过或正患有恶性肿瘤/癌症",value:"2"},
+				 	   {key:"这次住院要做个时间大于45分钟的手术（包括腹腔镜或者关节镜手术）",value:"2"},
+				 	   {key:"颈部或者胸部放置过静脉留置针或者中心静脉置管",value:"2"},
+				 	   {key:"连续卧床超过72小时",value:"2"}
+				 	   ], 
+				 value:[],
+				 scored:true,
+				 checkedStyle:"dot"
+				}
+				]
+			};
+			 //sick has save btn doctor hasn't save btn
+			var temp = store.get("user"),id="";
+			if(temp.type =="doctor"){
+				data.isshow = false;
+			}else {
+				data.isshow = true;
+			}
+		    var vmodel =avalon.define({
+		          $id: "test",
+		          d:data,
+		          click:function(e){
+		          	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
+		          	for(var i=0;i<list.length;i++){
+		          		temp.push($(list[i]).html());
+		          	}
+		          	vmodel.d.items[index].value = temp;
+		          	console.log(vmodel.d.$model);
+		          },
+		          blur:function(){
+		          	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
+		          	temp.push($(this).val());
+		          	vmodel.d.items[index].value = temp;
+		          	console.log(vmodel.d.$model);
+		          }
+		    });
+		    avalon.scan();
+		    for(var i=0;i<data.items.length;i++){
+		    	var temp = data.items[i];
+		    	if(temp.type == "checkbox"){
+			    	for(var j = 0;j<temp.value.length;j++){
+			    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
+			    	}
+		    	}else if(temp.type == "input"){
+		    		for(var j = 0;j<temp.keys.length;j++){
+			    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
+			    	}
+		    	}
+		    }
+
+
+		});
+	</script>
+</body>
+</html>
