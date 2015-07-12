@@ -1,16 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var result = require('./result');
-router.get('/sickstatus', function (req, res, next) {
-    req.models.sickstatus.find({type: req.param('type'), sick_id: req.param('sick_id')}, function (err, data) {
-        if (err) {
-            console.error(err);
-            res.json(result(false, '', {}));
-        } else {
-            res.json(result(true, '', data));
-        }
-    });
-});
 
 router.get('/info', function (req, res, next) {
     req.models.sick.get(req.param('id'), function (err, data) {
@@ -138,7 +128,19 @@ router.get('/sicktablelist', function(req, res, next) {
     });
 });
 
-router.get('/sicktable', function(req, res, next) {
+router.post('/savesicktable', function(req, res, next) {
+    var table_type= req.param('table_type');
+    var value = req.param('value');
+    req.models.sicktable.create({table_type: table_type, value: value}, function(err, item) {
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            res.json(result(true,'',item));
+        }
+    });
+});
+
+router.get('/sickstatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
     req.models.sickstatus.find({sick_id:sick_id, table_type:table_type}, function(err, data){
@@ -160,7 +162,7 @@ router.get('/sicktable', function(req, res, next) {
     });
 });
 
-router.post('/savetable', function(req, res, next) {
+router.post('/savestatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
     var table = req.param('table');
