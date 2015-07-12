@@ -190,7 +190,8 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 					        			url =  dd.url;
 					        		}else{
 					        			if(dd.type == "sick"){
-					        				url = "/gakf/inpatientInfo.html";
+					        				//url = "/gakf/inpatientInfo.html";
+					        				url = "/gakf/msg.html"
 					        			}
 					        		}
 					        		window.location.href = url;
