@@ -237,5 +237,48 @@ router.get('/hospitalDoctor', function(req, res, next) {
     }
 });
 
+router.get('/requestList', function(req, res, next){
+    var doctor_id = req.param('doctor_id');
+    req.models.sickRequest.find({'doctor_id': doctor_id}, function(err, items){
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            res.json(result(true,'',items));
+        }
+    });
+});
+
+router.get('/verify', function(req, res, next) {
+    var sick_id = req.param('sick_id');
+    var doctor_id = req.param('doctor_id');
+    var isok = req.param('isok')?'t':'f';
+    
+    req.models.sick.get(sick_id, function(err, sick) {
+        sick.save({status:isok}, function(err) {
+        if (err) {
+            res.json(result(false,'err', err));
+        } else {
+            req.models.sickRequest.find({'doctor_id':doctor_id, 'sick_id':sick_id}, function(err, data){
+                if (err) {
+                    res.json(result(false, 'err', err));
+                } else {
+                    if (data && data.length > 0) {
+                        data[0].save('status': 't', function(err) {
+                            if (err) {
+                                res.json(result(false,'err',err));
+                            } else {
+                                res.json(result(true, '', {}));
+                            }
+                        })
+                    } else {
+                        res.json(result(false, 'sick request not found', {}));
+                    }
+                }
+            });
+        }
+        });
+    });
+   
+});
 
 module.exports = router;

@@ -98,20 +98,24 @@ var define = function (db, models) {
         drug_name: {type: 'text'},
         drug_type: {type: 'text'},
         type: {type: 'text'},//s-建议 f-禁忌 c-慎用
-        drug_reason: {type: 'object', required: false}
+        drug_reason: {type: 'text', required: false}
     });
 
     //病人量表信息
     models.sickstatus = db.define('sickstatus', {
-        sick_id: {type: 'integer'},
-        table_type: {type: 'text'},
-        value: {type: 'object'}
+        sick_id: {type: 'integer', required:true},
+        table_type: {type: 'text', required:true},
+        value: {type: 'text',required:true}
     });
+    models.sickstatus.sync();
     //量表表
     models.sicktables = db.define('sicktable', {
         table_type: {type: 'text', required: false, unique: true},
-        value: {type: 'text', required: false}
+        value: {type: 'text', required: false},
+        target: {type:'text'，required:true}, //doctor, sick,
+        status:{type:'text', required:true, defaultValue:'t'} //t|f
     });
+    models.sicktables.sync();
     //查房信息
     models.sickcheck = db.define('sickcheck', {
         sick_id: {type: 'integer'},

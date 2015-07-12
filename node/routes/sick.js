@@ -128,4 +128,67 @@ router.get('/doctor', function (req, res, next) {
     }
 });
 
+router.get('/sicktablelist', function(req, res, next) {
+    req.models.sicktable.find({}, function(err, data) {
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            res.json(result(true, '', data));
+        }
+    });
+});
+
+router.get('/sicktable', function(req, res, next) {
+    var sick_id = req.param('sick_id');
+    var table_type = req.param('table_type');
+    req.models.sickstatus.find({sick_id:sick_id, table_type:table_type}, function(err, data){
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            if (!data || data.length == 0) {
+                req.models.sicktable.find({table_type: table_type}, function(err, data) {
+                    if (err) {
+                        res.json(result(false, 'err', err));
+                    } else {
+                        res.json(result(true,'', data[0]));
+                    }
+                });
+            } else {
+                res.json(result(true, '', data[0]));
+            }
+        }
+    });
+});
+
+router.post('/savetable', function(req, res, next) {
+    var sick_id = req.param('sick_id');
+    var table_type = req.param('table_type');
+    var table = req.param('table');
+    req.models.sickstatus.find({sick_id: sick_id, table_type: table_type}, function(err, data) {
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            if (data && data.length > 0) {
+                data[0].save({value: table}, function(err) {
+                    if (err) {
+                        res.json(result(false, 'err', err));
+                    } else {
+                        //todo cal score and recommend
+                        res.json(result(true, '',{}));
+                    }
+                });
+            } else {
+                req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:data}, function(err, item){
+                    if (err) {
+                        res.json(result(false, 'err', err));
+                    } else {
+                        //todo cal score and recommend
+                        res.json(result(true,'',{}));
+                    }
+                });
+            }
+        }
+    });
+});
+
 module.exports = router;
