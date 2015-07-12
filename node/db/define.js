@@ -112,7 +112,7 @@ var define = function (db, models) {
     models.sicktables = db.define('sicktable', {
         table_type: {type: 'text', required: false, unique: true},
         value: {type: 'text', required: false},
-        target: {type:'text'，required:true}, //doctor, sick,
+        target: {type:'text', required:true}, //doctor, sick,
         status:{type:'text', required:true, defaultValue:'t'} //t|f
     });
     models.sicktables.sync();

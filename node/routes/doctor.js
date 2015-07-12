@@ -263,7 +263,7 @@ router.get('/verify', function(req, res, next) {
                     res.json(result(false, 'err', err));
                 } else {
                     if (data && data.length > 0) {
-                        data[0].save('status': 't', function(err) {
+                        data[0].save({'status': 't'}, function(err) {
                             if (err) {
                                 res.json(result(false,'err',err));
                             } else {
