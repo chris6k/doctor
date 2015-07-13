@@ -138,10 +138,12 @@
 				success: function(obj){
 					obj.content.value = $.parseJSON(obj.content.value);
 					tempobj = obj.content;
-					vmodel.d = obj.content.value;
+					var d = obj.content.value;
+					vmodel.d = d;
 					vmodel.d.isshow = data.isshow;
-					for(var i=0;i<data.items.length;i++){
-				    	var temp = data.items[i];
+
+					for(var i=0;i<d.items.length;i++){
+				    	var temp = d.items[i];
 				    	if(temp.type == "checkbox"){
 					    	for(var j = 0;j<temp.value.length;j++){
 					    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
