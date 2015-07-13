@@ -105,17 +105,24 @@ var define = function (db, models) {
     models.sickstatus = db.define('sickstatus', {
         sick_id: {type: 'integer', required:true},
         table_type: {type: 'text', required:true},
-        value: {type: 'text',required:true}
+        value: {type: 'text',required:true, size:2048},
+        score:{type: 'integer'},
+        level:{type: 'text'}
     });
     models.sickstatus.sync();
     //量表表
     models.sicktables = db.define('sicktable', {
-        table_type: {type: 'text', required: false, unique: true},
-        value: {type: 'text', required: false},
+        table_type: {type: 'text', required: true, unique: true},
+        value: {type: 'text', required: true, size:2048},
         target: {type:'text', required:true}, //doctor, sick,
         status:{type:'text', required:true, defaultValue:'t'} //t|f
     });
     models.sicktables.sync();
+    models.sicktablerule = db.define('sicktable_rule', {
+        table_type: {type: 'text', required: true, unique:true},
+        rule: {type: 'text', required: true}
+    });
+    models.sicktablerule.sync();
     //查房信息
     models.sickcheck = db.define('sickcheck', {
         sick_id: {type: 'integer'},
