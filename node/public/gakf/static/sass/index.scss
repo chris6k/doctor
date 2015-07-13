@@ -3,7 +3,7 @@
 //reset
 @import "_common.scss";
 @import "_reset.scss";
-
+.ms-controller, .ms-important{visibility:hidden}
 .page-footer{
 	position:absolute;
 	bottom:15px;
