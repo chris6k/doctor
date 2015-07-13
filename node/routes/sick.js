@@ -201,4 +201,31 @@ router.post('/savestatus', function(req, res, next) {
     });
 });
 
+router.get('/sickscore', function(req, res, next) {
+    var sick_id = req.param('sick_id');
+    req.models.sickstatus.find({sick_id:sick_id}, function(err, data){
+        if (err) {
+            res.json(result(false,'err', err));
+        } else {
+        var re = {};
+        for(var i=0;i<data.length;i++) {
+            var item = data[i];
+            if (item.table_type === 'caprini') {
+                re.caprini = item.level;
+            } 
+            if (item.table_type === 'hss_left') {
+                re.hss += item.score;
+            }
+            if (item.table_type === 'hss_right') {
+                re.hss += item.score;
+            }
+            if (item.table_type === 'rapt') {
+                re.rapt = item.level;
+            }
+        }
+        res.json(result(true, '', re));
+    }
+    });
+});
+
 module.exports = router;
