@@ -391,7 +391,7 @@
      {'key':'渗出物性状','value':'自己填写'},
      {'key':'渗出物量','value':'自己填写'},
      {'key':'引流量','value':'自己填写'},
-     {'key':'输血量','value':'自己填写'},
+     {'key':'输血量','value':'自己填写'}
      ],
      'value':'',
      'scored':false,
@@ -400,9 +400,163 @@
    ]
 };
 
+{
+  'title':'术前骨科筛查量表'，
+   'summary':'',
+   'items':[
+     {
+     'title':'尿常规项目',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'葡萄糖','value':'未见异常','tip':'NA'},
+     {'key':'胆红素','value':'未见异常','tip':'NA'},
+     {'key':'酮体','value':'未见异常','tip':'NA'},
+     {'key':'比重','value':'未见异常','tip':'1.005-1.03'},
+     {'key':'红细胞','value':'未见异常','tip':'NA'},
+     {'key':'PH值','value':'未见异常','tip':'5.5-6.5'},
+     {'key':'尿蛋白','value':'未见异常','tip':'NA'},
+     {'key':'亚硝酸盐','value':'未见异常','tip':'NA'},
+     {'key':'白细胞','value':'未见异常','tip':'NA'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+     },
+     {
+     'title':'血常规项目',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'白细胞','value':'未见异常','tip':'3.5-9.5 10^9/L'},
+     {'key':'红细胞','value':'未见异常','tip':'3.8-5.10^12/L'},
+     {'key':'细胞比积','value':'未见异常','tip':'35.0-45.0%'},
+     {'key':'血红蛋白','value':'未见异常','tip':'115-150 g/L'},
+     {'key':'血小板','value':'未见异常','tip':'125-300 10^9/L'},
+     {'key':'中性细胞绝对值','value':'未见异常','tip':'1.8-6.3'},
+     {'key':'中性细胞百分比','value':'未见异常','tip':'40-75%'},
+     {'key':'血糖','value':'未见异常','tip':'3.90-5.80mmol/L'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'凝血功能',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'凝血酶原时间','value':'未见异常','tip':'11-14s'},
+     {'key':'国际标准化比率','value':'未见异常','tip':'0.82-1.15'},
+     {'key':'部分凝血活酶时间','value':'未见异常','tip':'20.0-40.0'},
+     {'key':'纤维蛋白原','value':'未见异常','tip':'2.00-4.00'},
+     {'key':'凝血酶时间','value':'未见异常','tip':'13.0-21.0'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'CRP',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'CRP','value':'未见异常','tip':'0-10'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'肝功能',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'总蛋白','value':'未见异常','tip':'60-80g/L'},
+     {'key':'白蛋白','value':'未见异常','tip':'35-55g/L'},
+     {'key':'谷丙转氨酶','value':'未见异常','tip':'0-65U/L'},
+     {'key':'谷草转氨酶','value':'未见异常','tip':'8_37U/L'},
+     {'key':'尿素','value':'未见异常','tip':'2.5-6.4mmol/L'},
+     {'key':'肌酐','value':'未见异常','tip':'53-115umol/L'},
+     {'key':'尿酸','value':'未见异常','tip':'210-430umol/L'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'电解质',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'K','value':'未见异常','tip':'3.5-5.5 mmol/L'},
+     {'key':'Na','value':'未见异常','tip':'135-145 mmol/L'},
+     {'key':'CI','value':'未见异常','tip':'95-105 mmol/L'},
+     {'key':'Ca','value':'未见异常','tip':'2.08-2.60 mmol/L'},
+     {'key':'Mg','value':'未见异常','tip':'0.65-1.05 mmol/L'},
+     {'key':'P','value':'未见异常','tip':'0.80-1.60 mmol/L'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'艾滋',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'艾滋','value':'未见异常','tip':'阴性'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'乙肝',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'乙肝','value':'未见异常','tip':'阴性'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    },
+    {
+     'title':'丙肝',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'丙肝','value':'未见异常','tip':'阴性'}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    }
+    
+   ]
+};
 
-
-
+{
+  'title':'术中骨科筛查量表'，
+  'summary':'',
+  'items':[
+   {
+     'title':'术中骨科筛查量表',
+     'summary':'',
+     'type':'input',
+     'keys':[
+     {'key':'手术时间','value':''},
+     {'key':'止血带时长','value':'','tip':'上肢一般60-90分钟\n下肢一般90-120分钟\n如果超时，休息20-30分钟再打'},
+     {'key':'出血量','value':''},
+     {'key':'输血量','value':''}
+     ],
+     'value':'',
+     'scored':false,
+     'checkedStyle':'none'
+    }
+  ]
+};
 
 
 
