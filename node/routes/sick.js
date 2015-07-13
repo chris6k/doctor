@@ -119,7 +119,7 @@ router.get('/doctor', function (req, res, next) {
 });
 
 router.get('/sicktablelist', function(req, res, next) {
-    req.models.sicktable.find({}, function(err, data) {
+    req.models.sicktables.find({}, function(err, data) {
         if (err) {
             res.json(result(false, 'err', err));
         } else {
@@ -131,7 +131,8 @@ router.get('/sicktablelist', function(req, res, next) {
 router.post('/savesicktable', function(req, res, next) {
     var table_type= req.param('table_type');
     var value = req.param('value');
-    req.models.sicktable.create({table_type: table_type, value: value}, function(err, item) {
+    var target = req.param('target');
+    req.models.sicktables.create({table_type: table_type, value: value, target: target}, function(err, item) {
         if (err) {
             res.json(result(false, 'err', err));
         } else {
@@ -143,12 +144,19 @@ router.post('/savesicktable', function(req, res, next) {
 router.get('/sickstatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
-    req.models.sickstatus.find({sick_id:sick_id, table_type:table_type}, function(err, data){
+    var query = {};
+    if (sick_id) {
+        query.sick_id=sick_id;
+    }
+    if (table_type) {
+        query.table_type=table_type;
+    }
+    req.models.sickstatus.find(query, function(err, data){
         if (err) {
             res.json(result(false, 'err', err));
         } else {
             if (!data || data.length == 0) {
-                req.models.sicktable.find({table_type: table_type}, function(err, data) {
+                req.models.sicktables.find({table_type: table_type}, function(err, data) {
                     if (err) {
                         res.json(result(false, 'err', err));
                     } else {
@@ -180,7 +188,7 @@ router.post('/savestatus', function(req, res, next) {
                     }
                 });
             } else {
-                req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:data}, function(err, item){
+                req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:table}, function(err, item){
                     if (err) {
                         res.json(result(false, 'err', err));
                     } else {
