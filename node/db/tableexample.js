@@ -55,6 +55,7 @@
    }
    ]
 };
+{"title":"膝关节HSS评分(左腿)", "summary":"", "items": [{"title":"疼痛", "summary":"", "type":"checkbox", "keys":[{"key": "行走时无疼痛", "value":15},{"key":"行走时轻度疼痛", "value":10}, {"key": "行走时中度疼痛", "value": 5},{"key": "行走时严重疼痛", "value": 0}], "value":"", "scored":true, "checkedStyle":"dot"}, {"title":"功能", "summary":"", "type":"checkbox", "keys":[{"key": "行走站立无限制", "value":12},{"key":"行走2500~5000米和站立半小时以上", "value":10}, {"key": "行走500~2500米和站立可达半小时", "value": 5},{"key": "行走少于500米", "value": 4}, {"key": "不能行走", "value" : 0}], "value":"", "scored":true, "checkedStyle":"dot"}] };
 
 {
 "title":"膝关节HSS评分(左腿)",
@@ -87,9 +88,8 @@
    {
        "title":"功能",
        "summary":"", 
-       "type":"radio", 
        "keys":[
-       {"key": "能上楼梯", "value":5},{"key":"能上楼梯，但需支具", "value":2},
+       {"key": "能上楼梯", "value":5},{"key":"能上楼梯,但需支具", "value":2},
        {"key": "无法行走", "value": 0}],
        "value":"",
        "scored":true,
@@ -100,12 +100,11 @@
        "summary":"", 
        "type":"radio", 
        "keys":[
-       {"key": "屋内行走，无需支具", "value":5},{"key":"屋内行走，需要支具", "value":2},
+       {"key": "屋内行走,无需支具", "value":5},{"key":"屋内行走,需要支具", "value":2},
        {"key": "无法行走", "value": 0}],
        "value":"",
        "scored":true,
-       "checkedStyle":"dot"
-   },
+       "checkedStyle":"dot"   },
    {
        "title":"活动度",
        "summary":"", 
@@ -367,6 +366,7 @@
 };
 
 {
+
   "title":"术后骨科筛查量表",
    "summary":"",
    "items":[
