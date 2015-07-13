@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
@@ -52,7 +53,7 @@
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a ms-href="">
+	    		<a href="javascript:void(0)" style="display:inline-block;width:100%;" ms-click="save">
 			    	<span style="color:#fff;">保存</span>
 			    </a>
 	    	</div>
@@ -80,98 +81,84 @@
 				selected(this,temp.attr("alt"));
 			});
 
-			var data = {
-				title:"量表标题",
-				summary:"点击选择一个月内患者有过的情况:",
-				items:[{
-				 title:"一、行走疼痛（总分30分）",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"行走时无疼痛",value:"15"},
-				 	   {key:"行走时轻度疼痛",value:"10"},
-				 	   {key:"行走时中度疼痛",value:"5"},
-				 	   {key:"行走时严重疼痛",value:"0"}], 
-				 value:["行走时无疼痛","行走时轻度疼痛"],
-				 scored:true,
-				 checkedStyle:"dot"
-				},
-				{
-				 title:"二、休息疼痛（总分30分）",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"休息时无疼痛",value:"15"},
-				 	   {key:"休息时轻度疼痛",value:"10"},
-				 	   {key:"休息时中度疼痛",value:"5"},
-				 	   {key:"休息时严重疼痛",value:"0"}], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},{
-				 title:"三、行走功能（总分22分）",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"行走站立无限制",value:"12"},
-				 	   {key:"行走2500～5000米和站立半小时以上",value:"10"},
-				 	   {key:"行走500～2500米和站立可达半小时",value:"5"},
-				 	   {key:"行走少于500米",value:"4"},
-				 	   {key:"能上楼梯，但需支具",value:"2"},
-				 	   {key:"屋内行走，无需支具",value:"5"},
-				 	   {key:"屋内行走，需要支具",value:"2"},
-				 	   {key:"不能行走",value:"0"}
-				 	   ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},{
-				 title:"四、活动度（总分18分）",
-				 summary:"", 
-				 type:"input", 
-				 keys:[{key:"每活动8度得1分（最高18分）",value:"18"}], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"none"
-				}
-				]
-			};
-			 //sick has save btn doctor hasn't save btn
+			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
 			var temp = store.get("user"),id="";
 			if(temp.type =="doctor"){
 				data.isshow = false;
 			}else {
 				data.isshow = true;
 			}
+			id = RC.parseOptions(window.location.href).sick_id;
+			var vmodel =avalon.define({
+				  $id: "test",
+			      d:data,
+			      click:function(e){
+			      	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
+			      	for(var i=0;i<list.length;i++){
+			      		temp.push($(list[i]).html());
+			      	}
+			      	vmodel.d.items[index].value = temp;
+			      	console.log(vmodel.d.$model);
+			      },
+			      blur:function(){
+			      	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
+			      	temp.push($(this).val());
+			      	vmodel.d.items[index].value = temp;
+			      	console.log(vmodel.d.$model);
+			      },
+			      save:function(){
+			      	//Post	/sick/savestatus	table_type, sick_id, table
+			      	var tempd ={
+			      		table_type:tempobj.table_type,
+			      		sick_id:id,
+			      		table:JSON.stringify(vmodel.d.$model)
+			      	};
+			      		$.ajax({ 
+							type:"post",
+							url: "/sick/savestatus",
+							dataType: "json", 
+							data:tempd,
+							success: function(d){
+								if(d.success){
+					        		window.location.href = "/gakf/sickDetail.html";
+								}else{
+									alert(d.msg);
+								}
+				    		},
+				    		error:function(e){
+				    		}
+						});
+			      }
+			});
+			avalon.scan();
+			$.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=hss_right&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					vmodel.d = obj.content.value;
+					vmodel.d.isshow = data.isshow;
+					for(var i=0;i<data.items.length;i++){
+				    	var temp = data.items[i];
+				    	if(temp.type == "checkbox"){
+					    	for(var j = 0;j<temp.value.length;j++){
+					    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
+					    	}
+				    	}else if(temp.type == "input"){
+				    		for(var j = 0;j<temp.keys.length;j++){
+					    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
+					    	}
+				    	}
+				    }
+	    		},
+	    		error:function(){
 
-		    var vmodel =avalon.define({
-		          $id: "test",
-		          d:data,
-		          click:function(e){
-		          	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
-		          	for(var i=0;i<list.length;i++){
-		          		temp.push($(list[i]).html());
-		          	}
-		          	vmodel.d.items[index].value = temp;
-		          	console.log(vmodel.d.$model);
-		          },
-		          blur:function(){
-		          	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
-		          	temp.push($(this).val());
-		          	vmodel.d.items[index].value = temp;
-		          	console.log(vmodel.d.$model);
-		          }
-		    });
-		    avalon.scan();
-		    for(var i=0;i<data.items.length;i++){
-		    	var temp = data.items[i];
-		    	if(temp.type == "checkbox"){
-			    	for(var j = 0;j<temp.value.length;j++){
-			    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
-			    	}
-		    	}else if(temp.type == "input"){
-		    		for(var j = 0;j<temp.keys.length;j++){
-			    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
-			    	}
-		    	}
-		    }
+	    		}
+			}); 
+		   
+		    
 
 		   
 

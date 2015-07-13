@@ -74,38 +74,56 @@
 		<span style="padding:5px 0px;display: inline-block;">医学量表</span>
 		<ul class="list-group">
 			<li class="list-group-item">
-		  		<a href="/gakf/caprini.html">
+		  		<a ms-href="/gakf/caprini.html?sick_id={{d.sickId}}">
   			  		<span>Caprini 量表</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">高危</span>
+  					<span class="right orange sl8" ms-if="d.caprini!=''">{{d.caprini}}</span>
+  					<span class="right orange sl8" ms-if="!d.caprini">点击请填写</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
-		  		<a href="/gakf/hss.html">
+		  		<a ms-href="/gakf/hss.html?sick_id={{d.sickId}}">
   			  		<span>膝关节HSS评分 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">点击请填写</span>
-		  		</a>
-		 	</li>
-		</ul>
-		<span style="padding:5px 0px;display: inline-block;">长期登记量表</span>
-
-		<ul class="list-group">
-			<li class="list-group-item">
-		  		<a href="">
-  			  		<span>术前骨科筛查量表</span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">点击请填写</span>
+  					<span class="right orange sl8" ms-if="d.hss!=''">{{d.hss}}</span>
+  					<span class="right orange sl8" ms-if="!d.hss">点击请填写</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
-		  		<a href="">
-  			  		<span>术前骨科筛查量表</span>
+		  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
+  			  		<span>创伤RAPT量表 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8">点击请填写</span>
+  					<span class="right orange sl8" ms-if="d.rapt!=''">{{d.rapt}}</span>
+  					<span class="right orange sl8" ms-if="!d.rapt">点击请填写</span>
 		  		</a>
 		 	</li>
 		</ul>
+		<div ms-visible="d.isvisible">
+			<span style="padding:5px 0px;display: inline-block;">长期登记量表</span>
+			<ul class="list-group">
+				<li class="list-group-item">
+			  		<a href="/gakf/before.html">
+	  			  		<span>术前骨科筛查量表</span>
+	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  						<span class="right orange sl8">点击请填写</span>
+			  		</a>
+			 	</li>
+			 	<li class="list-group-item">
+			  		<a href="/gakf/between.html">
+	  			  		<span>术中骨科筛查量表</span>
+	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+	  					<span class="right orange sl8">点击请填写</span>
+			  		</a>
+			 	</li>
+			 	<li class="list-group-item">
+			  		<a href="/gakf/after.html">
+	  			  		<span>术后骨科筛查量表</span>
+	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+	  					<span class="right orange sl8">点击请填写</span>
+			  		</a>
+			 	</li>
+			</ul>
+		</div>
 	</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="d.isout">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
@@ -139,6 +157,7 @@
 					id = RC.parseOptions(window.location.href).id;
 					data.isvisible = true;
 				}
+				data.sickId = id;
 				
 			    var vmodel = avalon.define({
 			          $id: "test",
@@ -151,11 +170,24 @@
 					dataType: "json", 
 					success: function(obj){
 						vmodel.d = $.extend(data,obj.content);
+						if(temp.type == "doctor"){
+							$.ajax({ 
+								type:"get",
+								url: "/sick/sickscore?sick_id="+id,
+								dataType: "json", 
+								success: function(obj){
+									vmodel.d = $.extend(vmodel.d.$model,obj.content);
+					    		},
+					    		error:function(){
+
+					    		}
+							}); 
+						}
 		    		},
 		    		error:function(){
 
 		    		}
-			}); 
+				}); 
 		});
 		
 	</script>

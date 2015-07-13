@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
-	<title>创伤RAPT量表</title>
+	<title>术中骨科筛查量表</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
@@ -27,11 +27,14 @@
 			</ul>
 			<ul class="list-group " ms-if="el.type == 'input'" >
 			  <li class="list-group-item " ms-repeat-el="el.keys" >
-			  	<div class="col-xs-8">
+			  	<div class="col-xs-4">
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
 			  	<div class="col-xs-4">
-			  		<input type="text" value="" style="width:100%" class="inputvalue" placeholder="请输入" ms-blur="blur" >
+			  		<input type="text" ms-attr-value="{{el.value}}" style="width:100%" class="inputvalue" placeholder="未见异常" ms-blur="blur" >
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span class="qtitle" style="margin-left: 5px;">{{el.tip|html}}</span>
 			  	</div>
 			  </li>
 			</ul>
@@ -72,56 +75,19 @@
 
 			var data = {
 				title:"量表标题",
-				summary:'<div class="tips">* 胸部 AIS>2分<br/>**腹部 AIS>2分<br/>***头部 AIS>2分<br/>****GCS<8分<br/>RAPT评分<br/> <= 5分 DVT低风险<br/> 5-14分 DVT中风险 <br/> >14分 DVT高风险</div>', 
+				summary:'', 
 				items:[{
-				 title:"病史",
+				 title:"术中量表",
 				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"肥胖",value:"2"},
-				 	   {key:"恶性肿瘤",value:"2"},
-				 	   {key:"凝血异常",value:"2"},
-				 	   {key:"恶性肿瘤",value:"2"},
-				 	   {key:"VTE病史",value:"3"}
+				 type:"input", 
+				 keys:[{key:"手术时间",value:"实际发生时间",tip:"<span style='text-align:right;display: inline-block;'>上肢60-90分<br/>下肢90-120分</span>"},
+				 	   {key:"止血带时长",value:"实际使用情况",tip:"	<span style='text-align:right;display: inline-block;'>如果超时休息20-30分钟再打</span>"},
+				 	   {key:"出血量",value:"请输入",tip:"ml"},
+				 	   {key:"输血量",value:"请输入",tip:"ml"}
 				 	   ], 
 				 value:[],
 				 scored:true,
 				 checkedStyle:"dot"
-				},
-				{
-				 title:"医源性损伤",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"中心静脉导管>24h",value:"2"},
-				 	   {key:"24h内输血> 4 units",value:"2"},
-				 	   {key:"手术时间>2 h",value:"2"},
-				 	   {key:"修复或结扎大血管",value:"3"}], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},{
-				 title:"创伤程度",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"胸部创伤是否较为严重?*",value:"2"},
-				 	   {key:"腹部创伤是否较为严重?**",value:"2"},
-				 	   {key:"头部创伤是否较为严重?***",value:"2"}
-				 	   ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},{
-				 title:"年龄",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[
-				 	{key:"40-60 岁",value:"2"},
-				 	{key:"60-75 岁",value:"3"},
-				 	{key:">75 岁",value:"4"}
-
-				 ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"none"
 				}
 				]
 			};
@@ -145,8 +111,10 @@
 		          	console.log(vmodel.d.$model);
 		          },
 		          blur:function(){
-		          	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
-		          	temp.push($(this).val());
+		          	var temp = [],index = $(this).parent().parent().parent().parent().attr("alt"),list=$(this).parent().parent().parent().find("input");
+		          	for(var i=0;i<list.length;i++){
+		          		temp.push($($(list).get(i)).val());
+		          	}
 		          	vmodel.d.items[index].value = temp;
 		          	console.log(vmodel.d.$model);
 		          }
