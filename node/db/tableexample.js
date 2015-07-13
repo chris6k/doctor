@@ -1,4 +1,4 @@
-{
+[{
    "title":"创伤RAPT量表",
    "summary":"",
    "items":
@@ -54,8 +54,7 @@
        "checkedStyle":"none"
    }
    ]
-};
-{"title":"膝关节HSS评分(左腿)", "summary":"", "items": [{"title":"疼痛", "summary":"", "type":"checkbox", "keys":[{"key": "行走时无疼痛", "value":15},{"key":"行走时轻度疼痛", "value":10}, {"key": "行走时中度疼痛", "value": 5},{"key": "行走时严重疼痛", "value": 0}], "value":"", "scored":true, "checkedStyle":"dot"}, {"title":"功能", "summary":"", "type":"checkbox", "keys":[{"key": "行走站立无限制", "value":12},{"key":"行走2500~5000米和站立半小时以上", "value":10}, {"key": "行走500~2500米和站立可达半小时", "value": 5},{"key": "行走少于500米", "value": 4}, {"key": "不能行走", "value" : 0}], "value":"", "scored":true, "checkedStyle":"dot"}] };
+},
 
 {
 "title":"膝关节HSS评分(左腿)",
@@ -177,7 +176,7 @@
        "checkedStyle":"dot"
    }
    ]
-};
+},
 
 
 {
@@ -302,7 +301,7 @@
        "checkedStyle":"dot"
    }
 ]
-};
+},
 
 {
   "title":"caprini",
@@ -357,13 +356,13 @@
     "type":"checkbox",
     "keys":[{"key":"接受了髋关节或者膝关节置换手术", "value":5},{"key":"髋关节、骨盆、腿部骨折", 
     "value":5},{"key":"严重创伤（例如：跌倒或者车祸后全身多处骨折）","value":5},{"key":"脊髓损伤引起瘫痪","value":5},
-    {"key":"脑卒中":"value":5}],
+    {"key":"脑卒中","value":5}],
     "value":"",
     "scored":true,
     "checkedStyle":"dot"
    }
    ]
-};
+},
 
 {
 
@@ -384,7 +383,7 @@
      {"key":"中性细胞百分比","value":"未见异常","tip":"40-75%"},
      {"key":"高敏感指标","value":"未见异常"},
      {"key":"CRP","value":"未见异常","tip":"0-10"},
-     {"key":"降钙素原","value":"未见异常","< 0.1ng /ml"},
+     {"key":"降钙素原","value":"未见异常","tip":"< 0.1ng /ml"},
      {"key":"细菌涂片","value":"未见异常"},
      {"key":"细菌培养","value":"未见异常"},
      {"key":"切口是否红肿","value":"自己填写"},
@@ -400,7 +399,7 @@
      "checkedStyle":"none"
     }
    ]
-};
+},
 
 {
   "title":"术前骨科筛查量表",
@@ -537,7 +536,7 @@
     }
     
    ]
-};
+},
 
 {
   "title":"术中骨科筛查量表",
@@ -558,7 +557,7 @@
      "checkedStyle":"none"
     }
   ]
-};
+},
 
 {
   "title":"四类药物禁忌",
@@ -763,9 +762,10 @@
      "value":"",
      "scored":false,
      "checkedStyle":"none"
-    },
+    }
   ]
-};
+}
+]
 
 
 
