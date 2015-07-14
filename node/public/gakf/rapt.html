@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
@@ -16,6 +17,17 @@
 			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+			<ul class="list-group " ms-if="el.type == 'radio'">
+			  <li class="list-group-item radio" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
@@ -42,7 +54,7 @@
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a ms-href="">
+	    		<a href="javascript:void(0)" style="display:inline-block;width:100%;" ms-click="save">
 			    	<span style="color:#fff;">保存</span>
 			    </a>
 	    	</div>
@@ -51,80 +63,20 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			function selected(obj,type){
-				var t = "yellowtag",type = !type?0:type;
-				if(!$(obj).data("isSelected")){
-					$(obj).addClass("selected");
-					$(obj).find(".tag").addClass(t);
-					$(obj).find(".tagcon").html("+"+type+"分");
-					$(obj).data("isSelected",true);
-				}else{
-					$(obj).removeClass("selected");
-					$(obj).find(".tag").removeClass(t);
-					$(obj).data("isSelected",false);
-					$(obj).find(".tagcon").html("");
-				}	
-			}
 			$("#gradeList").on("touchstart",".checkbox",function(){
 				var temp = $(this).find(".tag");
-				selected(this,temp.attr("alt"));
+				RC.selected(this,temp.attr("alt"));
+			});
+			var selected ;
+			
+			$("#gradeList").on("touchstart",".radio",function(){
+				var temp = $(this).find(".tag");
+				if(selected)RC.remove(selected);
+				RC.selected(this,temp.attr("alt"));
+				selected = this
 			});
 
-			var data = {
-				title:"量表标题",
-				summary:'<div class="tips">* 胸部 AIS>2分<br/>**腹部 AIS>2分<br/>***头部 AIS>2分<br/>****GCS<8分<br/>RAPT评分<br/> <= 5分 DVT低风险<br/> 5-14分 DVT中风险 <br/> >14分 DVT高风险</div>', 
-				items:[{
-				 title:"病史",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"肥胖",value:"2"},
-				 	   {key:"恶性肿瘤",value:"2"},
-				 	   {key:"凝血异常",value:"2"},
-				 	   {key:"恶性肿瘤",value:"2"},
-				 	   {key:"VTE病史",value:"3"}
-				 	   ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},
-				{
-				 title:"医源性损伤",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"中心静脉导管>24h",value:"2"},
-				 	   {key:"24h内输血> 4 units",value:"2"},
-				 	   {key:"手术时间>2 h",value:"2"},
-				 	   {key:"修复或结扎大血管",value:"3"}], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},{
-				 title:"创伤程度",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[{key:"胸部创伤是否较为严重?*",value:"2"},
-				 	   {key:"腹部创伤是否较为严重?**",value:"2"},
-				 	   {key:"头部创伤是否较为严重?***",value:"2"}
-				 	   ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				},{
-				 title:"年龄",
-				 summary:"", 
-				 type:"checkbox", 
-				 keys:[
-				 	{key:"40-60 岁",value:"2"},
-				 	{key:"60-75 岁",value:"3"},
-				 	{key:">75 岁",value:"4"}
-
-				 ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"none"
-				}
-				]
-			};
+			var data = {};
 			 //sick has save btn doctor hasn't save btn
 			var temp = store.get("user"),id="";
 			if(temp.type =="doctor"){
@@ -132,38 +84,28 @@
 			}else {
 				data.isshow = true;
 			}
+			id = RC.parseOptions(window.location.href).sick_id;
+			var vmodel ;
+		    
+		    
+		    $.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=rapt&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					var d = obj.content.value;
+					d.isshow = data.isshow;
+					d.id = id;
+					RC.setvmodel(d,tempobj);
+					RC.setItem(d);
+					
+	    		},
+	    		error:function(){
 
-		    var vmodel =avalon.define({
-		          $id: "test",
-		          d:data,
-		          click:function(e){
-		          	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
-		          	for(var i=0;i<list.length;i++){
-		          		temp.push($(list[i]).html());
-		          	}
-		          	vmodel.d.items[index].value = temp;
-		          	console.log(vmodel.d.$model);
-		          },
-		          blur:function(){
-		          	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
-		          	temp.push($(this).val());
-		          	vmodel.d.items[index].value = temp;
-		          	console.log(vmodel.d.$model);
-		          }
-		    });
-		    avalon.scan();
-		    for(var i=0;i<data.items.length;i++){
-		    	var temp = data.items[i];
-		    	if(temp.type == "checkbox"){
-			    	for(var j = 0;j<temp.value.length;j++){
-			    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
-			    	}
-		    	}else if(temp.type == "input"){
-		    		for(var j = 0;j<temp.keys.length;j++){
-			    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
-			    	}
-		    	}
-		    }
+	    		}
+			}); 
 
 		   
 

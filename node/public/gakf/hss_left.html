@@ -63,23 +63,9 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			function selected(obj,type){
-				var t = "yellowtag",type = !type?0:type;
-				if(!$(obj).data("isSelected")){
-					$(obj).addClass("selected");
-					$(obj).find(".tag").addClass(t);
-					$(obj).find(".tagcon").html("+"+type+"分");
-					$(obj).data("isSelected",true);
-				}else{
-					$(obj).removeClass("selected");
-					$(obj).find(".tag").removeClass(t);
-					$(obj).data("isSelected",false);
-					$(obj).find(".tagcon").html("");
-				}	
-			}
 			$("#gradeList").on("touchstart",".checkbox",function(){
 				var temp = $(this).find(".tag");
-				selected(this,temp.attr("alt"));
+				RC.selected(this,temp.attr("alt"));
 			});
 
 			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
@@ -91,63 +77,7 @@
 			}
 			id = RC.parseOptions(window.location.href).sick_id;
 			var vmodel ;
-			function setvmodel(data){
-					vmodel = avalon.define({
-					  $id: "test",
-				      d:data,
-				      click:function(e){
-				      	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
-				      	for(var i=0;i<list.length;i++){
-				      		temp.push($(list[i]).html());
-				      	}
-				      	vmodel.d.items[index].value = temp;
-				      	console.log(vmodel.d.$model);
-				      },
-				      blur:function(){
-				      	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
-				      	temp.push($(this).val());
-				      	vmodel.d.items[index].value = temp;
-				      	console.log(vmodel.d.$model);
-				      },
-				      save:function(){
-				      	var tempd ={
-				      		table_type:tempobj.table_type,
-				      		sick_id:id,
-				      		table:JSON.stringify(vmodel.d.$model)
-				      	};
-				      		$.ajax({ 
-								type:"post",
-								url: "/sick/savestatus",
-								dataType: "json", 
-								data:tempd,
-								success: function(d){
-									if(d.success){
-						        		window.location.href = "/gakf/sickDetail.html";
-									}else{
-										alert(d.msg);
-									}
-					    		},
-					    		error:function(e){
-					    		}
-							});
-				      }
-				});
-				avalon.scan();
-			}
-			function setItem(d){
-				for(var i=0;i<d.items.length;i++){
-				    	var temp = d.items[i];
-				    	if(temp.type == "checkbox"){
-					    	for(var j = 0;j<temp.value.length;j++){
-					    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
-					    	}
-				    	}else if(temp.type == "input"){
-				    		for(var j = 0;j<temp.keys.length;j++){
-					    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
-					    	}
-				    	}
-				    }
-			}
+			
 			$.ajax({ 
 				type:"get",
 				url: "/sick/sickstatus?table_type=hss_left&sick_id="+id,
@@ -158,8 +88,8 @@
 					var d = obj.content.value;
 					d.isshow = data.isshow;
 					d.id = id;
-					setvmodel(d);
-					setItem(d);
+					RC.setvmodel(d,tempobj);
+					RC.setItem(d);
 					
 	    		},
 	    		error:function(){

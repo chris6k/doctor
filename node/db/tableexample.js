@@ -1,6 +1,6 @@
 [{
    "title":"创伤RAPT量表",
-   "summary":"",
+   "summary":"<div class="tips">* 胸部 AIS>2分<br/>**腹部 AIS>2分<br/>***头部 AIS>2分<br/>****GCS<8分<br/>RAPT评分<br/> <= 5分 DVT低风险<br/> 5-14分 DVT中风险 <br/> >14分 DVT高风险</div>",
    "items":
    [
    {
@@ -32,9 +32,9 @@
        "summary":"", 
        "type":"checkbox", 
        "keys":[
-        {"key":"胸部创伤是否较为严重?","value":2},{"key":"腹部创伤是否较为严重?","value":2},
-        {"key":"头部创伤是否较为严重?","value":3},{"key":"脊柱骨折","value":3},
-        {"key":"重度昏迷持续4h以上","value":4},{"key":"下肢复杂骨折","value":4},
+        {"key":"胸部创伤是否较为严重?*","value":2},{"key":"腹部创伤是否较为严重?**","value":2},
+        {"key":"头部创伤是否较为严重?***","value":3},{"key":"脊柱骨折","value":3},
+        {"key":"重度昏迷持续4h以上****","value":4},{"key":"下肢复杂骨折","value":4},
         {"key":"盆骨骨折", "value":4}, {"key":"脊髓损伤 (截瘫、四肢瘫)", "value":4}
         ],
        "value":"",
@@ -47,7 +47,7 @@
        "type":"radio", 
        "keys":[
         {"key":"40-60岁","value":2},{"key":"60-75","value":3},
-        {"key":">75岁","value":4}
+        {"key":"大于75岁","value":4}
         ],
        "value":"",
        "scored":true,
