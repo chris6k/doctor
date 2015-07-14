@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>膝关节HHS评分</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test" class="ms-controller">
+
+	<div class="" id="gradeList">
+		<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top">
+		  <div id="my-tab">
+		    <div class="col-xs-6 text-center my-nav-line selected">
+		    	<a href="javascript:void(0)">左腿</a>
+		    </div>
+		    <div class="col-xs-6 text-center my-nav-line">
+		    	<a ms-href="/gakf/hss_right.html?sick_id={{d.id}}">右腿</a>
+		    </div>
+		  </div>
+		</nav>
+		<div style="margin-top:45px;"></div>
+		<span style="margin: 10px;display: inline-block;">{{d.summary}}</span>
+		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
+			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
+			<ul class="list-group " ms-if="el.type == 'checkbox'">
+			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+			<ul class="list-group " ms-if="el.type == 'input'" >
+			  <li class="list-group-item " ms-repeat-el="el.keys" >
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<input type="text" value="" style="width:100%" class="inputvalue" placeholder="请输入" ms-blur="blur" >
+			  	</div>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" style="display:inline-block;width:100%;" ms-click="save">
+			    	<span style="color:#fff;">保存</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/javascript">
+		require(["store","avalon"],function(store){
+			function selected(obj,type){
+				var t = "yellowtag",type = !type?0:type;
+				if(!$(obj).data("isSelected")){
+					$(obj).addClass("selected");
+					$(obj).find(".tag").addClass(t);
+					$(obj).find(".tagcon").html("+"+type+"分");
+					$(obj).data("isSelected",true);
+				}else{
+					$(obj).removeClass("selected");
+					$(obj).find(".tag").removeClass(t);
+					$(obj).data("isSelected",false);
+					$(obj).find(".tagcon").html("");
+				}	
+			}
+			$("#gradeList").on("touchstart",".checkbox",function(){
+				var temp = $(this).find(".tag");
+				selected(this,temp.attr("alt"));
+			});
+
+			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
+			var temp = store.get("user"),id="";
+			if(temp.type =="doctor"){
+				data.isshow = false;
+			}else {
+				data.isshow = true;
+			}
+			id = RC.parseOptions(window.location.href).sick_id;
+			var vmodel ;
+			function setvmodel(data){
+					vmodel = avalon.define({
+					  $id: "test",
+				      d:data,
+				      click:function(e){
+				      	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
+				      	for(var i=0;i<list.length;i++){
+				      		temp.push($(list[i]).html());
+				      	}
+				      	vmodel.d.items[index].value = temp;
+				      	console.log(vmodel.d.$model);
+				      },
+				      blur:function(){
+				      	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
+				      	temp.push($(this).val());
+				      	vmodel.d.items[index].value = temp;
+				      	console.log(vmodel.d.$model);
+				      },
+				      save:function(){
+				      	var tempd ={
+				      		table_type:tempobj.table_type,
+				      		sick_id:id,
+				      		table:JSON.stringify(vmodel.d.$model)
+				      	};
+				      		$.ajax({ 
+								type:"post",
+								url: "/sick/savestatus",
+								dataType: "json", 
+								data:tempd,
+								success: function(d){
+									if(d.success){
+						        		window.location.href = "/gakf/sickDetail.html";
+									}else{
+										alert(d.msg);
+									}
+					    		},
+					    		error:function(e){
+					    		}
+							});
+				      }
+				});
+				avalon.scan();
+			}
+			function setItem(d){
+				for(var i=0;i<d.items.length;i++){
+				    	var temp = d.items[i];
+				    	if(temp.type == "checkbox"){
+					    	for(var j = 0;j<temp.value.length;j++){
+					    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
+					    	}
+				    	}else if(temp.type == "input"){
+				    		for(var j = 0;j<temp.keys.length;j++){
+					    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
+					    	}
+				    	}
+				    }
+			}
+			$.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=hss_left&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					var d = obj.content.value;
+					d.isshow = data.isshow;
+					d.id = id;
+					setvmodel(d);
+					setItem(d);
+					
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+		});
+	</script>
+</body>
+</html>

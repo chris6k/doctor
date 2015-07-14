@@ -11,14 +11,15 @@
 	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
 <body ms-controller="test" class="ms-controller">
+
 	<div class="" id="gradeList">
 		<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top">
 		  <div id="my-tab">
-		    <div class="col-xs-6 text-center my-nav-line selected">
-		    	<a href="">左腿</a>
+		    <div class="col-xs-6 text-center my-nav-line ">
+		    	<a ms-href="/gakf/hss_left.html?sick_id={{d.id}}">左腿</a>
 		    </div>
-		    <div class="col-xs-6 text-center my-nav-line">
-		    	<a href="">右腿</a>
+		    <div class="col-xs-6 text-center my-nav-line selected">
+		    	<a href="javascript:void(0)">右腿</a>
 		    </div>
 		  </div>
 		</nav>
@@ -89,60 +90,52 @@
 				data.isshow = true;
 			}
 			id = RC.parseOptions(window.location.href).sick_id;
-			var vmodel =avalon.define({
-				  $id: "test",
-			      d:data,
-			      click:function(e){
-			      	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
-			      	for(var i=0;i<list.length;i++){
-			      		temp.push($(list[i]).html());
-			      	}
-			      	vmodel.d.items[index].value = temp;
-			      	console.log(vmodel.d.$model);
-			      },
-			      blur:function(){
-			      	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
-			      	temp.push($(this).val());
-			      	vmodel.d.items[index].value = temp;
-			      	console.log(vmodel.d.$model);
-			      },
-			      save:function(){
-			      	//Post	/sick/savestatus	table_type, sick_id, table
-			      	var tempd ={
-			      		table_type:tempobj.table_type,
-			      		sick_id:id,
-			      		table:JSON.stringify(vmodel.d.$model)
-			      	};
-			      		$.ajax({ 
-							type:"post",
-							url: "/sick/savestatus",
-							dataType: "json", 
-							data:tempd,
-							success: function(d){
-								if(d.success){
-					        		window.location.href = "/gakf/sickDetail.html";
-								}else{
-									alert(d.msg);
-								}
-				    		},
-				    		error:function(e){
-				    		}
-						});
-			      }
-			});
-			avalon.scan();
-			$.ajax({ 
-				type:"get",
-				url: "/sick/sickstatus?table_type=hss_right&sick_id="+id,
-				dataType: "json", 
-				success: function(obj){
-					obj.content.value = $.parseJSON(obj.content.value);
-					tempobj = obj.content;
-					var d = obj.content.value;
-					vmodel.d = d;
-					vmodel.d.isshow = data.isshow;
-
-					for(var i=0;i<d.items.length;i++){
+			var vmodel ;
+			function setvmodel(data){
+					vmodel = avalon.define({
+					  $id: "test",
+				      d:data,
+				      click:function(e){
+				      	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
+				      	for(var i=0;i<list.length;i++){
+				      		temp.push($(list[i]).html());
+				      	}
+				      	vmodel.d.items[index].value = temp;
+				      	console.log(vmodel.d.$model);
+				      },
+				      blur:function(){
+				      	var temp=[],index = $(this).parent().parent().parent().parent().attr("alt");
+				      	temp.push($(this).val());
+				      	vmodel.d.items[index].value = temp;
+				      	console.log(vmodel.d.$model);
+				      },
+				      save:function(){
+				      	var tempd ={
+				      		table_type:tempobj.table_type,
+				      		sick_id:id,
+				      		table:JSON.stringify(vmodel.d.$model)
+				      	};
+				      		$.ajax({ 
+								type:"post",
+								url: "/sick/savestatus",
+								dataType: "json", 
+								data:tempd,
+								success: function(d){
+									if(d.success){
+						        		window.location.href = "/gakf/sickDetail.html";
+									}else{
+										alert(d.msg);
+									}
+					    		},
+					    		error:function(e){
+					    		}
+							});
+				      }
+				});
+				avalon.scan();
+			}
+			function setItem(d){
+				for(var i=0;i<d.items.length;i++){
 				    	var temp = d.items[i];
 				    	if(temp.type == "checkbox"){
 					    	for(var j = 0;j<temp.value.length;j++){
@@ -154,16 +147,25 @@
 					    	}
 				    	}
 				    }
+			}
+			$.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=hss_right&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					var d = obj.content.value;
+					d.isshow = data.isshow;
+					d.id = id;
+					setvmodel(d);
+					setItem(d);
+					
 	    		},
 	    		error:function(){
 
 	    		}
 			}); 
-		   
-		    
-
-		   
-
 		});
 	</script>
 </body>
