@@ -52,7 +52,6 @@ RC['setvmodel'] = function(data,tempobj){
             for(var i=0;i<list.length;i++){
                 temp.push($(list[i]).html());
             }
-
             vmodel.d.items[index].value = temp;
             console.log(vmodel.d.$model);
           },
