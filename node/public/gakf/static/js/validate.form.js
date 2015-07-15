@@ -72,17 +72,19 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							success: function(d){
 								if(d.success){
 									var d = d.content || d.msg;
-									store.set('user', { type:d.type,id: d.id });
+									store.set('user', { type:d.type,id: d.id,doctor_id:d.doctor_id});
 					        		if(d.url){
 					        			url =  d.url;
 					        		}else{
 					        			if(d.type == "sick"){
-					        				url = "/gakf/sickDetail.html";
+					        				url = "/gakf/addSick.html";
 					        			}else if(d.type == "doctor"){
 					        				url = "/gakf/sick.html";
 					        			}
 					        		}
 					        		window.location.href = url;
+								}else{
+									alert(d.msg);
 								}
 				    		},
 				    		error:function(e){

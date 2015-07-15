@@ -76,7 +76,7 @@ RC['setvmodel'] = function(data,tempobj){
                     data:tempd,
                     success: function(d){
                         if(d.success){
-                            window.location.href = "/gakf/sickDetail.html?id="+data.id;
+                            window.location.href = "/gakf/addSick.html";
                         }else{
                             alert(d.msg);
                         }
