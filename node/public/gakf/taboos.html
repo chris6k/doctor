@@ -69,21 +69,19 @@
 				var temp = $(this).find(".tag");
 				RC.selected(this,temp.attr("alt"));
 			});
-			var selected = {parent:"",current:""};
 			$("#gradeList").on("touchstart",".radio",function(){
-				var temp = $(this).find(".tag"),p = $(this).parent().parent().attr("alt");
-				if(selected.current && selected.parent && selected.parent != p)RC.remove(selected);
+				var temp = $(this).find(".tag"),p=$(this).parent().parent();
+				if(p.data("selected"))RC.remove(p.data("selected"));
 				RC.selected(this,temp.attr("alt"));
-				selected.current = this;
-				selected.parent = $(this).parent().parent().attr("alt");
+				p.data("selected",this);
 			});
 
 			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
 			var temp = store.get("user"),id="";
 			if(temp.type =="doctor"){
-				data.isshow = true;
-			}else {
 				data.isshow = false;
+			}else {
+				data.isshow = true;
 			}
 			id = RC.parseOptions(window.location.href).sick_id;
 			var vmodel ;

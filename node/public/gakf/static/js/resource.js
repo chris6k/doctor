@@ -111,11 +111,11 @@ RC['selected'] = function (obj,type){
         $(obj).addClass("selected");
         $(obj).find(".tag").addClass(t);
         if(+type>0){
-            unit = "+";
+            unit = "+"+type+"分";
         }else {
             unit = "";
         }
-        $(obj).find(".tagcon").html(unit+type+"分");
+        $(obj).find(".tagcon").html(unit);
         $(obj).data("isSelected",true);
     }else{
         $(obj).removeClass("selected");
