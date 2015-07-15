@@ -54,7 +54,7 @@ router.post('/speak', function (req, res, next) {
         pic = req.param('pics');
         if (!(pic instanceof Array)) {
             var temp = [];
-            temp.push(pic);
+            temp = pic.split(",");
             pic=temp;
         }
         id = doctor_id || sick_id;

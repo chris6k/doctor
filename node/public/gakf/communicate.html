@@ -10,6 +10,12 @@
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<style type="text/css">
+	a:hover, a:focus{
+		text-decoration: none;
+		cursor: pointer;
+	}
+	</style>
 </head>
 <body>
 	<div class="container"  id="questionCon">
@@ -26,6 +32,7 @@
 					<div class="text-center">
 						<span class="titleBg">{{v.message.day | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span>
 					</div>
+					<a href="question.html?session_id={{v.id}}">
 					<div class="panel panel-default my-panel">
 					  <div class="panel-body">
 					  	<div class="h5" style="margin-top:0px;">{{v.message.title}}</div>
@@ -42,13 +49,14 @@
 					  	</div>
 					  	<div class="my-line"></div>
 					  	<div>
-					  		<a href="question.html?session_id={{v.id}}">
+					  		
 			  			  		<span class="h5">阅读全文  </span>
 			  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-					  		</a>
+					  		
 					 	</div>
 					  </div>
 					</div>
+					</a>
 		{{else}}
 		<div>
 			<div class="text-center">

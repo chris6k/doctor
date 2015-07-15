@@ -101,7 +101,7 @@ router.post('/check', function (req, res, next) {
             pic = req.param('pics');
             if (!(pic instanceof Array)) {
                 var temp = [];
-                temp.push(pic);
+                temp = pic.split(",");
                 pic=temp;
             }
             console.log('description=' + description + ', pics=' + pic);
@@ -142,7 +142,7 @@ router.post('/out_check', function (req, res, next) {
             pic = req.param('pics');
             if (!(pic instanceof Array)) {
                 var temp = [];
-                temp.push(pic);
+                temp = pic.split(",");
                 pic=temp;
             }
             console.log('description=' + description + ', pics=' + pic);
