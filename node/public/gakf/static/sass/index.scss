@@ -171,6 +171,10 @@ form em.error{width: 200px;margin-left: 10px; color: red;}
 	border-top:1px solid #ccc;
 	margin:10px 0px;
 }
+.my-title{
+	margin: 5px 10px;
+	display: inline-block;
+}
 .list-group-item{
 	line-height:20px;
 	overflow:hidden;
@@ -204,4 +208,10 @@ form em.error{width: 200px;margin-left: 10px; color: red;}
   border-bottom: 1px solid #ccc;
   height: 40px;
   line-height: 40px;
+}
+.list-group{
+	margin-bottom:10px;
+}
+.list-group-item{
+	margin:-1px;
 }

@@ -13,7 +13,7 @@
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
-			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
+			<span class="my-title">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
