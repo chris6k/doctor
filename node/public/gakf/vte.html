@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
-	<title>VTE量表</title>
+	<title>VTE评分</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
@@ -13,21 +13,32 @@
 <body ms-controller="test" class="ms-controller">
 	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top">
 	  <div id="my-tab">
-	    <div class="col-xs-6 text-center my-nav-line ">
-	    	<a ms-href="/gakf/rapt.html?sick_id={{d.id}}">RAPT 量表</a>
-	    </div>
 	    <div class="col-xs-6 text-center my-nav-line selected">
-	    	<a ms-href="javascript:void(0)">Caprini 量表</a>
+	    	<a href="javascript:void(0)">RAPT 量表</a>
+	    </div>
+	    <div class="col-xs-6 text-center my-nav-line">
+	    	<a ms-href="/gakf/hss_right.html?sick_id={{d.id}}">Caprini 量表</a>
 	    </div>
 	  </div>
 	</nav>
+	<div style="margin-top:45px;"></div>
 	<div class="" id="gradeList">
-		<span class="my-title" ms-if="d.summary!=''">{{d.summary|html}}</span>
-		<div class="spacer5" ms-if="d.summary==''"></div>
+		<div class="spacer5" ></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<span class="my-title">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+			<ul class="list-group " ms-if="el.type == 'radio'">
+			  <li class="list-group-item radio" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
@@ -48,6 +59,7 @@
 			  </li>
 			</ul>
 		</div>
+		<div class="">{{d.summary|html}}</div>
 	</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
@@ -66,8 +78,17 @@
 				var temp = $(this).find(".tag");
 				RC.selected(this,temp.attr("alt"));
 			});
+			var selected ;
+			
+			$("#gradeList").on("touchstart",".radio",function(){
+				var temp = $(this).find(".tag");
+				if(selected)RC.remove(selected);
+				RC.selected(this,temp.attr("alt"));
+				selected = this
+			});
 
-			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
+			var data = {};
+			 //sick has save btn doctor hasn't save btn
 			var temp = store.get("user"),id="";
 			if(temp.type =="doctor"){
 				data.isshow = false;
@@ -76,10 +97,11 @@
 			}
 			id = RC.parseOptions(window.location.href).sick_id;
 			var vmodel ;
-			
-			$.ajax({ 
+		    
+		    
+		    $.ajax({ 
 				type:"get",
-				url: "/sick/sickstatus?table_type=caprini&sick_id="+id,
+				url: "/sick/sickstatus?table_type=rapt&sick_id="+id,
 				dataType: "json", 
 				success: function(obj){
 					obj.content.value = $.parseJSON(obj.content.value);
@@ -95,6 +117,8 @@
 
 	    		}
 			}); 
+
+		   
 
 		});
 	</script>

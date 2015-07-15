@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
-	<title>病人详情</title>
+	<title>患者信息</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
@@ -61,7 +61,7 @@
   			  		<span>安全用药量表</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.taboos!=''">{{d.taboos}}</span>
-  					<span class="right orange sl8">点击请填写</span>
+  					<span class="right orange sl8" ms-if="!d.taboos">暂无结果</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
@@ -69,18 +69,18 @@
   			  		<span>安全用药建议 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.recommend!=''">{{d.recommend}}</span>
-  					<span class="right orange sl8">没有推荐</span>
+  					<span class="right orange sl8" ms-if="!d.recommend">无推荐</span>
 		  		</a>
 		 	</li>
 		</ul>
 		<span style="padding:5px 0px;display: inline-block;">医学量表</span>
 		<ul class="list-group">
 			<li class="list-group-item">
-		  		<a ms-href="/gakf/caprini.html?sick_id={{d.sickId}}">
-  			  		<span>Caprini 量表</span>
+		  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
+  			  		<span>VTE评分</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.caprini!=''">{{d.caprini}}</span>
-  					<span class="right orange sl8" ms-if="!d.caprini">点击请填写</span>
+  					<span class="right orange sl8" ms-if="!d.caprini">暂无结果</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
@@ -88,15 +88,15 @@
   			  		<span>膝关节HSS评分 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.hss!=''">{{d.hss}}</span>
-  					<span class="right orange sl8" ms-if="!d.hss">点击请填写</span>
+  					<span class="right orange sl8" ms-if="!d.hss">暂无结果</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
 		  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
-  			  		<span>创伤RAPT量表 </span>
+  			  		<span>出血评分 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.rapt!=''">{{d.rapt}}</span>
-  					<span class="right orange sl8" ms-if="!d.rapt">点击请填写</span>
+  					<span class="right orange sl8" ms-if="!d.rapt">暂无结果</span>
 		  		</a>
 		 	</li>
 		</ul>
@@ -107,21 +107,21 @@
 			  		<a ms-href="/gakf/before.html?sick_id={{d.sickId}}">
 	  			  		<span>术前骨科筛查量表</span>
 	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  						<span class="right orange sl8">点击请填写</span>
+  						<span class="right orange sl8">点击填写</span>
 			  		</a>
 			 	</li>
 			 	<li class="list-group-item">
 			  		<a ms-href="/gakf/between.html?sick_id={{d.sickId}}">
 	  			  		<span>术中骨科筛查量表</span>
 	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-	  					<span class="right orange sl8">点击请填写</span>
+	  					<span class="right orange sl8">点击填写</span>
 			  		</a>
 			 	</li>
 			 	<li class="list-group-item">
 			  		<a ms-href="/gakf/after.html?sick_id={{d.sickId}}">
 	  			  		<span>术后骨科筛查量表</span>
 	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-	  					<span class="right orange sl8">点击请填写</span>
+	  					<span class="right orange sl8">点击填写</span>
 			  		</a>
 			 	</li>
 			</ul>
