@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var result = require('./result');
-
+var calc = require('../biz/calculatejs');
 router.get('/info', function (req, res, next) {
     req.models.sick.get(req.param('id'), function (err, data) {
         if (err || !data) {
@@ -188,14 +188,22 @@ router.post('/savestatus', function(req, res, next) {
                     }
                 });
             } else {
-                req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:table}, function(err, item){
+                try {
+                    var tablejson = JSON.parse(table);
+                    calc.score(tablejson);
+                    calc.level(table_type, tablejson);
+                    req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:table}, function(err, item){
                     if (err) {
                         res.json(result(false, 'err', err));
-                    } else {
-                        //todo cal score and recommend
+                        } else {
                         res.json(result(true,'',{}));
                     }
-                });
+                    });
+                } catch (e) {
+                    console.error(e);
+                    res.json(result(false,'err', e));
+                }
+                
             }
         }
     });
