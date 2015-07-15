@@ -8,10 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
-		<span style="margin: 10px;display: inline-block;"></span>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
@@ -31,7 +31,7 @@
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
 			  	<div class="col-xs-4">
-			  		<input type="text" ms-attr-value="{{el.value}}" style="width:100%" class="inputvalue" placeholder="未见异常" ms-blur="blur" >
+			  		<input type="text"  style="width:100%" class="inputvalue" placeholder="未见异常" ms-blur="blur" >
 			  	</div>
 			  	<div class="col-xs-4">
 			  		<span class="qtitle" style="margin-left: 5px;">{{el.tip|html}}</span>
@@ -45,7 +45,7 @@
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a ms-href="">
+	    		<a href="javascript:void(0)" style="display:inline-block;width:100%;" ms-click="save">
 			    	<span style="color:#fff;">保存</span>
 			    </a>
 	    	</div>
@@ -54,87 +54,39 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			function selected(obj,type){
-				var t = "yellowtag",type = !type?0:type;
-				if(!$(obj).data("isSelected")){
-					$(obj).addClass("selected");
-					$(obj).find(".tag").addClass(t);
-					$(obj).find(".tagcon").html("+"+type+"分");
-					$(obj).data("isSelected",true);
-				}else{
-					$(obj).removeClass("selected");
-					$(obj).find(".tag").removeClass(t);
-					$(obj).data("isSelected",false);
-					$(obj).find(".tagcon").html("");
-				}	
-			}
 			$("#gradeList").on("touchstart",".checkbox",function(){
 				var temp = $(this).find(".tag");
-				selected(this,temp.attr("alt"));
+				RC.selected(this,temp.attr("alt"));
 			});
 
-			var data = {
-				title:"量表标题",
-				summary:'', 
-				items:[{
-				 title:"术中量表",
-				 summary:"", 
-				 type:"input", 
-				 keys:[{key:"手术时间",value:"实际发生时间",tip:"<span style='text-align:right;display: inline-block;'>上肢60-90分<br/>下肢90-120分</span>"},
-				 	   {key:"止血带时长",value:"实际使用情况",tip:"	<span style='text-align:right;display: inline-block;'>如果超时休息20-30分钟再打</span>"},
-				 	   {key:"出血量",value:"请输入",tip:"ml"},
-				 	   {key:"输血量",value:"请输入",tip:"ml"}
-				 	   ], 
-				 value:[],
-				 scored:true,
-				 checkedStyle:"dot"
-				}
-				]
-			};
-			 //sick has save btn doctor hasn't save btn
+			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
 			var temp = store.get("user"),id="";
 			if(temp.type =="doctor"){
-				data.isshow = false;
-			}else {
 				data.isshow = true;
+			}else {
+				data.isshow = false;
 			}
+			id = RC.parseOptions(window.location.href).sick_id;
+			var vmodel ;
+			
+			$.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=between&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					var d = obj.content.value;
+					d.isshow = data.isshow;
+					d.id = id;
+					RC.setvmodel(d,tempobj);
+					RC.setItem(d);
+					
+	    		},
+	    		error:function(){
 
-		    var vmodel =avalon.define({
-		          $id: "test",
-		          d:data,
-		          click:function(e){
-		          	var list = $(this).parent().find(".selected .qtitle"),value = $(this).parent().parent().find(".keys"),temp=[],index = $(this).parent().parent().attr("alt");
-		          	for(var i=0;i<list.length;i++){
-		          		temp.push($(list[i]).html());
-		          	}
-		          	vmodel.d.items[index].value = temp;
-		          	console.log(vmodel.d.$model);
-		          },
-		          blur:function(){
-		          	var temp = [],index = $(this).parent().parent().parent().parent().attr("alt"),list=$(this).parent().parent().parent().find("input");
-		          	for(var i=0;i<list.length;i++){
-		          		temp.push($($(list).get(i)).val());
-		          	}
-		          	vmodel.d.items[index].value = temp;
-		          	console.log(vmodel.d.$model);
-		          }
-		    });
-		    avalon.scan();
-		    for(var i=0;i<data.items.length;i++){
-		    	var temp = data.items[i];
-		    	if(temp.type == "checkbox"){
-			    	for(var j = 0;j<temp.value.length;j++){
-			    		$("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
-			    	}
-		    	}else if(temp.type == "input"){
-		    		for(var j = 0;j<temp.keys.length;j++){
-			    		$("span:contains("+temp.keys[j].key+")").parent().parent().find(".inputvalue").val(temp.value[j]);
-			    	}
-		    	}
-		    }
-
-		   
-
+	    		}
+			}); 
 		});
 	</script>
 </body>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
-	<title>术前骨科筛查量表</title>
+	<title>四类药物禁忌</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script type="text/javascript" src="./static/js/require.js"></script>
@@ -16,6 +16,17 @@
 			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+			<ul class="list-group " ms-if="el.type == 'radio'">
+			  <li class="list-group-item radio" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
@@ -58,6 +69,14 @@
 				var temp = $(this).find(".tag");
 				RC.selected(this,temp.attr("alt"));
 			});
+			var selected = {parent:"",current:""};
+			$("#gradeList").on("touchstart",".radio",function(){
+				var temp = $(this).find(".tag"),p = $(this).parent().parent().attr("alt");
+				if(selected.current && selected.parent && selected.parent != p)RC.remove(selected);
+				RC.selected(this,temp.attr("alt"));
+				selected.current = this;
+				selected.parent = $(this).parent().parent().attr("alt");
+			});
 
 			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
 			var temp = store.get("user"),id="";
@@ -71,7 +90,7 @@
 			
 			$.ajax({ 
 				type:"get",
-				url: "/sick/sickstatus?table_type=before&sick_id="+id,
+				url: "/sick/sickstatus?table_type=taboos&sick_id="+id,
 				dataType: "json", 
 				success: function(obj){
 					obj.content.value = $.parseJSON(obj.content.value);
