@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var result = require('./result');
-var calc = require('../biz/calculatejs');
+var calc = require('../biz/calculate');
 router.get('/info', function (req, res, next) {
     req.models.sick.get(req.param('id'), function (err, data) {
         if (err || !data) {
