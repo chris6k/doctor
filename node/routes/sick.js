@@ -166,12 +166,12 @@ router.get('/sickstatus', function(req, res, next) {
                 });
             } else {
                 res.json(result(true, '', data[0]));
-            }
+            }q
         }
     });
 });
 
-var saveProhibitDrug(pro_drug, sick_id) {
+var saveProhibitDrug = function(pro_drug, sick_id) {
     for (type in pro_drug) {
             for (sickname in pro_drug[type]) {
             var drug_arr = pro_drug[type][sickname];
@@ -190,7 +190,7 @@ var saveProhibitDrug(pro_drug, sick_id) {
     }
 };
 
-var saveRecommDrug(recomm_drug, id) {
+var saveRecommDrug = function(recomm_drug, id) {
     for (var i = 0; i< recomm_drug.length;i++) {
         req.models.sickdrug.create({sick_id: sick_id,
                     drug_name: recomm_drug[i],
