@@ -8,10 +8,10 @@ var auth_url = 'http://guanaikangfu.com/user/callback';
 var db_define = require('./db/define');
 var orm = require('orm');
 var app = express();
-app.listen(8080);
-// var weixin = require('./biz/weixin');
-// weixin(app);
-app.use(orm.express("mysql://root@localhost/guanai", {
+app.listen(80, '0.0.0.0');
+var weixin = require('./biz/weixin');
+weixin(app);
+app.use(orm.express("mysql://guanai:guanai@rdsnsbba6rlncdjwb97bd.mysql.rds.aliyuncs.com/guanai", {
         define: function (db, models, next) {
             db_define(db, models);
             db.sync(function (err) {
@@ -43,9 +43,18 @@ var sick = require('./routes/sick');
 var checklist = require('./routes/checklist');
 var answer = require('./routes/answer');
 var loginCheck = require('./routes/loginCheck');
-var imageUpload = require("./routes/imageUpload");
-
+var imageUpload = require('./routes/imageUpload');
+var sicktable = require('./routes/sicktables');
 app.use(loginCheck);
+// app.use(function (req, res, next) {
+//     var open_id = req.cookies.open_id;
+//     if (!open_id) {
+//         res.redirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaf3a162fe7e04d37&redirect_uri=http%3A%2F%2Fguanaikangfu.com%2Fuser%2Fcallback&response_type=code&scope=snsapi_base#wechat_redirect");
+//     } else {
+//         next();
+//     }
+// });
+
 app.use('/', routes);
 //app.use('/users', users); 
 app.use('/user', login);
@@ -54,6 +63,7 @@ app.use('/sick', sick);
 app.use('/checklist', checklist);
 app.use('/answer', answer);
 app.use('/image', imageUpload);
+app.use('/sicktables', sicktable);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

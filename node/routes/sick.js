@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var result = require('./result');
 var calc = require('../biz/calculate');
+var recommend = require('../biz/recommend');
 router.get('/info', function (req, res, next) {
     req.models.sick.get(req.param('id'), function (err, data) {
         if (err || !data) {
@@ -170,6 +171,39 @@ router.get('/sickstatus', function(req, res, next) {
     });
 });
 
+var saveProhibitDrug(pro_drug, sick_id) {
+    for (type in pro_drug) {
+            for (sickname in pro_drug[type]) {
+            var drug_arr = pro_drug[type][sickname];
+            for (var i = 0; i< ]drug_arr.length;i++) {
+                req.models.sickdrug.create({sick_id: sick_id,
+                    drug_name: drug_arr[i],
+                    drug_type: type,
+                    type: 'f',//s-建议 f-禁忌 c-慎用
+                    drug_reason: sickname}, function(err, item){
+                        if (err) {
+                            console.error(err);
+                        }
+                });
+            }
+         }
+    }
+};
+
+var saveRecommDrug(recomm_drug, id) {
+    for (var i = 0; i< recomm_drug.length;i++) {
+        req.models.sickdrug.create({sick_id: sick_id,
+                    drug_name: recomm_drug[i],
+                    drug_type: '抗骨松药',
+                    type: 's',//s-建议 f-禁忌 c-慎用
+                    drug_reason: ‘’}, function(err, item){
+                        if (err) {
+                            console.error(err);
+                        }
+    });
+    }
+}
+
 router.post('/savestatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
@@ -192,7 +226,13 @@ router.post('/savestatus', function(req, res, next) {
                     var tablejson = JSON.parse(table);
                     calc.score(tablejson);
                     calc.level(table_type, tablejson);
-                    req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:table}, function(err, item){
+                    var pro_drug = recommend.prohibit(tablejson);
+                    var rec_drug = recommend.recomm(pro_drug);
+
+                    saveProhibitDrug(rec_drug, sick_status);
+                    saveRecommDrug(rec_drug, sick_status);
+                    req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson)},
+                    function(err, item){
                     if (err) {
                         res.json(result(false, 'err', err));
                         } else {

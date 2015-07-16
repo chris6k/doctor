@@ -8,10 +8,10 @@ var weixin = require('weixin-apis');
 var login_url = '/gakf/login.html';
 var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
-var unverifyUrl = '';
+var unverifyUrl = '/gakf/msg.html';
 
 //todo
-var unreg_url = '';
+var unreg_url = '/gakf/msg.html';
 
 var getOpenId = function (req, res, code) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + appid + '&secret='
@@ -96,7 +96,7 @@ router.post('/login', function (req, res, next) {
                 res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
                 // res.redirect(target_url[type] || decodeURIComponent(cb));
             } else {
-                res.json(result(false, 'user status is f', {}));
+                res.json(result(false, 'user status is f or u', {}));
                 // res.redirect(login_url + '?err=3&wx_id=' + wx_id);
             }
         } else {
@@ -161,7 +161,13 @@ router.post('/reg', function (req, res, next) {
                         } else {
                             console.error('send request success');
                             if (doctor[0].wx_id) {
-                                //todo weixin notify
+                               req.wx_api.sendMessage(doctor[0].wx_id, "你猜我是谁", function(err){
+                                    if (err) {
+                                        console.error(err);
+                                    } else {
+                                        console.info(sendSucc);
+                                    }
+                               });
                             }
                             res.cookie('sick_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: true});
                             res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
