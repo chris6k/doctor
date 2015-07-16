@@ -175,7 +175,7 @@ var saveProhibitDrug = function(pro_drug, sick_id) {
     for (type in pro_drug) {
             for (sickname in pro_drug[type]) {
             var drug_arr = pro_drug[type][sickname];
-            for (var i = 0; i< ]drug_arr.length;i++) {
+            for (var i = 0; i< drug_arr.length;i++) {
                 req.models.sickdrug.create({sick_id: sick_id,
                     drug_name: drug_arr[i],
                     drug_type: type,
@@ -190,7 +190,7 @@ var saveProhibitDrug = function(pro_drug, sick_id) {
     }
 };
 
-var saveRecommDrug = function(recomm_drug, id) {
+var saveRecommDrug = function(recomm_drug, id) {git
     for (var i = 0; i< recomm_drug.length;i++) {
         req.models.sickdrug.create({sick_id: sick_id,
                     drug_name: recomm_drug[i],
