@@ -11,7 +11,8 @@
 	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
 <body ms-controller="test" class="ms-controller">
-	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top">
+	<div ms-if="!d.isshow">
+	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top" >
 	  <div id="my-tab">
 	    <div class="col-xs-6 text-center my-nav-line selected">
 	    	<a href="javascript:void(0)">RAPT 量表</a>
@@ -22,6 +23,7 @@
 	  </div>
 	</nav>
 	<div style="margin-top:45px;"></div>
+	</div>
 	<div class="" id="gradeList">
 		<div class="spacer5" ></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">

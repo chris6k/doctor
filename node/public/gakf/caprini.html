@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="./static/js/resource.js"></script>
 </head>
 <body ms-controller="test" class="ms-controller">
+	<div ms-if="!d.isshow">
 	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top">
 	  <div id="my-tab">
 	    <div class="col-xs-6 text-center my-nav-line ">
@@ -21,6 +22,8 @@
 	    </div>
 	  </div>
 	</nav>
+	<div style="margin-top:45px;"></div>
+	</div>
 	<div class="" id="gradeList">
 		<span class="my-title" ms-if="d.summary!=''">{{d.summary|html}}</span>
 		<div class="spacer5" ms-if="d.summary==''"></div>

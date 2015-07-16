@@ -76,13 +76,13 @@
 			</ul>
 			<span style="padding:5px 0px;display: inline-block;">医学量表</span>
 			<ul class="list-group">
-				<li class="list-group-item">
+				<!-- <li class="list-group-item">
 			  		<a ms-href="/gakf/caprini.html?sick_id={{d.sickId}}">
 	  			  		<span>Caprini 量表</span>
 	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
 	  					<span class="right orange sl8">点击填写</span>
 			  		</a>
-			 	</li>
+			 	</li> -->
 			 	<!-- <li class="list-group-item">
 			  		<a ms-href="/gakf/hss_left.html?sick_id={{d.sickId}}">
 	  			  		<span>膝关节HSS评分 </span>
@@ -90,9 +90,16 @@
 	  					<span class="right orange sl8" >点击填写</span>
 			  		</a>
 			 	</li> -->
-			 	<li class="list-group-item">
+			 	<!-- <li class="list-group-item">
 			  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
 	  			  		<span>创伤RAPT量表 </span>
+	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+	  					<span class="right orange sl8" >点击填写</span>
+			  		</a>
+			 	</li> -->
+			 	<li class="list-group-item">
+			  		<a ms-href="{{d.vteUrl}}">
+	  			  		<span>VTE量表 </span>
 	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
 	  					<span class="right orange sl8" >点击填写</span>
 			  		</a>
@@ -114,14 +121,15 @@
 	            "age":"",
 	            "gender":"男",
 	            "doctor_id":+RC.parseOptions(window.location.href).doctor_id,
-	            "operate_type_arr":["创伤手术","截肢手术"],
+	            "operate_type_arr":["创伤手术","关节手术"],
 	            "operate_type":"创伤手术",
 	            "care_level_arr":["高危"],
 	            "care_level":"高危",
 	            "bed_id":"",
 	            "in_day":"",
 	            "out_day":"",
-	            "doctor_name": ""
+	            "doctor_name": "",
+	            "vteUrl":"dd"
 			}
 			var temp = store.get("user");
 			var id = temp.id,doctor_id = temp.doctor_id;
@@ -172,18 +180,29 @@
 					dataType: "json", 
 					success: function(obj){
 						vmodel.d = $.extend(data,obj.content);
+
+
+						setUrl();
+
 		    		},
 		    		error:function(){
 
 		    		}
 				}); 
 		    }
-		    
+		    function setUrl(){
+		    	if(vmodel.d.operate_type=="关节手术"){
+					vmodel.d.vteUrl = "/gakf/caprini.html?sick_id="+data.sickId;
+				}else if(vmodel.d.operate_type=="创伤手术"){
+				    vmodel.d.vteUrl = "/gakf/rapt.html?sick_id="+data.sickId;
+				}
+		    }
 		    $(".my-collapse").on("touchstart",".secondCon",function(){
 				var p =$(this).parent().parent();
 				p.find(".detail").html($(this).html());
 				p.find(".detailInput").val($(this).attr("alt"));
 				p.find(".collapse").collapse('hide');
+				setUrl();
 			});
 	});
 	</script>
