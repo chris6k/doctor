@@ -8,6 +8,7 @@ var score = function(table) {
 	table.score = result;
 	return result;
 };
+
 var level = function(table_type, table) {
 	if (!table.score) {
 			score(table);
@@ -17,7 +18,7 @@ var level = function(table_type, table) {
 			table.level = '低危';
 		} else if (table.score == 2) {
 			table.level = '中危';
-		} else if (table.score >=3 and table.score <=4) {
+		} else if (table.score >=3 && table.score <=4) {
 			table.level = '高危';
 		} else {
 			table.level = '极高危';
@@ -43,7 +44,7 @@ var cal = function(item) {
 	if (!item.keys || item.keys.length === 0) return 0;
 	var result = 0;
 	for (var i = 0; i < item.keys.length; i++) {
-		var val =  = item.value[i];
+		var val = item.value[i];
 		var ratio = item.ratio || 1;
 		if (item.type === 'input') {
 			result += (val || 0) * ratio;
