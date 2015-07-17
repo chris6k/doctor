@@ -15,8 +15,8 @@ var prohibit = function(table) {
 var recomm = function(prohibit_list) {
 	var rec_drug = [];
 	for (var i = 0;i<all_rec_list.length;i++) {
-		var rec_one = all_rec_list[i];
-		var prohibit_item_list = prohibit_list['抗骨松药'];
+		var rec_one = all_rec_list["抗凝药"][i];
+		var prohibit_item_list = prohibit_list['抗凝药'];
 		for (var j = 0; j < prohibit_item_list.length;j++) {
 			if (prohibit_item_list[j].contains(rec_one)) {
 				rec_one = null;
@@ -54,8 +54,10 @@ var reason_type_name = {
 	3:'抗生素'
 };
 
-var all_rec_list = ['依替膦酸二钠片','阿可达-帕米膦酸钠','福善美-阿仑膦酸钠片','凯思立D-碳酸钙D3',
-'英康利-维生素D3','密盖息-鲑鱼降钙素','康美华-雌二醇','利维爱-替勃龙','安体芬-依普黄酮胶囊','苯丙酸诺龙'];
+var all_rec_list = {"抗骨松药":['依替膦酸二钠片','阿可达-帕米膦酸钠','福善美-阿仑膦酸钠片','凯思立D-碳酸钙D3',
+'英康利-维生素D3','密盖息-鲑鱼降钙素','康美华-雌二醇','利维爱-替勃龙','安体芬-依普黄酮胶囊','苯丙酸诺龙'],"抗凝药":
+['拜瑞妥-利伐沙班片','艾乐妥-阿哌沙班片','克赛-依诺肝素钠','速碧林-那屈肝素钙','华法林钠']
+};
 var reason_map = [];
 reason_map[0] = {
 	'酒精、安眠药、镇痛剂或其它精神药物急性中毒':['奇曼丁-盐酸曲马多缓释片'],
