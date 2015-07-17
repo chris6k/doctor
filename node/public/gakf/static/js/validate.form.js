@@ -77,7 +77,7 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 					        			url =  d.url;
 					        		}else{
 					        			if(d.type == "sick"){
-					        				url = "/gakf/addSick.html";
+					        				url = "/gakf/inpatientSick.html";
 					        			}else if(d.type == "doctor"){
 					        				url = "/gakf/sick.html";
 					        			}

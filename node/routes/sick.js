@@ -166,7 +166,7 @@ router.get('/sickstatus', function(req, res, next) {
                 });
             } else {
                 res.json(result(true, '', data[0]));
-            }q
+            }
         }
     });
 });
@@ -196,7 +196,7 @@ var saveRecommDrug = function(recomm_drug, id) {git
                     drug_name: recomm_drug[i],
                     drug_type: '抗骨松药',
                     type: 's',//s-建议 f-禁忌 c-慎用
-                    drug_reason: ‘’}, function(err, item){
+                    drug_reason: ''}, function(err, item){
                         if (err) {
                             console.error(err);
                         }
