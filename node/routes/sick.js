@@ -302,7 +302,7 @@ router.get('/sickscore', function(req, res, next) {
 
 router.get('/sickdrugcount', function(req, res, next){
     var sick_id = req.param('sick_id');
-    req.models.sickdrug.aggregate(['drug_type'], {sick_id:sick_id}).count('drug_type').groupBy('drug_type').get(function(err, state){
+    req.models.sickdrug.aggregate(['type'], {sick_id:sick_id}).count('type').groupBy('type').get(function(err, state){
         if (err) {
             res.json(result(false, 'err', err));
         } else {
