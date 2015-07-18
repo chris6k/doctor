@@ -49,7 +49,7 @@ var cal = function(item) {
 		if (item.type === 'input') {
 			result += (val || 0) * ratio;
 		} else {
-			result += val ? (selectKey(item.keys) || 0) * ratio:0;
+			result += val ? (selectKey(val, item.keys) || 0) * ratio:0;
 		}
 	}
 	return result;
