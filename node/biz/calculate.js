@@ -49,11 +49,21 @@ var cal = function(item) {
 		if (item.type === 'input') {
 			result += (val || 0) * ratio;
 		} else {
-			result += val ? item.keys[i].value * ratio:0;
+			result += val ? (selectKey(item.keys) || 0) * ratio:0;
 		}
 	}
 	return result;
 };
+
+var selectKey = function(key, keys) {
+	for (var i=0; i<keys.length;i++) {
+		var item = keys[i];
+		if (item.key === key) {
+			return item.value;
+		}
+	}
+	return 0;
+}
 
 
 

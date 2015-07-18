@@ -171,7 +171,7 @@ router.get('/sickstatus', function(req, res, next) {
     });
 });
 
-var saveProhibitDrug = function(pro_drug, sick_id) {
+var saveProhibitDrug = function(req, pro_drug, sick_id) {
     for (type in pro_drug) {
             for (sickname in pro_drug[type]) {
             var drug_arr = pro_drug[type][sickname];
@@ -190,7 +190,7 @@ var saveProhibitDrug = function(pro_drug, sick_id) {
     }
 };
 
-var saveRecommDrug = function(rec_drug, sick_id) {
+var saveRecommDrug = function(req, rec_drug, sick_id) {
     var recomm_drug = rec_drug.drugs;
     var recomm_name = rec_drug.name;
     for (var i = 0; i< recomm_drug.length;i++) {
@@ -221,8 +221,8 @@ router.post('/savestatus', function(req, res, next) {
                 var pro_drug = recommend.prohibit(tablejson);
                 var rec_drug = recommend.recomm(pro_drug);
 
-                saveProhibitDrug(pro_drug, sick_id);
-                saveRecommDrug(rec_drug.drugs, sick_id);
+                saveProhibitDrug(req, pro_drug, sick_id);
+                saveRecommDrug(req, rec_drug, sick_id);
 
                 data[0].save({value: JSON.stringify(tablejson), score:score, level:level}, function(err) {
                     if (err) {
@@ -239,8 +239,8 @@ router.post('/savestatus', function(req, res, next) {
                     var pro_drug = recommend.prohibit(tablejson);
                     var rec_drug = recommend.recomm(pro_drug);
 
-                    saveProhibitDrug(pro_drug, sick_id);
-                    saveRecommDrug(rec_drug, sick_id);
+                    saveProhibitDrug(req, pro_drug, sick_id);
+                    saveRecommDrug(req, rec_drug, sick_id);
                     req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
                     function(err, item){
                     if (err) {
