@@ -290,10 +290,10 @@ router.get('/sickscore', function(req, res, next) {
         if (err) {
             res.json(result(false,'err', err));
         } else {
-        var re = {};
+        var re = {caprini:'',hss:0,rapt:''};
         for(var i=0;i<data.length;i++) {
             var item = data[i];
-            console.info("item=" + JSON.stringify(item));
+            console.info("item.table_type=" + item.table_type + ", score=" + item.score);
             if (item.table_type === 'caprini') {
                 re.caprini = item.level||'';
             } 
@@ -314,11 +314,16 @@ router.get('/sickscore', function(req, res, next) {
 
 router.get('/sickdrugcount', function(req, res, next){
     var sick_id = req.param('sick_id');
-    req.models.sickdrug.aggregate(['type'], {sick_id:sick_id}).count('type').groupBy('type').get(function(err, state){
+
+    req.models.sickdrug.find({sick_id:sick_id}, function(err, data){
         if (err) {
             res.json(result(false, 'err', err));
         } else {
-            res.json(result(true, '', state));
+            var sick_name = {};
+            var reason = {};
+            for (var i = 0;i < data.length;i++) {
+
+            }
         }
     });
 });
