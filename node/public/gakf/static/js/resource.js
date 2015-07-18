@@ -91,7 +91,11 @@ RC['setvmodel'] = function(data,tempobj){
                     data:tempd,
                     success: function(d){
                         if(d.success){
-                            window.location.href = "/gakf/addSick.html";
+                            if(data.type == "doctor"){
+                                window.location.href = "/gakf/sickDetail.html?id="+data.id;
+                            }else{
+                                window.location.href = "/gakf/inpatientSick.html";
+                            }
                         }else{
                             alert(d.msg);
                         }
