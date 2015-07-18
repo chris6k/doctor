@@ -2,6 +2,24 @@ var weixin = require('weixin-apis');
 var WechatAPI = require('wechat-api');
 
 
+var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0', function(err){
+    if (!err) {
+        app.use(function(req, res, next) {
+        if (!req.wx_api) {
+            req.wx_api = api;
+        }
+        next();
+        });
+    } else {
+        console.error(err);
+    }
+});
+
+api.getLatestToken(function(err,token){
+    console.info("token=>" + token);
+    console.info("err=>" + err);
+});
+
 var weixin_biz = function (app) {
 // 微信接入配置
     weixin.configurate({
@@ -9,20 +27,6 @@ var weixin_biz = function (app) {
         token: 'guanai',
         appid: 'wx9b2bbce36613b66e',//'wx9b2bbce36613b66e',
         secret: 'b4c3079540dd4b57269a09b5e2d36dc0'//'b4c3079540dd4b57269a09b5e2d36dc0'
-    });
-
-
-    var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0', function(err){
-            if (!err) {
-                app.use(function(req, res, next) {
-                if (!req.wx_api) {
-                    req.wx_api = api;
-                }
-                next();
-                });
-            } else {
-                console.error(err);
-            }
     });
    
 

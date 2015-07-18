@@ -708,11 +708,11 @@
   "summary":"",
   "items":[
    {
-     "title":"药物过敏",
+     "title":"对药物过敏",
      "summary":"",
      "type":"checkbox",
      "keys":[
-     {"key":"药物过敏","value":""}
+     {"key":"对药物过敏","value":""}
      ],
      "value":"",
      "scored":false,

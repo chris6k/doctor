@@ -210,21 +210,24 @@ var saveProhibitDrug = function(req, pro_drug, sick_id, table_type) {
 var saveRecommDrug = function(req, rec_drug, sick_id, table_type) {
     var recomm_drug = rec_drug.drugs;
     var recomm_name = rec_drug.name;
+    console.info("recomm_name=>" + recomm_name + ", recomm_drug=>" + JSON.stringify(recomm_drug));
     req.models.sickdrug.find({sick_id:sick_id, table_type:table_type, type:'s'}).remove(function(err){
+        console.info("startsaverecomm");
         if (err) {console.error(err);} else {
         for (var i = 0; i< recomm_drug.length;i++) {
+            console.info("saverecomm=>" + recomm_drug[i]);
             req.models.sickdrug.create({sick_id: sick_id,
                     table_type:table_type,
                     drug_name: recomm_drug[i],
                     drug_type: recomm_name,
                     type: 's',//s-建议 f-禁忌 c-慎用
                     drug_reason: ''}, function(err, item) {
-                        if (err) {
-                            console.error(err);
-                        }
+                    if (err) {
+                        console.error(err);
+                    }
             });
         }
-        }
+    }
     });
 }
 

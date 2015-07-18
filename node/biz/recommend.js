@@ -16,9 +16,12 @@ var prohibit = function(table) {
 
 var recomm = function(prohibit_list) {
 	var rec_drug = [];
-	for (var i = 0;i<all_rec_list.length;i++) {
+
+	for (var i = 0;i<all_rec_list["抗凝药"].length;i++) {
 		var rec_one = all_rec_list["抗凝药"][i];
+		console.info("rec_one=>" + rec_one);
 		var prohibit_item_list = prohibit_list['抗凝药'];
+		console.info("prohibit_item_list=>" + JSON.stringify(prohibit_item_list));
 		for (var j = 0; j < prohibit_item_list.length;j++) {
 			if (prohibit_item_list[j].contains(rec_one)) {
 				rec_one = null;
@@ -29,6 +32,7 @@ var recomm = function(prohibit_list) {
 			rec_drug.push(rec_one);
 		}
 	}
+	console.info("drugs=>" + JSON.stringify(rec_drug));
 	return {name:"抗凝药",drugs:rec_drug};
 };
 
