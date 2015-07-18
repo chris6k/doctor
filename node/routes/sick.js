@@ -86,7 +86,15 @@ router.get('/print', function (req, res, next) {
 
 router.get('/sickdrug', function (req, res, next) {
     var sick_id = req.param('sick_id');
-    req.models.sickdrug.find({sick_id: sick_id}, function (err, data) {
+    var type = req.param('type');
+    var query = {};
+    if (sick_id) {
+        query.sick_id = sick_id;
+    }
+    if (type) {
+        query.type = type;
+    }
+    req.models.sickdrug.find(query, function (err, data) {
         if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
