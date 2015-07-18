@@ -322,8 +322,13 @@ router.get('/sickdrugcount', function(req, res, next){
             var sick_name = {};
             var reason = {};
             for (var i = 0;i < data.length;i++) {
-
+                sick_name[data[i].drug_name] = 1;
+                if (data[i].type==='f') {
+                    reason[data[i].drug_reason] = 1;
+                }
             }
+            res.json(result(true, '', {"drug_count":Object.keys(sick_name).length, "select_count" : Object.keys(reason).length}));
+
         }
     });
 });
