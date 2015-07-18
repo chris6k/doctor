@@ -1,14 +1,16 @@
 var prohibit = function(table) {
 	var prohibit_drug = {};
-	for (reason in reason_type_name) {
+	for (index in reason_type_name) {
 		var result = {};
 		var items = table.items;
 		if (!items || items.length === 0) return result;
 		for(var i = 0;i < items.length; i++) {
-			match(result, items[i], reason);
+			match(result, items[i], index);
 		}
-		prohibit_drug[reason_type_name[reason]] = result;
+		prohibit_drug[reason_type_name[index]] = result;
+		console.info("prohibit_drug=" + JSON.stringify(prohibit_drug));
     }
+    console.info("prohibit_drug=" + JSON.stringify(prohibit_drug));
     return prohibit_drug;
 };
 
@@ -33,20 +35,24 @@ var recomm = function(prohibit_list) {
 module.exports.prohibit = prohibit;
 module.exports.recomm = recomm;
 
-var match = function(result, item, reason) {
+var match = function(result, item, index) {
 	if (!item) return 0;
-	if (!item.keys || item.keys.length === 0) return 0;
-	for (var i = 0; i < item.keys.length; i++) {
-		var val = item.value[i];
-		var key = item.keys[i].key;
-		if (item.type != 'input') {
-			var drugs = reason_map[reason][key];
+	if (!item.value || item.value.length === 0) return 0;
+	if (item.type != 'input') {
+		for (var i = 0; i < item.value.length; i++) {
+			
+			var val = item.value[i];
+			var drugs = reason_map[index][val];
+			console.info("val=" + val);
+			console.info("drug=" + JSON.stringify(drugs));
 			if (drugs) {
-				result[key] = drugs;
+				result[val] = drugs;
 			}
+			
 		}
 	}
 };
+
 var reason_type_name = {
 	0:'镇痛药',
 	1:'抗骨松药',
@@ -58,6 +64,7 @@ var all_rec_list = {"抗骨松药":['依替膦酸二钠片','阿可达-帕米膦
 '英康利-维生素D3','密盖息-鲑鱼降钙素','康美华-雌二醇','利维爱-替勃龙','安体芬-依普黄酮胶囊','苯丙酸诺龙'],"抗凝药":
 ['拜瑞妥-利伐沙班片','艾乐妥-阿哌沙班片','克赛-依诺肝素钠','速碧林-那屈肝素钙','华法林钠']
 };
+
 var reason_map = [];
 reason_map[0] = {
 	'酒精、安眠药、镇痛剂或其它精神药物急性中毒':['奇曼丁-盐酸曲马多缓释片'],

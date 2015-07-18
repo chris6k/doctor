@@ -180,11 +180,12 @@ router.get('/sickstatus', function(req, res, next) {
 });
 
 var saveProhibitDrug = function(req, pro_drug, sick_id, table_type) {
+    req.models.sickdrug.find({sick_id:sick_id, table_type:table_type, type:'f'}).remove(function(err){
     for (type in pro_drug) {
         console.info("pro_drug=" + JSON.stringify(pro_drug[type]));
         for (sickname in pro_drug[type]) {
             var drug_arr = pro_drug[type][sickname];
-            req.models.sickdrug.find({sick_id:sick_id, table_type:table_type}).remove(function(err){
+            
                 if (err) {
                     console.error(err);
                 } else {
@@ -200,16 +201,16 @@ var saveProhibitDrug = function(req, pro_drug, sick_id, table_type) {
                             }
                         });
                     }
-                }     
-            });
-       }  
+                }             
+        }  
     }
+    });
 };
 
 var saveRecommDrug = function(req, rec_drug, sick_id, table_type) {
     var recomm_drug = rec_drug.drugs;
     var recomm_name = rec_drug.name;
-    req.models.sickdrug.find({sick_id:sick_id, table_type:table_type}).remove(function(err){
+    req.models.sickdrug.find({sick_id:sick_id, table_type:table_type, type:'s'}).remove(function(err){
         if (err) {console.error(err);} else {
         for (var i = 0; i< recomm_drug.length;i++) {
             req.models.sickdrug.create({sick_id: sick_id,
