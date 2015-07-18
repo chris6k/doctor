@@ -166,7 +166,7 @@ router.get('/sickstatus', function(req, res, next) {
                 });
             } else {
                 res.json(result(true, '', data[0]));
-            }q
+            }
         }
     });
 });
@@ -190,13 +190,15 @@ var saveProhibitDrug = function(pro_drug, sick_id) {
     }
 };
 
-var saveRecommDrug = function(recomm_drug, sick_id) {
+var saveRecommDrug = function(rec_drug, sick_id) {
+    var recomm_drug = rec_drug.drugs;
+    var recomm_name = rec_drug.name;
     for (var i = 0; i< recomm_drug.length;i++) {
         req.models.sickdrug.create({sick_id: sick_id,
                     drug_name: recomm_drug[i],
-                    drug_type: '抗骨松药',
+                    drug_type: recomm_name,
                     type: 's',//s-建议 f-禁忌 c-慎用
-                    drug_reason:''}, function(err, item){
+                    drug_reason: ''}, function(err, item) {
                         if (err) {
                             console.error(err);
                         }
