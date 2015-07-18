@@ -240,7 +240,7 @@ router.post('/savestatus', function(req, res, next) {
                     var rec_drug = recommend.recomm(pro_drug);
 
                     saveProhibitDrug(pro_drug, sick_id);
-                    saveRecommDrug(rec_drug.drugs, sick_id);
+                    saveRecommDrug(rec_drug, sick_id);
                     req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
                     function(err, item){
                     if (err) {
