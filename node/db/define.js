@@ -98,8 +98,10 @@ var define = function (db, models) {
         drug_name: {type: 'text'},
         drug_type: {type: 'text'},
         type: {type: 'text'},//s-建议 f-禁忌 c-慎用
-        drug_reason: {type: 'text', required: false}
+        drug_reason: {type: 'text', required: false},
+        table_type: {type: 'text', required: true}
     });
+    models.sickdrug.sync();
 
     //病人量表信息
     models.sickstatus = db.define('sickstatus', {

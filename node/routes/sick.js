@@ -173,31 +173,38 @@ router.get('/sickstatus', function(req, res, next) {
 
 var saveProhibitDrug = function(req, pro_drug, sick_id, table_type) {
     for (type in pro_drug) {
-            console.info("pro_drug=" + JSON.stringify(pro_drug[type]));
-            for (sickname in pro_drug[type]) {
+        console.info("pro_drug=" + JSON.stringify(pro_drug[type]));
+        for (sickname in pro_drug[type]) {
             var drug_arr = pro_drug[type][sickname];
-            //todo
-            for (var i = 0; i< drug_arr.length;i++) {
-                req.models.sickdrug.create({sick_id: sick_id,
-                    drug_name: drug_arr[i],
-                    drug_type: type,
-                    table_type:table_type,
-                    type: 'f',//s-建议 f-禁忌 c-慎用
-                    drug_reason: sickname}, function(err, item){
-                        if (err) {
-                            console.error(err);
-                        }
-                });
-            }
-         }
+            req.models.sickdrug.find({sick_id:sick_id, table_type:table_type}).remove(function(err){
+                if (err) {
+                    console.error(err);
+                } else {
+                    for (var i = 0; i< drug_arr.length;i++) {
+                        req.models.sickdrug.create({sick_id: sick_id,
+                        drug_name: drug_arr[i],
+                        drug_type: type,
+                        table_type:table_type,
+                        type: 'f',//s-建议 f-禁忌 c-慎用
+                        drug_reason: sickname}, function(err, item){
+                            if (err) {
+                                console.error(err);
+                            }
+                        });
+                    }
+                }     
+            });
+       }  
     }
 };
 
 var saveRecommDrug = function(req, rec_drug, sick_id, table_type) {
     var recomm_drug = rec_drug.drugs;
     var recomm_name = rec_drug.name;
-    for (var i = 0; i< recomm_drug.length;i++) {
-        req.models.sickdrug.create({sick_id: sick_id,
+    req.models.sickdrug.find({sick_id:sick_id, table_type:table_type}).remove(function(err){
+        if (err) {console.error(err);} else {
+        for (var i = 0; i< recomm_drug.length;i++) {
+            req.models.sickdrug.create({sick_id: sick_id,
                     table_type:table_type,
                     drug_name: recomm_drug[i],
                     drug_type: recomm_name,
@@ -206,8 +213,10 @@ var saveRecommDrug = function(req, rec_drug, sick_id, table_type) {
                         if (err) {
                             console.error(err);
                         }
+            });
+        }
+        }
     });
-    }
 }
 
 router.post('/savestatus', function(req, res, next) {
