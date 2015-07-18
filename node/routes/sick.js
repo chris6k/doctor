@@ -190,13 +190,13 @@ var saveProhibitDrug = function(pro_drug, sick_id) {
     }
 };
 
-var saveRecommDrug = function(recomm_drug, id) {git
+var saveRecommDrug = function(recomm_drug, sick_id) {
     for (var i = 0; i< recomm_drug.length;i++) {
         req.models.sickdrug.create({sick_id: sick_id,
                     drug_name: recomm_drug[i],
                     drug_type: '抗骨松药',
                     type: 's',//s-建议 f-禁忌 c-慎用
-                    drug_reason: ‘’}, function(err, item){
+                    drug_reason:''}, function(err, item){
                         if (err) {
                             console.error(err);
                         }
@@ -213,25 +213,33 @@ router.post('/savestatus', function(req, res, next) {
             res.json(result(false, 'err', err));
         } else {
             if (data && data.length > 0) {
-                data[0].save({value: table}, function(err) {
+                var tablejson = JSON.parse(table);
+                var score = calc.score(tablejson);
+                var level = calc.level(table_type, tablejson);
+                var pro_drug = recommend.prohibit(tablejson);
+                var rec_drug = recommend.recomm(pro_drug);
+
+                saveProhibitDrug(pro_drug, sick_id);
+                saveRecommDrug(rec_drug.drugs, sick_id);
+
+                data[0].save({value: JSON.stringify(tablejson), score:score, level:level}, function(err) {
                     if (err) {
                         res.json(result(false, 'err', err));
                     } else {
-                        //todo cal score and recommend
                         res.json(result(true, '',{}));
                     }
                 });
             } else {
                 try {
                     var tablejson = JSON.parse(table);
-                    calc.score(tablejson);
-                    calc.level(table_type, tablejson);
+                    var score = calc.score(tablejson);
+                    var level = calc.level(table_type, tablejson);
                     var pro_drug = recommend.prohibit(tablejson);
                     var rec_drug = recommend.recomm(pro_drug);
 
-                    saveProhibitDrug(rec_drug, sick_status);
-                    saveRecommDrug(rec_drug, sick_status);
-                    req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson)},
+                    saveProhibitDrug(pro_drug, sick_id);
+                    saveRecommDrug(rec_drug.drugs, sick_id);
+                    req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
                     function(err, item){
                     if (err) {
                         res.json(result(false, 'err', err));
@@ -258,17 +266,18 @@ router.get('/sickscore', function(req, res, next) {
         var re = {};
         for(var i=0;i<data.length;i++) {
             var item = data[i];
+            console.info("item=" + JSON.stringify(item));
             if (item.table_type === 'caprini') {
-                re.caprini = item.level;
+                re.caprini = item.level||'';
             } 
             if (item.table_type === 'hss_left') {
-                re.hss += item.score;
+                re.hss += item.score||0;
             }
             if (item.table_type === 'hss_right') {
-                re.hss += item.score;
+                re.hss += item.score||0;
             }
             if (item.table_type === 'rapt') {
-                re.rapt = item.level;
+                re.rapt = item.level||'';
             }
         }
         res.json(result(true, '', re));

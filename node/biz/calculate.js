@@ -28,7 +28,7 @@ var level = function(table_type, table) {
 	} else if (table_type == 'hss_right') {
 		//todo
 	} else if (table_type === 'rapt') {
-		if (tabe.score <= 5) {
+		if (table.score <= 5) {
 			table.level='DVT低风险';
 		} else if (table.score >5 && table.score <= 14) {
 			table.level = 'DVT中风险';

@@ -27,7 +27,7 @@ var recomm = function(prohibit_list) {
 			rec_drug.push(rec_one);
 		}
 	}
-	return rec_drug;
+	return {name:"抗凝药",drugs:rec_drug};
 };
 
 module.exports.prohibit = prohibit;
