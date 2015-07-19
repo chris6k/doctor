@@ -84,25 +84,25 @@ RC['setvmodel'] = function(data,tempobj){
                 sick_id:data.id,
                 table:JSON.stringify(vmodel.d.$model)
             };
-                $.ajax({ 
-                    type:"post",
-                    url: "/sick/savestatus",
-                    dataType: "json", 
-                    data:tempd,
-                    success: function(d){
-                        if(d.success){
-                            if(data.type == "doctor"){
-                                window.location.href = "/gakf/sickDetail.html?id="+data.id;
-                            }else{
-                                window.location.href = "/gakf/inpatientSick.html";
-                            }
+            $.ajax({ 
+                type:"post",
+                url: "/sick/savestatus",
+                dataType: "json", 
+                data:tempd,
+                success: function(d){
+                    if(d.success){
+                        if(data.type == "doctor"){
+                            window.location.href = "/gakf/sickDetail.html?id="+data.id;
                         }else{
-                            alert(d.msg);
+                            window.location.href = "/gakf/inpatientSick.html";
                         }
-                    },
-                    error:function(e){
+                    }else{
+                        alert(d.msg);
                     }
-                });
+                },
+                error:function(e){
+                }
+            });
           }
     });
     avalon.scan();
