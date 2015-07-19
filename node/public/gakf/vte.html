@@ -74,13 +74,13 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			$("#gradeList").on("touchstart",".checkbox",function(){
+			$("#gradeList").on("click",".checkbox",function(){
 				var temp = $(this).find(".tag");
 				RC.selected(this,temp.attr("alt"));
 			});
 			var selected ;
 			
-			$("#gradeList").on("touchstart",".radio",function(){
+			$("#gradeList").on("click",".radio",function(){
 				var temp = $(this).find(".tag");
 				if(selected)RC.remove(selected);
 				RC.selected(this,temp.attr("alt"));

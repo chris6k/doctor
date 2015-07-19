@@ -71,7 +71,7 @@
 			
 			$.ajax({ 
 				type:"get",
-				url: "/sick/sickstatus?table_type=before&sick_id="+id,
+				url: "/sick/sickstatus?table_type=sqgksclb&sick_id="+id,
 				dataType: "json", 
 				success: function(obj){
 					obj.content.value = $.parseJSON(obj.content.value);
