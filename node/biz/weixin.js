@@ -49,7 +49,7 @@ var weixin_biz = function (app) {
                             console.log(msg);
                             weixin.sendMsg(msg);
                         } else if (da2.length == 0) {
-                            msg.content - "暂时没有需要审核的病人";
+                            msg.content = "暂时没有需要审核的病人";
                             weixin.sendMsg(msg);
                         } else {
                             for (var i = 0; i< da2.length; i++) {
