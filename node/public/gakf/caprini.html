@@ -65,7 +65,7 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			$("#gradeList").on("click",".checkbox",function(){
+			$("#gradeList").on("touchstart",".checkbox",function(){
 				var temp = $(this).find(".tag");
 				RC.selected(this,temp.attr("alt"));
 			});
