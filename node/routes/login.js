@@ -4,11 +4,14 @@ var request = require('request');
 var result = require('./result');
 var appid = 'wx9b2bbce36613b66e', secret = 'b4c3079540dd4b57269a09b5e2d36dc0';
 var urlMap = {'1':'/gakf/flowSick.html', '2':'/gakf/communicate.html', '3':'/gakf/inpatientInfo.html'};
-var weixin = require('weixin-apis');
 var login_url = '/gakf/login.html';
 var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
 var unverifyUrl = '/gakf/msg.html';
+
+var WechatAPI = require('wechat-api');
+var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0');
+
 
 //todo
 var unreg_url = '/gakf/msg.html';
@@ -81,6 +84,7 @@ router.post('/login', function (req, res, next) {
     var type = req.param('type');
     var cb = req.param('cb');
     var wx_id = req.cookies.wx_id || '';
+    console.info("wx_id=" + wx_id);
     if (!username || !password || !type) {
         res.json(result(false,'empty username or password',{}));
         // res.redirect(login_url + '?err=1&wx_id=' + wx_id);
@@ -109,7 +113,11 @@ router.post('/login', function (req, res, next) {
                     data[0].save(function (err) {
                         if (!err) {
                             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
+                            if (data[0].status === 't') {
+                                res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
+                            } else {
+                                res.json(result(false, 'user status is f or u', {}));
+                            }
                             // res.redirect(target_url[type] || decodeURIComponent(cb));
                         } else {
                            res.json(result(false,'bind wx_id err',err));
@@ -154,18 +162,20 @@ router.post('/reg', function (req, res, next) {
                     // res.redirect(reg_url + '?err=2&wx_id=' + wx_id);
                 } else {
                     console.error('create succ');
-                    req.models.sickRequest.create({doctorId:doctor[0].id, sickId:item.id, lastUpdate:new Date()}, function(err, sickRequest) {
+                    req.models.sickRequest.create(
+                        {doctorId:doctor[0].id, sickId:item.id, sickName:name, sickBed: bed_no, lastUpdate:new Date()}, 
+                        function(err, sickRequest) {
                         if (err) {
                             console.error('send request failed');
                             res.json(result(false, 'err', err));
                         } else {
-                            console.error('send request success');
+                            console.info("doctor_open_id=" + doctor[0].wx_id);
                             if (doctor[0].wx_id) {
-                               req.wx_api.sendMessage(doctor[0].wx_id, "你猜我是谁", function(err){
+                               api.sendText(doctor[0].wx_id, "有新病人[" + name + "]申请成为您的病人，请回复‘同意+病人姓名'审核通过，回复'拒绝+病人姓名'拒绝请求", function(err){
                                     if (err) {
                                         console.error(err);
                                     } else {
-                                        console.info(sendSucc);
+                                        console.info("send request success");
                                     }
                                });
                             }

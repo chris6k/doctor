@@ -5,13 +5,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var auth_url = 'http://guanaikangfu.com/user/callback';
 
-var db_define = require('./db/define');
+var db_define = require('./db/define').define;
 var orm = require('orm');
 var app = express();
-app.listen(8080, '0.0.0.0');
-// var weixin = require('./biz/weixin');
-// weixin(app);
-app.use(orm.express("mysql://root@localhost/guanai", {
+app.listen(80, '0.0.0.0');
+
+app.use(orm.express("mysql://guanai:guanai@rdsnsbba6rlncdjwb97bd.mysql.rds.aliyuncs.com/guanai", {
         define: function (db, models, next) {
             db_define(db, models);
             db.sync(function (err) {
@@ -23,6 +22,9 @@ app.use(orm.express("mysql://root@localhost/guanai", {
         }
     }
 ));
+
+var weixin = require('./biz/weixin');
+weixin(app);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -33,7 +35,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 var routes = require('./routes/index');
 //var users = require('./routes/users');
@@ -46,6 +48,8 @@ var loginCheck = require('./routes/loginCheck');
 var imageUpload = require('./routes/imageUpload');
 var sicktable = require('./routes/sicktables');
 app.use(loginCheck);
+
+app.use(express.static(path.join(__dirname, 'public')));
 // app.use(function (req, res, next) {
 //     var open_id = req.cookies.open_id;
 //     if (!open_id) {
