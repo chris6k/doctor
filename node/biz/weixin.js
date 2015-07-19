@@ -126,9 +126,13 @@ var weixin_biz = function (app) {
                     weixin.sendMsg(msg);
                 } else {
                     models().sickRequest.find({doctorId: dat[0].id, sickName: name}, function(err, dat2){
-                        if (err || dat2.length == 0) {
+                        if (err) {
+                            weixin.sendMsg(msg);
+                        } else if (dat2.length === 0) {
+                            msg.content = "找不到该病人的审核申请";
                             weixin.sendMsg(msg);
                         } else {
+                            dat2[0].save({status:'t'});
                             models().sick.get(dat2[0].sickId, function(err, sick) {
                                 if (err || !sick) {
                                     msg.content="找不到该病人的信息";
@@ -148,6 +152,7 @@ var weixin_biz = function (app) {
                     });
                 }
             });
+            
         }
         
     });
