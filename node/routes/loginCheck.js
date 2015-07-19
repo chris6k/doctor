@@ -2,8 +2,8 @@ var urls = ['/gakf/flowSick.html', '/gakf/communicate.html', '/gakf/inpatientInf
 var urlMap = {'/gakf/flowSick.html':'1', '/gakf/communicate.html':'2', '/gakf/inpatientInfo.html':'3'};
 var appid = 'wx9b2bbce36613b66e', redirectUrl = 'http://101.200.183.229/user/callback';
 //todo
-var unverifyUrl = '';
-var loginUrl = '';
+var unverifyUrl = '/gakf/msg.html';
+var loginUrl = '/gakf/login.html';
 
 var checkUrl = function(path) {
     for (var i = 0;i<urls.length;i++) {
@@ -16,6 +16,7 @@ var checkUrl = function(path) {
 }
 
 var check = function (req, res, next) {
+    console.log("check in");
     var path = req.originalUrl;
     var open_id = req.cookies.wx_id;
     var uid = req.cookies.sick_id || req.cookies.doctor_id;
@@ -23,6 +24,9 @@ var check = function (req, res, next) {
     var type = req.cookies.type;
     var missInfo = !open_id || open_id === 'undefined' || !uid || uid === 'undefined' 
     || !status || status === 'undefined' || !type || type === 'undefined';
+
+    console.log("path=" + path + ",checkUrl=" + checkUrl(path));
+    console.log("missinfo=" + missInfo);
 
     if (checkUrl(path)) {
         if (missInfo) {
@@ -34,16 +38,16 @@ var check = function (req, res, next) {
                 + '&response_type=code&scope=snsapi_base#wechat_redirect');
         } else if (status === 'u' && type === 'sick') {
             req.models.sick.get(uid, function(err, sick){
-                if (err) {
+                if (err){
                     res.redirect(loginUrl);
                     return;
                 }
-                if (sick.status === 't') {
+                if (sick.status === 't'){
                     res.cookie('status', sick.status, {expires: new Date(Date.now() + 900000), httpOnly: true});
                     next();
                     return;
                 }
-                if (sick.status === 'f') {
+                if (sick.status === 'f'){
                     res.cookie('status', sick.status, {expires: new Date(Date.now() + 900000), httpOnly: true});
                     res.redirect(loginUrl);
                     return;

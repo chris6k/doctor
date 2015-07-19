@@ -1,26 +1,20 @@
 var weixin = require('weixin-apis');
 var WechatAPI = require('wechat-api');
+var defines = require('../db/define');
 
 
-var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0', function(err){
-    if (!err) {
-        app.use(function(req, res, next) {
-        if (!req.wx_api) {
-            req.wx_api = api;
-        }
-        next();
-        });
-    } else {
-        console.error(err);
+var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0');
+var _models;
+var models = function() {
+    if (!_models) {
+        _models = defines.cachedModels;
     }
-});
-
-api.getLatestToken(function(err,token){
-    console.info("token=>" + token);
-    console.info("err=>" + err);
-});
+    return _models;
+};
 
 var weixin_biz = function (app) {
+
+
 // 微信接入配置
     weixin.configurate({
         app: app,
@@ -34,21 +28,128 @@ var weixin_biz = function (app) {
     weixin.on('textMsg', function (data) {
         console.log('>>>>>>>>> textMsg emit >>>>>>>>>');
         console.log(data);
-        var articles = [];
-        articles[0] = {
-            title: "欢迎使用XXX",
-            description: "使用入门",
-            picUrl: "http://cms.csdnimg.cn/article/201404/01/5339fcde7d200.jpg",
-            url: "http://www.csdn.net/article/2014-04-01/2819079-9-soft-skills-every-web-developer-should-master"
-        };
-        var msg = {
-            toUserName: data.fromUserName,
-            fromUserName: data.toUserName,
-            msgType: 'news',
-            articles: articles
-        };
-        console.log(msg);
-        weixin.sendMsg(msg);
+        if (data.content === '审核') {
+            var msg = {
+                toUserName: data.fromUserName,
+                fromUserName: data.toUserName,
+                msgType: 'text',
+                content: ''
+            };
+            models().doctor.find({"wx_id":data.fromUserName}, function(err, da){
+                if (err || da.length==0) {
+                    console.error(err);
+                    msg.content = "医生账户未绑定微信，请登录";
+                    console.log(msg);
+                    weixin.sendMsg(msg);
+                } else {
+                    models().sickRequest.find({"doctorId": da[0].id, "status":"f"}, function(err, da2){
+                        if (err) {
+                            console.error(err);
+                            msg.content="抱歉，暂时无法提供服务";
+                            console.log(msg);
+                            weixin.sendMsg(msg);
+                        } else if (da2.length == 0) {
+                            msg.content = "暂时没有需要审核的病人";
+                            weixin.sendMsg(msg);
+                        } else {
+                            for (var i = 0; i< da2.length; i++) {
+                                msg.content += "病人[" + da2[i].sickName + "]申请成为您的病人\n";
+                            }
+                            
+                            msg.content += "请回复‘同意+病人姓名'审核通过，回复'拒绝+病人姓名'拒绝请求";
+                            
+                            weixin.sendMsg(msg);
+                        }
+                    });
+                }
+            });
+            
+            
+            // console.log(msg);
+            // weixin.sendMsg(msg);
+            // api.sendText(data.fromUserName, "hello world", function(err){
+            //     console.error(err)
+            // });
+
+        } else if (data.content.indexOf("同意") == 0) {
+            var name = data.content.slice(2);
+            var msg = {
+                        toUserName: data.fromUserName,
+                        fromUserName: data.toUserName,
+                        msgType: 'text',
+                        content: "操作失败，暂时无法审核，请稍候再试"
+                    };
+            console.info("sick name = " + name);
+            models().doctor.find({wx_id: data.fromUserName}, function(err, dat) {
+                if (err || dat.length === 0) {
+                    weixin.sendMsg(msg);
+                } else {
+                    models().sickRequest.find({doctorId: dat[0].id, sickName: name}, function(err, dat2){
+                        if (err) {
+                            weixin.sendMsg(msg);
+                        } else if (dat2.length === 0) {
+                            msg.content = "找不到该病人的审核申请";
+                            weixin.sendMsg(msg);
+                        } else {
+                            dat2[0].save({status:'t'});
+                            models().sick.get(dat2[0].sickId, function(err, sick) {
+                                if (err || !sick) {
+                                    msg.content="找不到该病人的信息";
+                                    weixin.sendMsg(msg);
+                                } else {
+                                    sick.save({status:'t'}, function(err){
+                                        if (err) {
+                                            weixin.sendMsg(msg);
+                                        } else {
+                                            msg.content="操作成功";
+                                            weixin.sendMsg(msg);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+            
+        } else if (data.content.indexOf("拒绝") == 0) {
+            var name = data.content.slice(2);
+            var msg = {
+                        toUserName: data.fromUserName,
+                        fromUserName: data.toUserName,
+                        msgType: 'text',
+                        content: "操作失败，暂时无法审核，请稍候再试"
+                    };
+            console.info("sick name = " + name);
+            models().doctor.find({wx_id: data.fromUserName}, function(err, dat) {
+                if (err || dat.length === 0) {
+                    weixin.sendMsg(msg);
+                } else {
+                    models().sickRequest.find({doctorId: dat[0].id, sickName: name}, function(err, dat2){
+                        if (err || dat2.length == 0) {
+                            weixin.sendMsg(msg);
+                        } else {
+                            models().sick.get(dat2[0].sickId, function(err, sick) {
+                                if (err || !sick) {
+                                    msg.content="找不到该病人的信息";
+                                    weixin.sendMsg(msg);
+                                } else {
+                                    sick.save({status:'f'}, function(err){
+                                        if (err) {
+                                            weixin.sendMsg(msg);
+                                        } else {
+                                            msg.content="操作成功";
+                                            weixin.sendMsg(msg);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        
     });
 
 // 监听图片消息

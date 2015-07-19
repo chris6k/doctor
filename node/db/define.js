@@ -1,8 +1,11 @@
-var define = function (db, models) {
+var defines = {};
+defines.define = (function(defines){return function (db, models) {
     db.settings.set('instance.cache', false);
     //医生申请表
     models.sickRequest = db.define('sick_request', {
         sickId: {type: 'integer', required: true},
+        sickName: {type: 'text', required: true},
+        sickBed: {type: 'text', required: true},
         doctorId: {type: 'integer', required: true},
         lastUpdate:{type: 'date', time:true, required: true},
         status:{type: 'text', required:true, defaultValue: 'f'} //t,f
@@ -176,5 +179,12 @@ var define = function (db, models) {
         value: {type: 'text'},
         content: {type: 'text'}
     });
+
+    defines.cachedModels = models;
+    console.info("init defines.cachedModels=" + defines.cachedModels + ",doctor=" + defines.cachedModels);
 };
-module.exports = define;
+
+
+})(defines);
+
+module.exports = defines;
