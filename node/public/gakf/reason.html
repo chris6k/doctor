@@ -6,29 +6,35 @@
 	<title>用药推荐详情</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+
 </head>
-<body>
+<body ms-controller="test" class="ms-controller">
 	<div class="">
-		<span style="margin: 10px;display: inline-block;">阿莫西林：</span>
+		<span style="margin: 10px;display: inline-block;">{{d.t}}：</span>
 		<ul class="list-group" id="gradeList">
-		  <li class="list-group-item selected">
-		  	<div class="col-xs-8">
-		  		<span>≤ 40岁 </span>
-		  	</div>
-		  	<div class="col-xs-4">
-		  		<span alt= "0" class="tag greentag"></span>
-		  	</div>
-		  </li>
-		  <li class="list-group-item selected">
-		  	<div class="col-xs-8">
-		  		<span>肥胖（BMI ≥ 25） </span>
-		  	</div>
-		  	<div class="col-xs-4">
-			  	<span alt= "1" class="tag yellowtag"></span>
-			  	<span class="right tagcon sl8">+1 分</span>
+		  <li class="list-group-item " ms-repeat-el="d.r">
+		  	<div class="col-xs-12">
+		  		<span>{{el}} </span>
 		  	</div>
 		  </li>
 		</ul>
 	</div>
+	<script type="text/javascript">
+		require(["store","avalon"],function(store){
+			var id = RC.parseOptions(window.location.href).sick_id,data=store.get("reason");
+			var vmodel = avalon.define({
+		          $id: "test",
+		          d:data,
+		          click:function(i){
+		          	store.set("reason",vmodel.d[i].reason);
+		          }
+		    });
+		    avalon.scan();
+			
+		});
+	</script>
 </body>
 </html>

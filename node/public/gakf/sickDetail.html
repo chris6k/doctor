@@ -60,16 +60,16 @@
 		  		<a ms-href="/gakf/taboos.html?sick_id={{d.sickId}}">
   			  		<span>安全用药量表</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.taboos!=''">{{d.taboos}}</span>
-  					<span class="right orange sl8" ms-if="!d.taboos">共4项用药禁忌</span>
+  					<span class="right orange sl8" ms-if="d.select_count!=''">共 {{d.select_count}} 项用药禁忌</span>
+  					<span class="right orange sl8" ms-if="!d.select_count">无用药禁忌</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
 		  		<a ms-href="/gakf/recommend.html?sick_id={{d.sickId}}">
   			  		<span>安全用药建议 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.recommend!=''">{{d.recommend}}</span>
-  					<span class="right orange sl8" ms-if="!d.recommend">共3条建议</span>
+  					<span class="right orange sl8" ms-if="d.drug_count!=''">共 {{d.drug_count}} 条建议</span>
+  					<span class="right orange sl8" ms-if="!d.drug_count">无建议</span>
 		  		</a>
 		 	</li>
 		</ul>
@@ -80,7 +80,8 @@
   			  		<span>VTE评分</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.caprini!=''">{{d.caprini}}</span>
-  					<span class="right orange sl8" ms-if="!d.caprini">极高危</span>
+  					<span class="right orange sl8" ms-if="d.rapt!=''">{{d.rapt}}</span>
+  					<span class="right orange sl8" ms-if="d.caprini == ''&& d.rapt==''">极高危</span>
 		  		</a>
 		 	</li>
 		 	<li class="list-group-item">
@@ -152,7 +153,10 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-				var data={isvisible:false,isout:Boolean(RC.parseOptions(window.location.href).isout)||false},temp=store.get("user"),id;
+				var data={isvisible:false,
+						  caprini:'',
+						  rapt:'',
+						isout:Boolean(RC.parseOptions(window.location.href).isout)||false},temp=store.get("user"),id;
 				if(temp.type=="sick"){
 					id = temp.id;
 				}else if(temp.type == "doctor"){
@@ -184,6 +188,19 @@
 
 					    		}
 							}); 
+							$.ajax({ 
+								type:"get",
+								url: "/sick/sickdrugcount?sick_id="+id,
+								dataType: "json", 
+								success: function(obj){
+									var d = obj.content;
+									
+									vmodel.d = $.extend(vmodel.d.$model,d);
+					    		},
+					    		error:function(){
+
+					    		}
+							});
 						}
 		    		},
 		    		error:function(){

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
-	<title>患者提问</title>
+	<title>患者提问-安全用药</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 
@@ -28,55 +28,44 @@
 		</div>
 		<nav class="navbar navbar-default my-nav my-nav-top">
 			  <div id="my-tab">
-			    <div class="col-xs-6 text-center my-nav-line selected">
-			    	<a href="javascript:void(0)">基本信息</a>
+			    <div class="col-xs-6 text-center my-nav-line ">
+			    	<a ms-href="/gakf/question.html?session_id={{d.session_id}}">基本信息</a>
 			    </div>
-			    <div class="col-xs-6 text-center my-nav-line">
-			    	<a ms-href="/gakf/safe.html?session_id={{d.session_id}}">安全用药</a>
+			    <div class="col-xs-6 text-center my-nav-line selected">
+			    	<a href="javascript:void(0)">安全用药</a>
 			    </div>
 			  </div>
 		</nav>
 		<div class="navCon">
+			<span style="padding:5px 0px;display: inline-block;">禁用</span>
 			<ul class="list-group">
-			  <li class="list-group-item">
-			  	<span>主治医生</span>
-			  	<span class="right">{{d.doctor_name}}</span>
-			  </li>
+				  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 'f'"  >
+				  	
+				  	<div class="col-xs-5">
+				  		<span>{{el.name}}</span>
+				  	</div>
+				  	<div class="col-xs-3 text-center" >
+				  		<span>{{el.type}}</span>
+				  	</div>
+				  	<div class="col-xs-4">
+				  		<a ms-href="/gakf/reason.html?id={{el.id}}" ms-attr-alt="$index" ms-click="click($index)">
+				  			<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+		  					<span class="right  sl8 orange">{{el.count}}项理由</span>
+		  				</a>
+				  	</div>
+				  </li>
 			</ul>
-			<div class="spacer10"></div>
+			<span style="padding:5px 0px;display: inline-block;">推荐</span>
 			<ul class="list-group">
-			  <li class="list-group-item gray">
-			  	<span>患者姓名</span>
-			  	<span class="right">{{d.name}}</span>
-			  </li>
-			  <li class="list-group-item">
-			  	<span>年龄</span>
-			  	<span class="right">{{d.age}}岁</span>
-			  </li>
-			  <li class="list-group-item gray">
-			  	<span>性别</span>
-			  	<span class="right">{{d.gender}}</span>
-			  </li>
-			  <li class="list-group-item">
-			  	<span>手术类型</span>
-			  	<span class="right">{{d.operate_type}}</span>
-			  </li>
-			  <li class="list-group-item gray">
-			  	<span>护理级别</span>
-			  	<span class="right">{{d.care_level}}</span>
-			  </li>
-			  <li class="list-group-item">
-			  	<span>床号</span>
-				<span class="right">{{d.bed_id}}</span>
-			  </li>
-			  <li class="list-group-item gray">
-			  	<span>入院日期</span>
-			  	<span class="right">{{d.in_day | date("yyyy年MM月dd日"}}</span>
-			  </li>
-			  <li class="list-group-item">
-			  	<span>出院日期</span>
-				<span class="right">{{d.out_day | date("yyyy年MM月dd日"}}</span>
-			  </li>
+				  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 's'"  >
+				  	
+				  	<div class="col-xs-8">
+				  		<span>{{el.name}}</span>
+				  	</div>
+				  	<div class="col-xs-4">
+				  		<span>{{el.type}}</span>
+				  	</div>
+				  </li>
 			</ul>
 		</div>
 	</div>
@@ -130,11 +119,40 @@
 
 			    		}
 					}); 
+					$.ajax({ 
+						type:"get",
+						url: "/sick/sickdrug?sick_id="+data.speaker_id,
+						dataType: "json", 
+						success: function(obj){
+
+							var d = obj.content,dd={},temp=[];
+							for(var i=0;i<d.length;i++){
+
+								if(!dd[d[i].drug_name]){
+									dd[d[i].drug_name] = {name:d[i].drug_name,type:d[i].drug_type,reason:[d[i].drug_reason],count:1,t:d[i].type,id:d[i].id};
+								}else{
+									dd[d[i].drug_name].reason.push(d[i].drug_reason);
+									dd[d[i].drug_name].count = dd[d[i].drug_name].reason.length;
+								}
+							}
+							for(n in dd){
+								temp.push(dd[n]);
+							}
+							vmodel.d = $.extend(data,{safe:temp});
+							console.log(vmodel.d.$model);
+							//vmodel.d = temp;
+			    		},
+			    		error:function(){
+
+			    		}
+					});
+
 	    		},
 	    		error:function(){
 
 	    		}
 			}); 
+
 		 	 $("#replay").on("touchstart",function(){
 		    	$("#askFrom").submit();
 		    })
