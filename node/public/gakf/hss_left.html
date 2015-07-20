@@ -63,8 +63,9 @@
 	  </div>
 	</nav>
 	<script type="text/javascript">
-		require(["store","avalon"],function(store){
-			$("#gradeList").on("touchstart",".checkbox",function(){
+		require(["store","avalon","index"],function(store){
+			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
+			$("#gradeList").on("tap",".checkbox",function(){
 				var temp = $(this).find(".tag");
 				RC.selected(this,temp.attr("alt"));
 			});

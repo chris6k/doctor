@@ -115,7 +115,7 @@ RC['setItem'] = function (d){
             var temp = d.items[i];
             if(temp.type == "checkbox"|| temp.type == "radio"){
                 for(var j = 0;j<temp.value.length;j++){
-                    $("span:contains("+temp.value[j]+")").parent().parent().trigger("touchstart");
+                    $("span:contains("+temp.value[j]+")").parent().parent().trigger("tap");
                 }
             }else if(temp.type == "input"){
                 for(var j = 0;j<temp.keys.length;j++){

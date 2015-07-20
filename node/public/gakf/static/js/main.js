@@ -29,7 +29,8 @@ require.config({
         "zyUpload":"zyUpload",
         "avalon":"avalon",
         "resource":"resource",
-        "store":"store.min"
+        "store":"store.min",
+        'index':'index'
 	}
 });
 
