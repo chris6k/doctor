@@ -125,6 +125,7 @@
 		  </div>
 		</nav>
 	</div>
+	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
 	<script type="text/javascript">
 	require(["store","bootstrap","avalon"],function(store){
 			var data = {
@@ -158,7 +159,10 @@
 					data:{sick:d},
 					success: function(d){
 						if(d.success){
-							//window.location.href= "sick.html?doctor_id="+d.content.doctor_id;
+							$("#commesCom").html("保存成功").show();
+							setTimeout(function(){
+								$("#commesCom").html("").hide();
+							},1500);
 						}
 		    		},
 		    		error:function(){
