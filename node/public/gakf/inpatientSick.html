@@ -128,6 +128,13 @@
 			  		</a>
 			 	</li>
 			</ul>
+			<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
+			<div class="row ads">
+				<div class="col-xs-12">
+					<span>此处显示广告</span>
+					<span class="close right">x</span>
+				</div>
+			</div>
 		</div>
 		
 		<div class="spacer10"></div>
@@ -139,7 +146,7 @@
 		  </div>
 		</nav>
 	</div>
-	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
+	
 	<script type="text/javascript">
 	require(["store","bootstrap","avalon"],function(store){
 			var data = {
@@ -235,6 +242,9 @@
 				p.find(".collapse").collapse('hide');
 				setUrl();
 			});
+			$(".close").on("touchstart",function(){
+		    	$(this).parent().parent().remove();
+		    });
 	});
 	</script>
 </body>
