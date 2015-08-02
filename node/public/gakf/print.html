@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>打印床头卡</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script  type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test" class="ms-controller">
+	<div class="container">
+		<div class="spacer50"></div>
+		<div class="row">
+	  		<div class="col-xs-12 title text-center">{{d.name}}</div>
+	  	</div>
+	  	<div class="row">
+	  		<div class="col-xs-7">年龄：{{d.age}}</div>
+			<div class="col-xs-5">性别：{{d.gender}}</div>
+			<div class="col-xs-7">主治医生：{{d.doctor_name}}</div>
+			<div class="col-xs-5">护士：{{d.nurse_name}}</div>
+			<div class="col-xs-7">床号：{{d.bed_id}}</div>
+			<div class="col-xs-5">护理级别：{{d.care_level}}</div>
+	  	</div>
+	  	<div class="spacer20"></div>
+	  	<div class="row">
+	  		<div class="col-xs-2"></div>
+	  		<div class="col-xs-8">
+	  			<img ms-src="{{d.ewurl}}" style="width:162px;">
+	  		</div>
+	  		<div class="col-xs-2"></div>
+	  	</div>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" >
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12 text-center">
+	    		<a ms-href="/gakf/check.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
+			    	<span style="color:#fff;" >打印</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/javascript">
+	require(["avalon"],function(){
+		var data = {
+			ewurl:"./static/images/ew.png"
+		},id;
+	   	var vmodel = avalon.define({
+	          $id: "test",
+	          d:data
+	    });
+	    avalon.scan();
+	    id = RC.parseOptions(window.location.href).sick_id;
+	    $.ajax({ 
+				type:"get",
+				url: "/sick/info?id="+id,
+				dataType: "json", 
+				success: function(obj){
+					vmodel.d = $.extend(data,obj.content);
+					$.ajax({ 
+						type:"get",
+						url: "/sick/sickscore?sick_id="+id,
+						dataType: "json", 
+						success: function(obj){
+							vmodel.d = $.extend(vmodel.d.$model,obj.content);
+			    		},
+			    		error:function(){
+
+			    		}
+					}); 
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+	});
+	</script>
+</body>
+</html>

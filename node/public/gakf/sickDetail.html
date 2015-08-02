@@ -142,10 +142,16 @@
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="!d.isout">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
-	    	<div class="col-xs-12">
+	    	<div class="col-xs-6 text-left">
 
 	    		<a ms-href="/gakf/check.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
-			    	<span style="color:#fff;" >查房</span>
+			    	<span style="color:#fff;" >诊疗记录</span>
+			    </a>
+	    	</div>
+	    	<div class="col-xs-6 text-right">
+
+	    		<a ms-href="/gakf/print.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
+			    	<span style="color:#fff;" >打印床头卡</span>
 			    </a>
 	    	</div>
 	    </div>
