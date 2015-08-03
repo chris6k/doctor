@@ -110,7 +110,7 @@ defines.define = (function(defines){return function (db, models) {
     models.sickstatus = db.define('sickstatus', {
         sick_id: {type: 'integer', required:true},
         table_type: {type: 'text', required:true},
-        value: {type: 'text',required:true, size:2048},
+        value: {type: 'text',required:true, size:6000},
         score:{type: 'integer'},
         level:{type: 'text'}
     });
@@ -118,7 +118,7 @@ defines.define = (function(defines){return function (db, models) {
     //量表表
     models.sicktables = db.define('sicktable', {
         table_type: {type: 'text', required: true, unique: true},
-        value: {type: 'text', required: true, size:2048},
+        value: {type: 'text', required: true, size:6000},
         target: {type:'text', required:true}, //doctor, sick,
         status:{type:'text', required:true, defaultValue:'t'} //t|f
     });
