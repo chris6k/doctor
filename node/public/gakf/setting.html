@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的账号</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script  type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test" >
+	<div class="container ">
+		<div class="spacer10"></div>
+		<ul class="list-group">
+		  <li class="list-group-item">
+		  	<span>姓名</span>
+		  	<input class="right text-right my-input1 gray" type="text" placeholder="姓名" ms-duplex="d.name"/>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>签名</span>
+		  	<textarea class="right my-textarea1" ms-duplex="d.signature" placeholder="设置个性签名"></textarea>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>原始密码</span>
+		  	<input class="right text-right my-input1 gray" type="password" placeholder="原始密码" ms-duplex="d.psw"/>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>新密码</span>
+		  	<input class="right text-right my-input1 gray" type="password" placeholder="新密码" ms-duplex="d.npsw"/>
+		  </li>
+		</ul>
+		<div class="spacer10"></div>
+		<ul class="list-group">
+			 <li class="list-group-item text-center">
+			  	<a href="login.html">退出登录</a>
+			  </li>
+		</ul>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="#">
+			    	<span style="color:#fff;">保存</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/javascript">
+		require(["store","avalon"],function(store){
+		var data = {},id,temp=store.get("user"),id,url;
+		if(temp.type=="sick"){
+			id = temp.id;
+			url = "/sick/info?id="+id;
+		}else if(temp.type == "doctor"){
+			id = temp.doctor_id;
+			url = "/doctor/info?doctor_id="+id;
+		}
+	   	var vmodel = avalon.define({
+	          $id: "test",
+	          d:data
+	    });
+	    avalon.scan();
+	    $.ajax({ 
+				type:"get",
+				url: url,
+				dataType: "json", 
+				success: function(obj){
+					vmodel.d = $.extend(data,obj.content);
+					$.ajax({ 
+						type:"get",
+						url: url,
+						dataType: "json", 
+						success: function(obj){
+							vmodel.d = $.extend(vmodel.d.$model,obj.content);
+			    		},
+			    		error:function(){
+
+			    		}
+					}); 
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+	    //退出登录
+
+	});
+	</script>
+</body>
+</html>

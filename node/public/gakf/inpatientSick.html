@@ -27,7 +27,21 @@
 		  </li>
 		  <li class="list-group-item">
 		  	<span>年龄</span>
-		  	<input class="right text-right my-input1" type="text" placeholder="年龄" ms-duplex="d.age"/>
+		  	<span class="right">
+		  		<input class=" text-right my-input1" type="text" placeholder="年龄" ms-duplex="d.age"/>岁
+		  	</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>身高</span>
+		  	<span class="right">
+		  		<input class=" text-right my-input1" type="text" placeholder="身高" ms-duplex="d.hight"/> cm
+		  	</span>
+		  </li>
+		  <li class="list-group-item">
+		  	<span>体重</span>
+		  	<span class="right">
+		  		<input class=" text-right my-input1" type="text" placeholder="体重" ms-duplex="d.weight"/> kg
+		  	</span>
 		  </li>
 		  <li class="list-group-item gray my-collapse" >
 		  	<a href="#sexDom"  data-toggle="collapse" >
@@ -66,11 +80,11 @@
 		  </li>
 		  <li class="list-group-item gray">
 		  	<span>入院日期</span>
-		  	<input class="right text-right my-input1" ms-duplex="d.in_day" >
+		  	<span class="right">{{d.in_day}}</span>
 		  </li>
 		  <li class="list-group-item">
 		  	<span>出院日期</span>
-		  	<input class="right text-right my-input1" ms-duplex="d.out_day" >
+		  	<span class="right">{{d.out_day}}</span>
 		  </li>
 		</ul>
 		<span style="padding:5px 0px;display: inline-block;">安全用药</span>
@@ -114,6 +128,13 @@
 			  		</a>
 			 	</li>
 			</ul>
+			<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
+			<div class="row ads">
+				<div class="col-xs-12">
+					<span>此处显示广告</span>
+					<span class="close right">x</span>
+				</div>
+			</div>
 		</div>
 		
 		<div class="spacer10"></div>
@@ -125,7 +146,7 @@
 		  </div>
 		</nav>
 	</div>
-	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
+	
 	<script type="text/javascript">
 	require(["store","bootstrap","avalon"],function(store){
 			var data = {
@@ -133,7 +154,7 @@
 	            "age":"",
 	            "gender":"男",
 	            "doctor_id":+RC.parseOptions(window.location.href).doctor_id,
-	            "operate_type_arr":["创伤手术","关节手术"],
+	            "operate_type_arr":["创伤手术","关节手术","其他"],
 	            "operate_type":"创伤手术",
 	            "care_level_arr":["高危"],
 	            "care_level":"高危",
@@ -210,7 +231,7 @@
 		    function setUrl(){
 		    	if(vmodel.d.operate_type=="关节手术"){
 					vmodel.d.vteUrl = "/gakf/caprini.html?sick_id="+data.sickId;
-				}else if(vmodel.d.operate_type=="创伤手术"){
+				}else if(vmodel.d.operate_type=="创伤手术" || vmodel.d.operate_type=="其他"){
 				    vmodel.d.vteUrl = "/gakf/rapt.html?sick_id="+data.sickId;
 				}
 		    }
@@ -221,6 +242,9 @@
 				p.find(".collapse").collapse('hide');
 				setUrl();
 			});
+			$(".close").on("touchstart",function(){
+		    	$(this).parent().parent().remove();
+		    });
 	});
 	</script>
 </body>

@@ -37,7 +37,8 @@
 			  </div>
 		</nav>
 		<div class="navCon">
-			<span style="padding:5px 0px;display: inline-block;">禁用</span>
+			<span style="padding:5px 0px;display: inline-block;" ms-if="d.isf" >禁用</span>
+			<div style="padding:5px 0px;" ms-if="!d.isf">无禁用</div>
 			<ul class="list-group">
 				  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 'f'"  >
 				  	
@@ -56,6 +57,7 @@
 				  </li>
 			</ul>
 			<span style="padding:5px 0px;display: inline-block;">推荐</span>
+			<div style="padding:5px 0px;" ms-if="!d.iss">无推荐</div>
 			<ul class="list-group">
 				  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 's'"  >
 				  	
@@ -135,11 +137,17 @@
 									dd[d[i].drug_name].reason.push(d[i].drug_reason);
 									dd[d[i].drug_name].count = dd[d[i].drug_name].reason.length;
 								}
+								if(!data.iss && d[i].type == "s"){
+									data.iss = true;
+								}
+								if(!data.isf && d[i].type == "f"){
+									data.isf = true;
+								}
 							}
 							for(n in dd){
 								temp.push(dd[n]);
 							}
-							vmodel.d = $.extend(data,{safe:temp});
+							vmodel.d = $.extend(data,{safe:temp,});
 							console.log(vmodel.d.$model);
 							//vmodel.d = temp;
 			    		},
