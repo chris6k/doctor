@@ -62,7 +62,7 @@
   "items": [{
     "title": "疼痛",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "行走时无疼痛",
       "value": 15
@@ -82,7 +82,7 @@
   }, {
     "title": "功能",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "行走站立无限制",
       "value": 12
@@ -105,7 +105,7 @@
   }, {
     "title": "功能",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "能上楼梯",
       "value": 5
@@ -122,7 +122,7 @@
   }, {
     "title": "功能",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "屋内行走,无需支具",
       "value": 5
@@ -150,7 +150,7 @@
   }, {
     "title": "肌力",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "优：完全能对抗阻力",
       "value": 10
@@ -170,7 +170,7 @@
   }, {
     "title": "屈曲畸形",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "无畸形",
       "value": 10
@@ -190,7 +190,7 @@
   }, {
     "title": "稳定性",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "正常",
       "value": 10
@@ -210,7 +210,7 @@
   }, {
     "title": "减分项目",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "单手杖",
       "value": -1
@@ -258,7 +258,7 @@
   "items": [{
     "title": "疼痛",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "行走时无疼痛",
       "value": 15
@@ -278,7 +278,7 @@
   }, {
     "title": "功能",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "行走站立无限制",
       "value": 12
@@ -301,7 +301,7 @@
   }, {
     "title": "功能",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "能上楼梯",
       "value": 5
@@ -318,7 +318,7 @@
   }, {
     "title": "功能",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "屋内行走,无需支具",
       "value": 5
@@ -346,7 +346,7 @@
   }, {
     "title": "肌力",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "优：完全能对抗阻力",
       "value": 10
@@ -366,7 +366,7 @@
   }, {
     "title": "屈曲畸形",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "无畸形",
       "value": 10
@@ -386,7 +386,7 @@
   }, {
     "title": "稳定性",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "正常",
       "value": 10
@@ -406,7 +406,7 @@
   }, {
     "title": "减分项目",
     "summary": "",
-    "type": "checkbox",
+    "type": "radio",
     "keys": [{
       "key": "单手杖",
       "value": -1
@@ -893,22 +893,27 @@
      "value":"",
      "scored":false,
      "checkedStyle":"none"
-    },
-    {
+    }
+  ]
+},
+{
+  "title":"出血高危评估",
+  "summary":"",
+  "items":[
+   {
      "title":"是否出血高危人群",
      "summary":"",
      "type":"checkbox",
      "keys":[
-     {"key":"是否有家族性出血史","value":""},
-     {"key":"自己是否有出血史","value":""},
-     {"key":"是否手术之前使用过抗凝治疗","value":""}
+     {"key":"自己或者家族性有凝血障碍疾病","value":""},
+     {"key":"有易出血症状(例如血流不止或者皮肤容易瘀斑等)","value":""},
+     {"key":"手术之前使用过任何抗凝治疗(抗血小板治疗或者抗凝治疗)","value":""}
      ],
      "value":"",
      "scored":false,
      "checkedStyle":"none"
-    }
-  ]
-}
+    }]
+  }
 ]
 
 

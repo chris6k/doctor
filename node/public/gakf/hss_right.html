@@ -28,8 +28,8 @@
 		<div class="spacer5" ms-if="d.summary==''"></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<span class="my-title">{{el.title}}</span>
-			<ul class="list-group " ms-if="el.type == 'checkbox'">
-			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
+			<ul class="list-group " ms-if="el.type == 'radio'">
+			  <li class="list-group-item radio" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
@@ -65,9 +65,11 @@
 	<script type="text/javascript">
 		require(["store","avalon","index"],function(store){
 			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
-			$("#gradeList").on("tap",".checkbox",function(){
-				var temp = $(this).find(".tag");
+			$("#gradeList").on("tap",".radio",function(){
+				var temp = $(this).find(".tag"),p=$(this).parent().parent();
+				if(p.data("selected"))RC.remove(p.data("selected"));
 				RC.selected(this,temp.attr("alt"));
+				p.data("selected",this);
 			});
 
 			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
