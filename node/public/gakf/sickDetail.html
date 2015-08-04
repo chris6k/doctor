@@ -9,6 +9,12 @@
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<style type="text/css">
+	.text-center .row div{
+		padding:0px;
+		text-align: content;
+	}
+	</style>
 </head>
 <body ms-controller="test" class="ms-controller">
 
@@ -55,25 +61,7 @@
 			<span class="right">{{d.bed_id}}</span>
 		  </li>
 		</ul>
-		<span style="padding:5px 0px;display: inline-block;">安全用药</span>
-		<ul class="list-group">
-			<li class="list-group-item">
-		  		<a ms-href="/gakf/taboos.html?sick_id={{d.sickId}}">
-  			  		<span>安全用药量表</span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.select_count!=''">共 {{d.select_count}} 项用药禁忌</span>
-  					<span class="right orange sl8" ms-if="!d.select_count">无用药禁忌</span>
-		  		</a>
-		 	</li>
-		 	<li class="list-group-item">
-		  		<a ms-href="/gakf/recommend.html?sick_id={{d.sickId}}">
-  			  		<span>安全用药建议 </span>
-  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.drug_count!=''">共 {{d.drug_count}} 条建议</span>
-  					<span class="right orange sl8" ms-if="!d.drug_count">无建议</span>
-		  		</a>
-		 	</li>
-		</ul>
+		
 		<span style="padding:5px 0px;display: inline-block;">患者自评量表（患者填写）</span>
 		<ul class="list-group">
 			<li class="list-group-item">
@@ -90,8 +78,27 @@
 		  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
   			  		<span>出血评估 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.rapt!=''">{{d.rapt}}</span>
-  					<span class="right orange sl8" ms-if="!d.rapt">高出血倾向</span>
+  					<span class="right orange sl8" ms-if="d.cxpg!=''">{{d.cxpg}}</span>
+  					<span class="right orange sl8" ms-if="!d.cxpg">2项目出血风险</span>
+		  		</a>
+		 	</li>
+		</ul>
+		<span style="padding:5px 0px;display: inline-block;">安全用药</span>
+		<ul class="list-group">
+			<!-- <li class="list-group-item">
+		  		<a ms-href="/gakf/taboos.html?sick_id={{d.sickId}}">
+  			  		<span>安全用药量表</span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8" ms-if="d.select_count!=''">共 {{d.select_count}} 项用药禁忌</span>
+  					<span class="right orange sl8" ms-if="!d.select_count">无用药禁忌</span>
+		  		</a>
+		 	</li> -->
+		 	<li class="list-group-item">
+		  		<a ms-href="/gakf/recommend.html?sick_id={{d.sickId}}">
+  			  		<span>安全用药建议 </span>
+  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+  					<span class="right orange sl8" ms-if="d.drug_count!=''">共 {{d.drug_count}} 条建议</span>
+  					<span class="right orange sl8" ms-if="!d.drug_count">无建议</span>
 		  		</a>
 		 	</li>
 		</ul>
@@ -106,14 +113,7 @@
 				  	<span>出院日期</span>
 					<input class="right text-right my-input1" ms-duplex="d.out_day" >
 				</li>
-				<li class="list-group-item">
-			  		<a ms-href="/gakf/hss_left.html?sick_id={{d.sickId}}">
-	  			  		<span>膝关节HHS评分 </span>
-	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-	  					<span class="right orange sl8" ms-if="d.hss!=''">{{d.hss}}</span>
-	  					<span class="right orange sl8" ms-if="!d.hss">点击填写</span>
-			  		</a>
-			 	</li>
+				
 				<li class="list-group-item">
 			  		<a ms-href="/gakf/before.html?sick_id={{d.sickId}}">
 	  			  		<span>术前骨科筛查量表</span>
@@ -135,6 +135,14 @@
 	  					<span class="right orange sl8">点击填写</span>
 			  		</a>
 			 	</li>
+			 	<li class="list-group-item">
+			  		<a ms-href="/gakf/hss_left.html?sick_id={{d.sickId}}">
+	  			  		<span>膝关节HHS评分 </span>
+	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
+	  					<span class="right orange sl8" ms-if="d.hss!=''">{{d.hss}}</span>
+	  					<span class="right orange sl8" ms-if="!d.hss">点击填写</span>
+			  		</a>
+			 	</li>
 			</ul>
 		</div>
 	</div>
@@ -152,16 +160,21 @@
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="!d.isout">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
-	    	<div class="col-xs-4 text-left">
+	    	<div class="col-xs-2">
 	    		<span style="color:#fff;" ms-click="save">保存</span>
 	    	</div>
-	    	<div class="col-xs-4 text-left">
+	    	<div class="col-xs-3">
+	    		<a ms-href="/gakf/flow.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}&isout={{d.isout}}">
+			    	<span style="color:#fff;">联系患者</span>
+			    </a>
+	    	</div>
+	    	<div class="col-xs-3">
 
 	    		<a ms-href="/gakf/check.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
 			    	<span style="color:#fff;" >诊疗记录</span>
 			    </a>
 	    	</div>
-	    	<div class="col-xs-4 text-right">
+	    	<div class="col-xs-4">
 
 	    		<a ms-href="/gakf/print.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
 			    	<span style="color:#fff;" >打印床头卡</span>
