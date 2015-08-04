@@ -24,7 +24,13 @@
 		{{/if}}
 		{{if v.day}}
 					<div class="text-center">
-						<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日'}} 出院第 1 天</span>
+						<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日'}}
+							{{if isout === "false"}}
+								住院第 1 天
+							{{else}}
+								出院第 1 天
+							{{/if}}
+						</span>
 					</div>
 					<div class="panel panel-default my-panel">
 					  <div class="panel-body">
@@ -107,7 +113,8 @@
 				url: url,
 				dataType: "json", 
 				success: function(obj){
-					data.d= obj.content;
+					data.d = obj.content;
+					data.isout = user.isout;
 					var pics  = [];
 					//匹配json内容
 				    var html = render($("#test"),data);
@@ -119,7 +126,7 @@
 	    		}
 			}); 
 		 	$("#askDoctor").on("touchstart",function(){
-		 		var params = "?doctor_id="+user.doctor_id+"&sick_id="+user.sick_id;
+		 		var params = "?doctor_id="+user.doctor_id+"&sick_id="+user.sick_id+"&isout="+user.isout;
 		    	$(this).attr("href","addFlow.html"+params);
 		    })
 		});

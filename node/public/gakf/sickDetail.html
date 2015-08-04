@@ -75,7 +75,7 @@
 		 	</li>
 		 	
 		 	<li class="list-group-item">
-		  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
+		  		<a ms-href="/gakf/cxgwpg.html?sick_id={{d.sickId}}">
   			  		<span>出血评估 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.cxpg!=''">{{d.cxpg}}</span>
@@ -160,15 +160,15 @@
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="!d.isout">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
-	    	<div class="col-xs-2">
+	    	<div class="col-xs-4">
 	    		<span style="color:#fff;" ms-click="save">保存</span>
 	    	</div>
-	    	<div class="col-xs-3">
-	    		<a ms-href="/gakf/flow.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}&isout={{d.isout}}">
+	    	<!-- <div class="col-xs-3">
+	    		<a href="javascript:void(0)">
 			    	<span style="color:#fff;">联系患者</span>
 			    </a>
-	    	</div>
-	    	<div class="col-xs-3">
+	    	</div> -->
+	    	<div class="col-xs-4">
 
 	    		<a ms-href="/gakf/check.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
 			    	<span style="color:#fff;" >诊疗记录</span>
