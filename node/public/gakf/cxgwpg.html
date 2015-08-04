@@ -12,8 +12,6 @@
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
-		<span class="my-title" ms-if="d.summary!=''">{{d.summary|html}}</span>
-		<div class="spacer5" ms-if="d.summary==''"></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<span class="my-title">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
@@ -38,6 +36,8 @@
 			  </li>
 			</ul>
 		</div>
+		<div class="spacer50"></div>
+		<div class="">{{d.summary|html}}</div>
 	</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
@@ -68,59 +68,25 @@
 			id = RC.parseOptions(window.location.href).sick_id;
 			var vmodel ;
 			
-			// $.ajax({ 
-			// 	type:"get",
-			// 	url: "/sick/sickstatus?table_type=caprini&sick_id="+id,
-			// 	dataType: "json", 
-			// 	success: function(obj){
-					// obj.content.value = $.parseJSON(obj.content.value);
-					tempobj = {
-					  "title":"出血高危评估",
-					  "summary":"",
-					  "items":[
-					   {
-					     "title":"是否出血高危人群",
-					     "summary":"",
-					     "type":"checkbox",
-					     "keys":[
-					     {"key":"自己或者家族性有凝血障碍疾病","value":""},
-					     {"key":"有易出血症状(例如血流不止或者皮肤容易瘀斑等)","value":""},
-					     {"key":"手术之前使用过任何抗凝治疗(抗血小板治疗或者抗凝治疗)","value":""}
-					     ],
-					     "value":"",
-					     "scored":false,
-					     "checkedStyle":"none"
-					    }]
-					  };
-					var d = {
-					  "title":"出血高危评估",
-					  "summary":"",
-					  "items":[
-					   {
-					     "title":"是否出血高危人群",
-					     "summary":"",
-					     "type":"checkbox",
-					     "keys":[
-					     {"key":"自己或者家族性有凝血障碍疾病","value":""},
-					     {"key":"有易出血症状(例如血流不止或者皮肤容易瘀斑等)","value":""},
-					     {"key":"手术之前使用过任何抗凝治疗(抗血小板治疗或者抗凝治疗)","value":""}
-					     ],
-					     "value":"",
-					     "scored":false,
-					     "checkedStyle":"none"
-					    }]
-					  };
+			$.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=cxgwpg&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					var d = obj.content.value;
 					d.isshow = data.isshow;
 					d.id = id;
 					d.type = temp.type;
 					RC.setvmodel(d,tempobj);
 					RC.setItem(d);
 					
-	  //   		},
-	  //   		error:function(){
+	    		},
+	    		error:function(){
 
-	  //   		}
-			// }); 
+	    		}
+			}); 
 
 		});
 	</script>
