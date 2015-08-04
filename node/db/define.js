@@ -73,7 +73,9 @@ defines.define = (function(defines){return function (db, models) {
         wx_id: {type: 'text', required: false},
         status: {type: 'text', defaultValue: 'u'},//t,f,u
         drug_s: {type: 'integer', defaultValue: 0, required: false},
-        drug_f: {type: 'integer', defaultValue: 0, required: false}
+        drug_f: {type: 'integer', defaultValue: 0, required: false},
+        height: {type: 'text', required: false},
+        wight:{type: 'text', required: false}
     }, {
         methods: {
             in_duration: function () {
