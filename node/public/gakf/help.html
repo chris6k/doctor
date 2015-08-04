@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>帮助</title>
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body>
+	
+	<script type="text/javascript">
+	require(["store"],function(store){
+		var data={},user=store.get("user");
+		if(user.type == "doctor"){
+			window.location.href = "/gakf/help_doctor.html";
+		}else{
+			window.location.href = "/gakf/help_sick.html";
+		}
+
+	});
+	</script>
+</body>
+</html>
