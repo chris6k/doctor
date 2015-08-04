@@ -9,6 +9,12 @@
 	<script type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<style type="text/css">
+	.text-center .row div{
+		padding:0px;
+		text-align: content;
+	}
+	</style>
 </head>
 <body ms-controller="test" class="ms-controller">
 
@@ -154,16 +160,21 @@
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" ms-visible="d.isvisible" ms-if="!d.isout">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
-	    	<div class="col-xs-4 text-left">
+	    	<div class="col-xs-2">
 	    		<span style="color:#fff;" ms-click="save">保存</span>
 	    	</div>
-	    	<div class="col-xs-4 text-left">
+	    	<div class="col-xs-3">
+	    		<a ms-href="/gakf/flow.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}&isout={{d.isout}}">
+			    	<span style="color:#fff;">联系患者</span>
+			    </a>
+	    	</div>
+	    	<div class="col-xs-3">
 
 	    		<a ms-href="/gakf/check.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
 			    	<span style="color:#fff;" >诊疗记录</span>
 			    </a>
 	    	</div>
-	    	<div class="col-xs-4 text-right">
+	    	<div class="col-xs-4">
 
 	    		<a ms-href="/gakf/print.html?sick_id={{d.sickId}}&doctor_id={{d.doctor_id}}">
 			    	<span style="color:#fff;" >打印床头卡</span>
