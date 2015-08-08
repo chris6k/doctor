@@ -28,8 +28,24 @@
 			<div class="form-group">
 				<input type="password" class="form-control my-input repassword" id="repassword" name="login_repwd" placeholder="确认密码"/>
 			</div>
+			<div class="form-group">
+			  	<input class="form-control my-input user" type="text" placeholder="年龄 (岁)" name="age"/>
+			</div>
+			<div class="form-group">
+			  	<input class="form-control my-input user" type="text" placeholder="身高 (cm)" name="height"/>
+			</div>
+			<div class="form-group">
+			  	<input class="form-control my-input user" type="text" placeholder="体重 (kg)" name="weight"/>
+			</div>
 
 			<div class="spacer30"></div>
+			<div class="form-group">
+
+				<select  class="form-control my-input "  id="gender" name="gender" ms-change="change($event)">
+					<option value = "" >选择性别</option>
+					<option ms-repeat-el="d.gender" ms-attr-value="{{el.name}}" >{{el.name}}</option>
+				</select>
+			</div>
 			<div class="form-group">
 
 				<select  class="form-control my-input "  id="hospital" name="hospital" ms-change="change($event)">
@@ -71,6 +87,7 @@
 				reg.validate("regForm");
 				var data = {
 					hospital:[],
+					gender:[{name:"男"},{name:"女"}],
 					list:[],
 					area:[],
 					room:[],

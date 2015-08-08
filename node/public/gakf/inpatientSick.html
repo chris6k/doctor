@@ -64,7 +64,7 @@
 				<div class="secondCon" ms-repeat-el="d.operate_type_arr" ms-attr-alt="{{el}}">{{el}}</div>
 			</div>
 		  </li>
-		  <li class="list-group-item gray my-collapse">
+		  <!-- <li class="list-group-item gray my-collapse">
 		  	<a href="#care_level" data-toggle="collapse" >
 			  	<span>护理级别</span>
 			  	<span class="right detail" class="" >高危</span>
@@ -73,7 +73,7 @@
 			<div id="care_level" class="panel-collapse collapse text-center" role="tabpanel" >
 				<div class="secondCon" ms-repeat-el="d.care_level_arr" ms-attr-alt="{{el}}">{{el}}</div>
 			</div>
-		  </li>
+		  </li> -->
 		  <li class="list-group-item">
 		  	<span>床号</span>
 			<input class="right text-right my-input1" type="text" placeholder="床号" ms-duplex="d.bed_id" />
@@ -137,12 +137,12 @@
 				 	</li>
 			</ul>
 			<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
-			<div class="row ads">
+			<!-- <div class="row ads">
 				<div class="col-xs-12">
 					<span>此处显示广告</span>
 					<span class="close right">x</span>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		
 		<div class="spacer10"></div>
@@ -251,9 +251,10 @@
 				p.find(".collapse").collapse('hide');
 				setUrl();
 			});
-			$(".close").on("touchstart",function(){
-		    	$(this).parent().parent().remove();
-		    });
+			
+			// $(".close").on("touchstart",function(){
+		 //    	$(this).parent().parent().remove();
+		 //    });
 	});
 	</script>
 </body>

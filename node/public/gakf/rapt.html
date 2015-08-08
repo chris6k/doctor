@@ -15,10 +15,10 @@
 	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top" >
 	  <div id="my-tab">
 	    <div class="col-xs-6 text-center my-nav-line selected">
-	    	<a href="javascript:void(0)">RAPT 量表</a>
+	    	<a href="javascript:void(0)">RAPT 量表(创伤)</a>
 	    </div>
 	    <div class="col-xs-6 text-center my-nav-line">
-	    	<a ms-href="/gakf/caprini.html?sick_id={{d.id}}">Caprini 量表</a>
+	    	<a ms-href="/gakf/caprini.html?sick_id={{d.id}}">Caprini 量表(关节)</a>
 	    </div>
 	  </div>
 	</nav>
@@ -63,7 +63,7 @@
 		</div>
 		<div class="">{{d.summary|html}}</div>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" >
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
