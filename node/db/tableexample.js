@@ -47,7 +47,7 @@
 
 {
   "title": "膝关节HSS评分(左腿)",
-  "summary": "",
+  "summary": "<div class='tips'>免责声明:<br/>本量表参考http://www.haodf.com/zhuanjiaguandian/zhuyuchang_733246266.htm <br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
   "items": [{
     "title": "疼痛",
     "summary": "",
@@ -213,27 +213,54 @@
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
-  }, {
+  },{
     "title": "减分项目",
     "summary": "",
-    "type": "input",
+    "type": "radio",
     "keys": [{
-      "key": "伸直滞缺5度(-2)",
+      "key": "伸直滞缺5度",
       "value": -2
     }, {
-      "key": "伸直滞缺10度(-3)",
+      "key": "伸直滞缺10度",
       "value": -3
     }, {
-      "key": "伸直滞缺15度(-5)",
+      "key": "伸直滞缺15度",
       "value": -5
-    }, {
-      "key": "每5度外翻(-1X)",
-      "value": 0
-    }, {
-      "key": "每5度内翻(-1X)",
-      "value": 0
     }],
-    "ratio": -1,
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度外翻",
+      "value": -1
+    }, {
+      "key": "每10度外翻",
+      "value": -2
+    }, {
+      "key": "每15度外翻",
+      "value": -3
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度内翻",
+      "value": -1
+    }, {
+      "key": "每10度内翻",
+      "value": -2
+    }, {
+      "key": "每15度内翻",
+      "value": -3
+    }],
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
@@ -243,7 +270,7 @@
 
 {
   "title": "膝关节HSS评分(右腿)",
-  "summary": "",
+  "summary": "<div class='tips'>免责声明:<br/>本量表参考http://www.haodf.com/zhuanjiaguandian/zhuyuchang_733246266.htm <br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
   "items": [{
     "title": "疼痛",
     "summary": "",
@@ -409,27 +436,54 @@
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
-  }, {
+  },{
     "title": "减分项目",
     "summary": "",
-    "type": "input",
+    "type": "radio",
     "keys": [{
-      "key": "伸直滞缺5度(-2)",
+      "key": "伸直滞缺5度",
       "value": -2
     }, {
-      "key": "伸直滞缺10度(-3)",
+      "key": "伸直滞缺10度",
       "value": -3
     }, {
-      "key": "伸直滞缺15度(-5)",
+      "key": "伸直滞缺15度",
       "value": -5
-    }, {
-      "key": "每5度外翻(-1X)",
-      "value": 0
-    }, {
-      "key": "每5度内翻(-1X)",
-      "value": 0
     }],
-    "ratio": -1,
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度外翻",
+      "value": -1
+    }, {
+      "key": "每10度外翻",
+      "value": -2
+    }, {
+      "key": "每15度外翻",
+      "value": -3
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度内翻",
+      "value": -1
+    }, {
+      "key": "每10度内翻",
+      "value": -2
+    }, {
+      "key": "每15度内翻",
+      "value": -3
+    }],
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
