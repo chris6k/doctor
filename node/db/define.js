@@ -75,7 +75,9 @@ defines.define = (function(defines){return function (db, models) {
         drug_s: {type: 'integer', defaultValue: 0, required: false},
         drug_f: {type: 'integer', defaultValue: 0, required: false},
         height: {type: 'text', required: false},
-        weight:{type: 'text', required: false}
+        weight:{type: 'text', required: false},
+        age:{type: 'integer', required: false},
+        gender:{type: 'text', required:false} //m,f
     }, {
         methods: {
             in_duration: function () {
