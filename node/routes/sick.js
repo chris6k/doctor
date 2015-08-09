@@ -235,53 +235,63 @@ router.post('/savestatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
     var table = req.param('table');
-    req.models.sickstatus.find({sick_id: sick_id, table_type: table_type}, function(err, data) {
-        if (err) {
-            res.json(result(false, 'err', err));
-        } else {
-            if (data && data.length > 0) {
-                var tablejson = JSON.parse(table);
-                var score = calc.score(tablejson);
-                var level = calc.level(table_type, tablejson);
-                var pro_drug = recommend.prohibit(tablejson);
-                var rec_drug = recommend.recomm(pro_drug);
-
-                saveProhibitDrug(req, pro_drug, sick_id, table_type);
-                saveRecommDrug(req, rec_drug, sick_id, table_type);
-
-                data[0].save({value: JSON.stringify(tablejson), score:score, level:level}, function(err) {
-                    if (err) {
-                        res.json(result(false, 'err', err));
-                    } else {
-                        res.json(result(true, '',{}));
-                    }
-                });
+    req.models.sick.get({id: sick_id}, function(err, sick) {
+        if (err) res.json(result(false, 'err', err));
+        else if (!sick) res.json(result(false, 'no such sick[id=' + sick_id,null));
+        else {
+            var bmi = cal.bmi(sick.weight || 0, sick.height || 0);
+            var age = cal.age;
+            var gender = cal.gender;
+            req.models.sickstatus.find({sick_id: sick_id, table_type: table_type}, function(err, data) {
+            if (err) {
+                res.json(result(false, 'err', err));
             } else {
-                try {
+                if (data && data.length > 0) {
                     var tablejson = JSON.parse(table);
-                    var score = calc.score(tablejson);
+                    var score = calc.score(tablejson, bmi, age);
                     var level = calc.level(table_type, tablejson);
-                    var pro_drug = recommend.prohibit(tablejson);
+                    var pro_drug = recommend.prohibit(tablejson, gender, age);
                     var rec_drug = recommend.recomm(pro_drug);
 
                     saveProhibitDrug(req, pro_drug, sick_id, table_type);
                     saveRecommDrug(req, rec_drug, sick_id, table_type);
-                    req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
-                    function(err, item){
-                    if (err) {
-                        res.json(result(false, 'err', err));
+
+                    data[0].save({value: JSON.stringify(tablejson), score:score, level:level}, function(err) {
+                        if (err) {
+                            res.json(result(false, 'err', err));
                         } else {
-                        res.json(result(true,'',{}));
-                    }
+                            res.json(result(true, '',{}));
+                        }
                     });
-                } catch (e) {
-                    console.error(e);
-                    res.json(result(false,'err', e));
+                } else {
+                    try {
+                        var tablejson = JSON.parse(table);
+                        var score = calc.score(tablejson, bmi, age);
+                        var level = calc.level(table_type, tablejson);
+                        var pro_drug = recommend.prohibit(tablejson);
+                        var rec_drug = recommend.recomm(pro_drug);
+
+                        saveProhibitDrug(req, pro_drug, sick_id, table_type);
+                        saveRecommDrug(req, rec_drug, sick_id, table_type);
+                        req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
+                        function(err, item){
+                        if (err) {
+                            res.json(result(false, 'err', err));
+                            } else {
+                            res.json(result(true,'',{}));
+                        }
+                        });
+                    } catch (e) {
+                        console.error(e);
+                        res.json(result(false,'err', e));
+                    }
+                    
                 }
-                
             }
+    });
         }
     });
+    
 });
 
 router.get('/sickscore', function(req, res, next) {
@@ -298,10 +308,10 @@ router.get('/sickscore', function(req, res, next) {
                 re.caprini = item.level||'';
             } 
             if (item.table_type === 'hss_left') {
-                re.hss += item.score||0;
+                re.hss += item.level||'';
             }
             if (item.table_type === 'hss_right') {
-                re.hss += item.score||0;
+                re.hss += item.level||'';
             }
             if (item.table_type === 'rapt') {
                 re.rapt = item.level||'';

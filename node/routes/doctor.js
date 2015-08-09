@@ -28,6 +28,7 @@ router.get('/out_sicks', function (req, res, next) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
+    var sick_array = [];
     req.models.sick.find({
         doctor_id: doctor_id,
         out_day: orm.lte(new Date())
@@ -38,8 +39,24 @@ router.get('/out_sicks', function (req, res, next) {
         } else {
             for (var i = 0; i< data.length; i++) {
                 data[i].out_dur = data[i].out_duration();
+                sick_array.push(data[i]);
             }
-            res.json(result(true, '', data));
+            req.model.sick.find({
+                doctor_id : doctor_id,
+                in_day: orm.lte(new Date(Date.now() - 18 * 24 * 3600 * 1000)),
+                out_day: null
+            }, function(err, data2) {
+                if (err || !data) {
+                    res.json(result(true, '', sick_array));
+                } else {
+                    for (var i = 0; i < data2.length; i++) {
+                        data2[i].out_dur = data2[i].out_duration();
+                        sick_array.push(data2[i]);
+                    }
+                    res.json(result(true, '', sick_array));
+                }
+            });
+           
         }
     });
 });

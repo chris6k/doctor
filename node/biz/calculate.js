@@ -1,4 +1,4 @@
-var score = function(table) {
+var score = function(table, bmi, age) {
 	var result = 0;
 	var items = table.items;
 	if (!items || items.length === 0) return result;
@@ -6,6 +6,33 @@ var score = function(table) {
 		result += cal(items[i]);
 	}
 	table.score = result;
+	if (table_type == 'caprini') {
+		if (bmi >= 25 && bmi < 40) {
+			result += 1;
+		}
+		if (age > 41 && age <= 60) {
+			result += 1;
+		} else if (age >= 61 && age <= 74) {
+			result += 2;
+		} else if (age >= 75) {
+			result += 3;
+		}
+	} else if (table_type == 'rapt') {
+		if (bmi >= 25) {
+			result += 2;
+		}
+		if (age >= 40 and age <= 60) {
+			result =+ 2;
+		} else if (age > 61 && age <= 75) {
+			result += 3;
+		} else if (age > 75) {
+			result += 4;
+		}
+	} else if (table_type == 'slywjj-female') {
+		//todo
+	} else if (table_type == 'slywjj-male') {
+		//todo
+	}
 	return result;
 };
 
@@ -24,9 +51,25 @@ var level = function(table_type, table) {
 			table.level = '极高危';
 		}
 	} else if (table_type === 'hss_left') {
-		//todo	
+		if (table.score >= 85) {
+			table.level = '优';
+		} else if (table.score >= 70 && table.score < 85) {
+			table.level = '良';
+		} else if (table.score >= 60 && table.score < 70 ) {
+			table.level = '中';
+		} else if (table.score < 60) {
+			table.level = '差';
+		}
 	} else if (table_type == 'hss_right') {
-		//todo
+		if (table.score >= 85) {
+			table.level = '优';
+		} else if (table.score >= 70 && table.score < 85) {
+			table.level = '良';
+		} else if (table.score >= 60 && table.score < 70 ) {
+			table.level = '中';
+		} else if (table.score < 60) {
+			table.level = '差';
+		}
 	} else if (table_type === 'rapt') {
 		if (table.score <= 5) {
 			table.level='DVT低风险';
@@ -66,13 +109,10 @@ var selectKey = function(key, keys) {
 };
 
 var bmi = function(weight, height) {
-	return weight / (height ^ 2);
+	return weight / ((1.0 * height / 100) ^ 2);
 };
 
-//需要计算BMI的表格
-var bmi_map = {
-	
-};
+
 
 module.exports.bmi = bmi;
 module.exports.score = score;
