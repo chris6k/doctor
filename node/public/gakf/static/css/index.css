@@ -89,7 +89,7 @@
 .tag.greentag { background-color: #0acd00; }
 .tag.yellowtag { background-color: #f97729; }
 
-.tips { padding: 0px 15px; line-height: 20px; color: #B8AFAF; padding-bottom: 20px; font-size: 11px; }
+.tips { padding: 0px 15px; line-height: 20px; color: #B8AFAF; padding-bottom: 20px; font-size: 11px; word-wrap: break-word; }
 
 /* Reset */
 html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, table, caption, tbody, tfoot, thead, tr, th, td, h1, h2, h3 { margin: 0; padding: 0; border: none; outline: 0; vertical-align: baseline; background: transparent; color: #171717; }
@@ -169,7 +169,7 @@ form em.error { width: 200px; margin-left: 10px; color: red; }
 
 .my-input:focus { outline: none; border: #75174b 1px solid !important; box-shadow: 0 0 3px #75174b !important; }
 
-.my-input1 { border: none; color: #333; width: 200px; height: 20px; }
+.my-input1 { border: none; color: #333; width: 140px; height: 20px; }
 
 .sign-control a { color: #75174b; }
 

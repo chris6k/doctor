@@ -24,7 +24,6 @@
 		  </div>
 		</nav>
 		<div style="margin-top:45px;"></div>
-		<span class="my-title" ms-if="d.summary!=''">{{d.summary}}</span>
 		<div class="spacer5" ms-if="d.summary==''"></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<span class="my-title">{{el.title}}</span>
@@ -50,6 +49,7 @@
 			  </li>
 			</ul>
 		</div>
+		<div class="">{{d.summary|html}}</div>
 	</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">

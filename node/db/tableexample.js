@@ -47,7 +47,7 @@
 
 {
   "title": "膝关节HSS评分(左腿)",
-  "summary": "",
+  "summary": "<div class='tips'>免责声明:<br/>本量表参考http://www.haodf.com/zhuanjiaguandian/zhuyuchang_733246266.htm <br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
   "items": [{
     "title": "疼痛",
     "summary": "",
@@ -213,27 +213,54 @@
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
-  }, {
+  },{
     "title": "减分项目",
     "summary": "",
-    "type": "input",
+    "type": "radio",
     "keys": [{
-      "key": "伸直滞缺5度(-2)",
+      "key": "伸直滞缺5度",
       "value": -2
     }, {
-      "key": "伸直滞缺10度(-3)",
+      "key": "伸直滞缺10度",
       "value": -3
     }, {
-      "key": "伸直滞缺15度(-5)",
+      "key": "伸直滞缺15度",
       "value": -5
-    }, {
-      "key": "每5度外翻(-1X)",
-      "value": 0
-    }, {
-      "key": "每5度内翻(-1X)",
-      "value": 0
     }],
-    "ratio": -1,
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度外翻",
+      "value": -1
+    }, {
+      "key": "每10度外翻",
+      "value": -2
+    }, {
+      "key": "每15度外翻",
+      "value": -3
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度内翻",
+      "value": -1
+    }, {
+      "key": "每10度内翻",
+      "value": -2
+    }, {
+      "key": "每15度内翻",
+      "value": -3
+    }],
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
@@ -243,7 +270,7 @@
 
 {
   "title": "膝关节HSS评分(右腿)",
-  "summary": "",
+  "summary": "<div class='tips'>免责声明:<br/>本量表参考http://www.haodf.com/zhuanjiaguandian/zhuyuchang_733246266.htm <br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
   "items": [{
     "title": "疼痛",
     "summary": "",
@@ -409,27 +436,54 @@
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
-  }, {
+  },{
     "title": "减分项目",
     "summary": "",
-    "type": "input",
+    "type": "radio",
     "keys": [{
-      "key": "伸直滞缺5度(-2)",
+      "key": "伸直滞缺5度",
       "value": -2
     }, {
-      "key": "伸直滞缺10度(-3)",
+      "key": "伸直滞缺10度",
       "value": -3
     }, {
-      "key": "伸直滞缺15度(-5)",
+      "key": "伸直滞缺15度",
       "value": -5
-    }, {
-      "key": "每5度外翻(-1X)",
-      "value": 0
-    }, {
-      "key": "每5度内翻(-1X)",
-      "value": 0
     }],
-    "ratio": -1,
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度外翻",
+      "value": -1
+    }, {
+      "key": "每10度外翻",
+      "value": -2
+    }, {
+      "key": "每15度外翻",
+      "value": -3
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  },{
+    "title": "减分项目",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "每5度内翻",
+      "value": -1
+    }, {
+      "key": "每10度内翻",
+      "value": -2
+    }, {
+      "key": "每15度内翻",
+      "value": -3
+    }],
     "value": "",
     "scored": true,
     "checkedStyle": "dot"
@@ -703,8 +757,9 @@
 },
 
 {
-  "title":"四类药物禁忌",
-  "summary":"",
+  "label":"请根据患者实际自身情况选择对应项目，如有任何不清楚地方，请向专业医务人员询问",
+  "title":"四类药物禁忌(女性)",
+  "summary":"<div class='tips'>免责声明:<br/>本量表由对应的药品与MIMS网站内容整理而成<br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
   "items":[
    {
      "title":"对药物过敏",
@@ -712,18 +767,6 @@
      "type":"checkbox",
      "keys":[
      {"key":"对药物过敏","value":""}
-     ],
-     "value":"",
-     "scored":false,
-     "checkedStyle":"none"
-    },
-    {
-     "title":"性别年龄相关",
-     "summary":"",
-     "type":"radio",
-     "keys":[
-     {"key":"儿童及青少年(小于18岁)","value":""},
-     {"key":"青年女性(18~35岁)","value":""}
      ],
      "value":"",
      "scored":false,
@@ -747,14 +790,15 @@
      "type":"checkbox",
      "keys":[
      {"key":"消化道出血或溃疡","value":""},
-     {"key":"颅内出血","value":""},
+     {"key":"脑出血","value":""},
      {"key":"阴道出血","value":""},
      {"key":"注射部位血肿", "value":""},
-     {"key":"出血倾向","value":""},
+     {"key":"凝血异常伴出血倾向","value":""},
      {"key":"应用非甾体抗炎药后发生胃肠道出血或穿孔病史","value":""},
      {"key":"可能引起出血的器质性损伤","value":""},
      {"key":"活动性出血","value":""},
-     {"key":"皮肤瘀斑，牙龈出血，鼻衄、伤口出血、月经量过多等","value":""}
+     {"key":"皮肤瘀斑，牙龈出血，鼻衄、伤口出血等","value":""},
+     {"key":"月经量过多","value":""}
      ],
      "value":"",
      "scored":false,
@@ -765,7 +809,7 @@
      "summary":"",
      "type":"checkbox",
      "keys":[
-     {"key":"炎症性肠病","value":"炎症性肠病"},
+     {"key":"炎症性肠病，如克罗恩病、溃疡性结肠炎","value":"炎症性肠病"},
      {"key":"导致食管排空延迟的食管异常","value":""}
      ],
      "value":"",
@@ -783,7 +827,6 @@
      {"key":"GGT和转氨酶升高", "value":""},
      {"key":"伴凝血异常和临床相关出血风险的肝病","value":""},
      {"key":"肝硬化","value":"肝硬化"},
-     {"key":"Child Pugh C级和转氨酶升高>5倍ULN","value":""},
      {"key":"一过性转氨酶升高","value":""}
      ],
      "value":"",
@@ -796,7 +839,7 @@
      "type":"checkbox",
      "keys":[
      {"key":"肾功能不全","value":""},
-     {"key":"含钙肾结石或有肾结石病史","value":""}
+     {"key":"肾结石","value":""}
      ],
      "value":"",
      "scored":false,
@@ -808,16 +851,13 @@
      "type":"checkbox",
      "keys":[
      {"key":"冠状动脉搭桥手术（CABG）围手术期","value":""},
-     {"key":"心力衰竭","value":""},
+     {"key":"充血性心力衰竭","value":""},
      {"key":"已确定的缺血性心脏疾病，外周动脉血管和/或脑血管疾病","value":""},
-     {"key":"难以控制的动脉高压", "value":""},
-     {"key":"血栓栓塞性疾病","value":""},
-     {"key":"心肌梗死","value":""},
+     {"key":"急性心肌梗塞", "value":""},
      {"key":"高血压","value":""},
      {"key":"活动或近期的动脉、静脉血栓性疾病","value":""},
-     {"key":"传染性心内膜炎","value":""},
-     {"key":"不稳定心绞痛","value":""},
-     {"key":"心包炎及心包积液","value":""}
+     {"key":"急性心内膜炎","value":""},
+     {"key":"不稳定心绞痛","value":""}
      ],
      "value":"",
      "scored":false,
@@ -871,9 +911,9 @@
      "summary":"",
      "type":"checkbox",
      "keys":[
-     {"key":"乳腺癌，与雌激素有关的肿瘤","value":""},
-     {"key":"伴有尿路阻塞的前列腺癌和前列腺腺癌","value":""},
-     {"key":"良性或恶性肝脏肿瘤或病史", "value":""}
+     {"key":"与雌激素有关的肿瘤","value":""},
+     {"key":"乳腺癌","value":""},
+     {"key":"良性或恶性肝脏肿瘤", "value":""}
      ],
      "value":"",
      "scored":false,
@@ -894,25 +934,170 @@
      "checkedStyle":"none"
     }
   ]
-},
-{
-  "title":"出血高危评估",
-  "summary":"",
+},{
+  "label":"请根据患者实际自身情况选择对应项目，如有任何不清楚地方，请向专业医务人员询问",
+  "title":"四类药物禁忌(男性)",
+  "summary":"<div class='tips'>免责声明:<br/>本量表由对应的药品与MIMS网站内容整理而成<br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
   "items":[
    {
-     "title":"是否出血高危人群",
+     "title":"对药物过敏",
      "summary":"",
      "type":"checkbox",
      "keys":[
-     {"key":"自己或者家族性有凝血障碍疾病","value":""},
-     {"key":"有易出血症状(例如血流不止或者皮肤容易瘀斑等)","value":""},
-     {"key":"手术之前使用过任何抗凝治疗(抗血小板治疗或者抗凝治疗)","value":""}
+     {"key":"对药物过敏","value":""}
      ],
      "value":"",
      "scored":false,
      "checkedStyle":"none"
-    }]
-  }
+    },
+    {
+     "title":"您有任何溃疡或出血症状吗",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"消化道出血或溃疡","value":""},
+     {"key":"脑出血","value":""},
+     {"key":"注射部位血肿", "value":""},
+     {"key":"凝血异常伴出血倾向","value":""},
+     {"key":"应用非甾体抗炎药后发生胃肠道出血或穿孔病史","value":""},
+     {"key":"可能引起出血的器质性损伤","value":""},
+     {"key":"活动性出血","value":""},
+     {"key":"皮肤瘀斑，牙龈出血，鼻衄、伤口出血等","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您有其他消化道疾患吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"炎症性肠病，如克罗恩病、溃疡性结肠炎","value":""},
+     {"key":"导致食管排空延迟的食管异常","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您的肝脏正常吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"肝功能不全","value":""},
+     {"key":"急性肝病","value":""},
+     {"key":"慢性肝病或最近曾患肝炎者","value":""},
+     {"key":"GGT和转氨酶升高", "value":""},
+     {"key":"伴凝血异常和临床相关出血风险的肝病","value":""},
+     {"key":"肝硬化","value":"肝硬化"},
+     {"key":"一过性转氨酶升高","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+     {
+     "title":"您的肾脏正常吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"肾功能不全","value":""},
+     {"key":"肾结石","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您的心血管正常吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"冠状动脉搭桥手术（CABG）围手术期","value":""},
+     {"key":"充血性心力衰竭","value":""},
+     {"key":"已确定的缺血性心脏疾病，外周动脉血管和/或脑血管疾病","value":""},
+     {"key":"急性心肌梗塞", "value":""},
+     {"key":"高血压","value":""},
+     {"key":"活动或近期的动脉、静脉血栓性疾病","value":""},
+     {"key":"急性心内膜炎","value":""},
+     {"key":"不稳定心绞痛","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您近期有过外伤或接受过手术和麻醉吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"近期手术","value":""},
+     {"key":"蛛网膜下腔麻醉或硬膜外麻醉","value":""},
+     {"key":"外伤","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您有精神疾病史吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"未能充分控制的癫痫","value":""},
+     {"key":"精神病","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您有任何代谢性疾病吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"电解质代谢异常","value":""},
+     {"key":"低钙血症","value":""},
+     {"key":"高钙血症","value":""},
+     {"key":"高尿酸血症", "value":""},
+     {"key":"维生素D增多症","value":""},
+     {"key":"高磷血症伴肾性佝偻病","value":""},
+     {"key":"卟啉症","value":""},
+     {"key":"贫血","value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您有肿瘤相关疾病史吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"与雌激素有关的肿瘤","value":""},
+     {"key":"前列腺腺癌","value":""},
+     {"key":"良性或恶性肝脏肿瘤", "value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    },
+    {
+     "title":"您有其他疾患吗？",
+     "summary":"",
+     "type":"checkbox",
+     "keys":[
+     {"key":"青光眼","value":""},
+     {"key":"不能站立或坐直至少30分钟","value":""},
+     {"key":"酒精、安眠药、镇痛剂或其它精神药物急性中毒", "value":""}
+     ],
+     "value":"",
+     "scored":false,
+     "checkedStyle":"none"
+    }
+  ]
+}
 ]
 
 

@@ -12,14 +12,15 @@
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
+		<div class="spacer5"></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<span class="my-title">{{el.title}}</span>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
-			  	<div class="col-xs-8">
+			  	<div class="col-xs-9">
 			  		<span class="qtitle">{{el.key}}</span>
 			  	</div>
-			  	<div class="col-xs-4">
+			  	<div class="col-xs-3">
 			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
 		  			<span class="right tagcon sl8"></span>
 			  	</div>
