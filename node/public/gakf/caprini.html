@@ -52,7 +52,7 @@
 			</ul>
 		</div>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="!d.isshow">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
@@ -66,9 +66,13 @@
 	<script type="text/javascript">
 		require(["store","avalon","index"],function(store){
 			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
+			var user=store.get("user");
 			$("#gradeList").on("tap",".checkbox",function(){
-				var temp = $(this).find(".tag");
-				RC.selected(this,temp.attr("alt"));
+				var score="",temp = $(this).find(".tag");
+				if(user.type == "doctor"){
+					score = temp.attr("alt");
+				}
+				RC.selected(this,score);
 			});
 
 			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
