@@ -243,21 +243,31 @@ router.post('/savestatus', function(req, res, next) {
             var bmi = calc.bmi(sick.weight || 0, sick.height || 0);
             var age = sick.age;
             var gender = sick.gender;
-            console.info("1, sick_id=" + sick_id + " && table_type=" + table_type);
+            // console.info("1, sick_id=" + sick_id + " && table_type=" + table_type);
             req.models.sickstatus.find({sick_id: sick_id, table_type: table_type}, function(err, data) {
-            console.info("2, sick_id=" + sick_id + " && table_type=" + table_type);
+            // console.info("2, sick_id=" + sick_id + " && table_type=" + table_type);
             if (err) {
-                console.info("5");
+                // console.info("5");
                 res.json(result(false, 'err', err));
             } else {
                 if (data && data.length > 0) {
-                    console.info("3");
                     var tablejson = JSON.parse(table);
                     var score = calc.score(tablejson, table_type,  bmi, age);
                     var level = calc.level(table_type, tablejson);
                     var pro_drug = recommend.prohibit(tablejson, gender, age);
                     var rec_drug = recommend.recomm(pro_drug);
-
+                    if (table_type.indexOf('slywjj') >= 0) {
+                        for (var i = 0;i < tablejson.items.length; i++) {
+                        var it = tablejson.items[i];
+                        it.value = it.value ? it.value : [];
+                        for (var j = 0; j < it.value.length; j++) {
+                            if (it.value[j] === "对药物过敏") {
+                                sick.save({irr: 1});
+                            }
+                        }
+                         
+                    }
+                    
                     saveProhibitDrug(req, pro_drug, sick_id, table_type);
                     saveRecommDrug(req, rec_drug, sick_id, table_type);
 
@@ -270,7 +280,7 @@ router.post('/savestatus', function(req, res, next) {
                     });
                 } else {
                     try {
-                        console.info("4");
+                        // console.info("4");
                         var tablejson = JSON.parse(table);
                         var score = calc.score(tablejson, table_type, bmi, age);
                         var level = calc.level(table_type, tablejson);

@@ -15,9 +15,9 @@ var prohibit = function(table, gender, age) {
 			match(result, items[i], index);
 		}
 		prohibit_drug[reason_type_name[index]] = result;
-		console.info("prohibit_drug=" + JSON.stringify(prohibit_drug));
+		// console.info("prohibit_drug=" + JSON.stringify(prohibit_drug));
     }
-    console.info("prohibit_drug=" + JSON.stringify(prohibit_drug));
+    // console.info("prohibit_drug=" + JSON.stringify(prohibit_drug));
     return prohibit_drug;
 };
  
