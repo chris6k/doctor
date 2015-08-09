@@ -63,9 +63,17 @@ var selectKey = function(key, keys) {
 		}
 	}
 	return 0;
-}
+};
 
+var bmi = function(weight, height) {
+	return weight / (height ^ 2);
+};
 
+//需要计算BMI的表格
+var bmi_map = {
+	
+};
 
+module.exports.bmi = bmi;
 module.exports.score = score;
 module.exports.level = level;

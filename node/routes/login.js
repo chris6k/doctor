@@ -155,7 +155,8 @@ router.post('/reg', function (req, res, next) {
             req.models.sick.create({
                 name: name, username: username, password: password, hospital:doctor[0].hospital,
                 bed_id: bed_no, wx_id: wx_id, doctor_name: doctor[0].name,
-                nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id
+                nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id，
+                height: height, weight:weight
             }, function (err, item) {
                 if (err) {
                     res.json(result(false, 'err', err));
