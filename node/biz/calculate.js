@@ -21,7 +21,7 @@ var score = function(table, bmi, age) {
 		if (bmi >= 25) {
 			result += 2;
 		}
-		if (age >= 40 and age <= 60) {
+		if (age >= 40 && age <= 60) {
 			result =+ 2;
 		} else if (age > 61 && age <= 75) {
 			result += 3;
