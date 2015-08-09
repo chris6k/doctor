@@ -169,7 +169,7 @@ form em.error { width: 200px; margin-left: 10px; color: red; }
 
 .my-input:focus { outline: none; border: #75174b 1px solid !important; box-shadow: 0 0 3px #75174b !important; }
 
-.my-input1 { border: none; color: #333; width: 200px; height: 20px; }
+.my-input1 { border: none; color: #333; width: 140px; height: 20px; }
 
 .sign-control a { color: #75174b; }
 

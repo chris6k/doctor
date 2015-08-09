@@ -84,12 +84,18 @@
 			}else {
 				data.isshow = true;
 			}
-			id = RC.parseOptions(window.location.href).sick_id;
-			var vmodel ;
-			
+			var option = RC.parseOptions(window.location.href);
+			id = option.sick_id;
+			var vmodel ,gender =  option.gender,url;
+			if(gender == "男"){
+				url = "/sick/sickstatus?table_type=slywjj-male&sick_id="+id ;
+			}else if(gender == "女"){
+				url = "/sick/sickstatus?table_type=slywjj-female&sick_id="+id;
+			}
+
 			$.ajax({ 
 				type:"get",
-				url: "/sick/sickstatus?table_type=slywjj&sick_id="+id,
+				url: url,
 				dataType: "json", 
 				success: function(obj){
 					obj.content.value = $.parseJSON(obj.content.value);
