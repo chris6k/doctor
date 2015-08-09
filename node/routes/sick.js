@@ -239,9 +239,9 @@ router.post('/savestatus', function(req, res, next) {
         if (err) res.json(result(false, 'err', err));
         else if (!sick) res.json(result(false, 'no such sick[id=' + sick_id,null));
         else {
-            var bmi = cal.bmi(sick.weight || 0, sick.height || 0);
-            var age = cal.age;
-            var gender = cal.gender;
+            var bmi = calc.bmi(sick.weight || 0, sick.height || 0);
+            var age = sick.age;
+            var gender = sick.gender;
             req.models.sickstatus.find({sick_id: sick_id, table_type: table_type}, function(err, data) {
             if (err) {
                 res.json(result(false, 'err', err));
