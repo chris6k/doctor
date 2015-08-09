@@ -4,11 +4,12 @@ var prohibit = function(table, gender, age) {
 		var result = {};
 		var items = table.items;
 		if (!items || items.length === 0) return result;
+		console.info("prohibit, gender=" + gender + ", and age = " + age);
 		if (gender == "女" && age > 18 && age <= 35) {
-			match(result, {value: ['青年女性']}, index);
+			match(result, {value: ['青年女性(18~35岁)']}, index);
 		}
 		if (age < 18) {
-			match(result, {value: ['儿童及青少年']}, index);
+			match(result, {value: ['儿童及青少年(小于18岁)']}, index);
 		}
 		for(var i = 0;i < items.length; i++) {
 			match(result, items[i], index);
