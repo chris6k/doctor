@@ -90,21 +90,7 @@ router.post('/login', function (req, res, next) {
         // res.redirect(login_url + '?err=1&wx_id=' + wx_id);
         return;
     }
-    req.models[type].find({wx_id: wx_id}, function (err, data) {
-        if (err) {
-            res.json(result(false, 'get user by wx_id err', err));
-            // res.redirect(login_url + '?err=2&wx_id=' + wx_id);
-        } else if (data && data.length > 0) {
-            if (data[0].status === 't') {
-                res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
-                // res.redirect(target_url[type] || decodeURIComponent(cb));
-            } else {
-                res.json(result(false, 'user status is f or u', {}));
-                // res.redirect(login_url + '?err=3&wx_id=' + wx_id);
-            }
-        } else {
-            req.models[type].find({username: username, password: password}, function (err, data) {
+    req.models[type].find({username: username, password: password}, function (err, data) {
                 if (err) {
                     res.json(result(false, 'get user by name and password err', err));
                     // res.redirect(login_url + '?err=4&wx_id=' + wx_id);
@@ -128,9 +114,25 @@ router.post('/login', function (req, res, next) {
                     res.json(result(false,'no user',{}));
                     // res.redirect(login_url + '?err=6&wx_id=' + wx_id);
                 }
-            });
-        }
     });
+    // req.models[type].find({wx_id: wx_id}, function (err, data) {
+    //     if (err) {
+    //         res.json(result(false, 'get user by wx_id err', err));
+    //         // res.redirect(login_url + '?err=2&wx_id=' + wx_id);
+    //     } 
+    //     else if (data && data.length > 0) {
+    //         if (data[0].status === 't') {
+    //             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+    //             res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
+    //             // res.redirect(target_url[type] || decodeURIComponent(cb));
+    //         } else {
+    //             res.json(result(false, 'user status is f or u', {}));
+    //             // res.redirect(login_url + '?err=3&wx_id=' + wx_id);
+    //         }
+    //     } else {
+            
+    //     }
+    // });
 });
 
 router.post('/reg', function (req, res, next) {
