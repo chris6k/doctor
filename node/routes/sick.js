@@ -235,7 +235,7 @@ router.post('/savestatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
     var table = req.param('table');
-    req.models.sick.get({id: sick_id}, function(err, sick) {
+    req.models.sick.get(sick_id, function(err, sick) {
         if (err) res.json(result(false, 'err', err));
         else if (!sick) res.json(result(false, 'no such sick[id=' + sick_id,null));
         else {
