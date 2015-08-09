@@ -132,6 +132,22 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						room:{
 							required: true
+						},
+						height:{
+							required: true,
+							maxlength:3
+						},
+						weight:{
+							required: true,
+							maxlength:3
+						},
+						age:{
+							required: true,
+							min:1,
+							max:150
+						},
+						gender:{
+							required: true
 						}
 
 					},
@@ -168,6 +184,22 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						room:{
 							required: "请选择科室"
+						},
+						height:{
+							required: "请输入身高",
+							maxlength: "请输入正常身高，单位为cm"
+						},
+						weight:{
+							required: "请输入体重",
+							maxlength: "请输入正常体重，单位为kg"
+						},
+						age:{
+							required: "请输入年龄",
+							min:"请输入正常年龄，单位为岁",
+							max:"请输入正常年龄，单位为岁"
+						},
+						gender:{
+							required: "请选择性别"
 						}
 
 					},

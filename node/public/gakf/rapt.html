@@ -15,10 +15,10 @@
 	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top" >
 	  <div id="my-tab">
 	    <div class="col-xs-6 text-center my-nav-line selected">
-	    	<a href="javascript:void(0)">RAPT 量表</a>
+	    	<a href="javascript:void(0)">RAPT 量表(创伤)</a>
 	    </div>
 	    <div class="col-xs-6 text-center my-nav-line">
-	    	<a ms-href="/gakf/caprini.html?sick_id={{d.id}}">Caprini 量表</a>
+	    	<a ms-href="/gakf/caprini.html?sick_id={{d.id}}">Caprini 量表(关节)</a>
 	    </div>
 	  </div>
 	</nav>
@@ -63,7 +63,7 @@
 		</div>
 		<div class="">{{d.summary|html}}</div>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
@@ -77,16 +77,23 @@
 	<script type="text/javascript">
 		require(["store","avalon","index"],function(store){
 			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
+			var user=store.get("user");
 			$("#gradeList").on("tap",".checkbox",function(){
-				var temp = $(this).find(".tag");
-				RC.selected(this,temp.attr("alt"));
+				var score="",temp = $(this).find(".tag");
+				if(user.type == "doctor"){
+					score = temp.attr("alt");
+				}
+				RC.selected(this,score);
 			});
 			var selected ;
 			
 			$("#gradeList").on("tap",".radio",function(){
-				var temp = $(this).find(".tag");
+				var score="", temp = $(this).find(".tag");
 				if(selected)RC.remove(selected);
-				RC.selected(this,temp.attr("alt"));
+				if(user.type == "doctor"){
+					score = temp.attr("alt");
+				}
+				RC.selected(this,score);
 				selected = this;
 			});
 
