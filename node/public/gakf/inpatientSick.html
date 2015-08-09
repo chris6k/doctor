@@ -238,10 +238,10 @@
 				}); 
 		    }
 		    function setUrl(){
-		    	if(vmodel.d.operate_type=="关节手术" || vmodel.d.operate_type=="其他"){
-					vmodel.d.vteUrl = "/gakf/caprini.html?sick_id="+data.sickId;
-				}else if(vmodel.d.operate_type=="创伤手术" ){
+		    	if(vmodel.d.operate_type=="创伤手术" ){
 				    vmodel.d.vteUrl = "/gakf/rapt.html?sick_id="+data.sickId;
+				}else{
+					vmodel.d.vteUrl = "/gakf/caprini.html?sick_id="+data.sickId;
 				}
 		    }
 		    $(".my-collapse").on("touchstart",".secondCon",function(){
