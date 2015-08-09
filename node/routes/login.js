@@ -141,6 +141,10 @@ router.post('/reg', function (req, res, next) {
     // var doctor_name = req.param('doctor');
     var bed_no = req.param('bed_no');
     // var hospital = req.param('hospital');
+    var height = req.param('height');
+    var weight = req.param('weight');
+    var age = req.param("age");
+    var gender = req.param('gender');
     var wx_id = req.cookies.wx_id;
     if (!username || !password || !doctor_id || !bed_no) {
         res.redirect(reg_url + '?err=1');
@@ -155,8 +159,8 @@ router.post('/reg', function (req, res, next) {
             req.models.sick.create({
                 name: name, username: username, password: password, hospital:doctor[0].hospital,
                 bed_id: bed_no, wx_id: wx_id, doctor_name: doctor[0].name,
-                nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id，
-                height: height, weight:weight
+                nurse_name: doctor[0].nurse_name, doctor_id: doctor[0].id, nurse_id: doctor[0].nurse_id,
+                height: height, weight:weight, age:age, gender:gender
             }, function (err, item) {
                 if (err) {
                     res.json(result(false, 'err', err));
