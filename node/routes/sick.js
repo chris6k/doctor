@@ -308,10 +308,10 @@ router.get('/sickscore', function(req, res, next) {
                 re.caprini = item.level||'';
             } 
             if (item.table_type === 'hss_left') {
-                re.hss += item.level||'';
+                re.hss_left = item.level||'';
             }
             if (item.table_type === 'hss_right') {
-                re.hss += item.level||'';
+                re.hss_right += item.level||'';
             }
             if (item.table_type === 'rapt') {
                 re.rapt = item.level||'';
