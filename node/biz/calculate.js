@@ -1,4 +1,4 @@
-var score = function(table, bmi, age) {
+var score = function(table, table_type, bmi, age) {
 	var result = 0;
 	var items = table.items;
 	if (!items || items.length === 0) return result;

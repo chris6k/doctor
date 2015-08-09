@@ -235,6 +235,7 @@ router.post('/savestatus', function(req, res, next) {
     var sick_id = req.param('sick_id');
     var table_type = req.param('table_type');
     var table = req.param('table');
+    
     req.models.sick.get(sick_id, function(err, sick) {
         if (err) res.json(result(false, 'err', err));
         else if (!sick) res.json(result(false, 'no such sick[id=' + sick_id,null));
@@ -242,13 +243,17 @@ router.post('/savestatus', function(req, res, next) {
             var bmi = calc.bmi(sick.weight || 0, sick.height || 0);
             var age = sick.age;
             var gender = sick.gender;
+            console.info("1, sick_id=" + sick_id + " && table_type=" + table_type);
             req.models.sickstatus.find({sick_id: sick_id, table_type: table_type}, function(err, data) {
+            console.info("2, sick_id=" + sick_id + " && table_type=" + table_type);
             if (err) {
+                console.info("5");
                 res.json(result(false, 'err', err));
             } else {
                 if (data && data.length > 0) {
+                    console.info("3");
                     var tablejson = JSON.parse(table);
-                    var score = calc.score(tablejson, bmi, age);
+                    var score = calc.score(tablejson, table_type,  bmi, age);
                     var level = calc.level(table_type, tablejson);
                     var pro_drug = recommend.prohibit(tablejson, gender, age);
                     var rec_drug = recommend.recomm(pro_drug);
@@ -259,14 +264,15 @@ router.post('/savestatus', function(req, res, next) {
                     data[0].save({value: JSON.stringify(tablejson), score:score, level:level}, function(err) {
                         if (err) {
                             res.json(result(false, 'err', err));
-                        } else {
+                        } else { 
                             res.json(result(true, '',{}));
                         }
                     });
                 } else {
                     try {
+                        console.info("4");
                         var tablejson = JSON.parse(table);
-                        var score = calc.score(tablejson, bmi, age);
+                        var score = calc.score(tablejson, table_type, bmi, age);
                         var level = calc.level(table_type, tablejson);
                         var pro_drug = recommend.prohibit(tablejson);
                         var rec_drug = recommend.recomm(pro_drug);
