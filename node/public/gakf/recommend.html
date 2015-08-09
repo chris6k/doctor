@@ -14,9 +14,8 @@
 	<div class="container">
 		<span style="padding:5px 0px;display: inline-block;" >禁用</span>
 		<div style="padding:5px 0px;" ms-if="!d.isf">无禁用</div>
-		<ul class="list-group">
+		<ul class="list-group reasonCon" >
 			  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 'f'"  >
-			  	
 			  	<div class="col-xs-5">
 			  		<span>{{el.name}}</span>
 			  	</div>
@@ -24,14 +23,14 @@
 			  		<span>{{el.type}}</span>
 			  	</div>
 			  	<div class="col-xs-4">
-			  		<a ms-href="/gakf/reason.html?id={{el.id}}" ms-attr-alt="$index" ms-click="click($index)">
+			  		<a href="javascript:void(0)" ms-attr-alt="$index" ms-attr-data="el.id" class="reasonItem">
 			  			<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
 	  					<span class="right  sl8 orange">{{el.count}}项理由</span>
 	  				</a>
 			  	</div>
 			  </li>
 		</ul>
-		<span style="padding:5px 0px;display: inline-block;" >推荐</span>
+		<!-- <span style="padding:5px 0px;display: inline-block;" >推荐</span>
 		<div style="padding:5px 0px;" ms-if="!d.iss">无推荐</div>
 		<ul class="list-group">
 			  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 's'"  >
@@ -43,7 +42,7 @@
 			  		<span>{{el.type}}</span>
 			  	</div>
 			  </li>
-		</ul>
+		</ul> -->
 	</div>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
@@ -51,15 +50,21 @@
 			var vmodel = avalon.define({
 		          $id: "test",
 		          d:data,
-		          click:function(i){
+		          click:function(i,id){
 		          	var temp ={
-		          		r:vmodel.d[i].reason,
-		          		t:vmodel.d[i].name
+		          		r:vmodel.d.safe[i].reason,
+		          		t:vmodel.d.safe[i].name
 		          	}
 		          	store.set("reason",temp);
+		          	window.location.href = "/gakf/reason.html?id="+id;
 		          }
 		    });
 		    avalon.scan();
+		    //ms-href="/gakf/reason.html?id={{el.id}}"
+		    $(".reasonCon").on("touchstart",".reasonItem",function(){
+		    	var s = $(this).attr("alt"),id = $(this).attr("data");
+		    	vmodel.click(s,id);
+		    })
 			$.ajax({ 
 				type:"get",
 				url: "/sick/sickdrug?sick_id="+id,
@@ -70,9 +75,10 @@
 					for(var i=0;i<d.length;i++){
 
 						if(!dd[d[i].drug_name]){
-							dd[d[i].drug_name] = {name:d[i].drug_name,type:d[i].drug_type,reason:[d[i].drug_reason],count:1,t:d[i].type,id:d[i].id};
+							dd[d[i].drug_name] = {name:d[i].drug_name,type:d[i].drug_type,count:1,t:d[i].type,id:d[i].id};
+							dd[d[i].drug_name].reason = d[i].drug_reason ?[d[i].drug_reason]:[];
 						}else{
-							dd[d[i].drug_name].reason.push(d[i].drug_reason);
+							if(d[i].drug_reason)dd[d[i].drug_name].reason.push(d[i].drug_reason);
 							dd[d[i].drug_name].count = dd[d[i].drug_name].reason.length;
 						}
 						if(!data.iss && d[i].type == "s"){
