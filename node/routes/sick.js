@@ -331,7 +331,7 @@ router.get('/sickscore', function(req, res, next) {
             // console.info("item.table_type=" + item.table_type + ", score=" + item.score);
             if (item.table_type === 'caprini') {
                 re.caprini = item.level||'';
-                re.caprini_score = item.score;
+                re.caprini_score = item.score || 0;
             } 
             if (item.table_type === 'hss_left') {
                 re.hss_left = item.level||'';
@@ -341,7 +341,7 @@ router.get('/sickscore', function(req, res, next) {
             }
             if (item.table_type === 'rapt') {
                 re.rapt = item.level||'';
-                re.rapt_score = item.score;
+                re.rapt_score = item.score || 0;
             }
             if (item.table_type === 'cxgwpg') {
                 var table = JSON.parse(item.value);
