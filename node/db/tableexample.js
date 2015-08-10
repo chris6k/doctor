@@ -1097,6 +1097,289 @@
      "checkedStyle":"none"
     }
   ]
+},
+{
+  "title": "Harris 髋关节功能评分",
+  "summary": "<div class='tips'>免责声明:<br/>本量表参考<br/>1. http://www.chinaqking.com/yc/2013/368485.html <br/>2.http://www.orthopaedicscore.com/scorepages/harris_hip_score.html<br/>请患者在医务工作者指导下进行填写，本量表最终结果仅供专业医务工作者参考</div>",
+  "items": [
+  {
+    "title": "疼痛",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "无",
+      "value": 44
+    }, {
+      "key": "轻微",
+      "value": 40
+    }, {
+      "key": "轻度，偶服止痛药",
+      "value": 30
+    }, {
+      "key": "轻度，常服止痛药",
+      "value": 20
+    },{
+      "key": "重度，活动受限",
+      "value": 10
+    },{
+      "key": "不能活动",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "跛行",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "无",
+      "value": 11
+    }, {
+      "key": "轻度",
+      "value": 8
+    }, {
+      "key": "中度",
+      "value": 5
+    }, {
+      "key": "重度",
+      "value": 0
+    }, {
+      "key": "不能行走",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "行走时辅助",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "不用",
+      "value": 11
+    }, {
+      "key": "长距离用一个手杖",
+      "value": 7
+    }, {
+      "key": "单拐",
+      "value": 3
+    }, {
+      "key": "2个手杖",
+      "value": 2
+    }, {
+      "key": "2个拐杖",
+      "value": 0
+    }, {
+      "key": "不能行走",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "行走距离",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "不受限",
+      "value": 11
+    }, {
+      "key": "3公里以上",
+      "value": 8
+    }, {
+      "key": "1000米-1500米",
+      "value": 5
+    }, {
+      "key": "室内活动",
+      "value": 2
+    }, {
+      "key": "卧床或坐椅",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "上楼梯",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "一步一阶，不用扶手",
+      "value": 4
+    }, {
+      "key": "一步一阶，用扶手",
+      "value": 2
+    }, {
+      "key": "某种方式上楼",
+      "value": 1
+    }, {
+      "key": "不能上楼",
+      "value": 0
+    }, {
+      "key": "卧床或坐椅",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "穿袜子，系鞋带",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "容易",
+      "value": 4
+    }, {
+      "key": "困难",
+      "value": 2
+    }, {
+      "key": "不能",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "坐椅子",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "任何角度坐椅子，没有不适",
+      "value": 5
+    }, {
+      "key": "高椅子坐半个小时以上",
+      "value": 3
+    }, {
+      "key": "坐椅子不能超过半小时",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "公共交通",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "上公共交通",
+      "value": 1
+    }, {
+      "key": "不能上公共交通",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "是否具备所有畸形问题，固定内收畸形<10°，固定内旋畸形<10°，肢体短缩<3.2CM，固定屈曲畸形<30°",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "具备",
+      "value": 4
+    }, {
+      "key": "不具备",
+      "value": 0
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "屈曲角度",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "不能",
+      "value": 0
+    },{
+      "key": "0°-8°",
+      "value": 0.4
+    },{
+      "key": "9°-16°",
+      "value": 0.8
+    },{
+      "key": "17°-24°",
+      "value": 1.2
+    },{
+      "key": "25°-32°",
+      "value": 1.6
+    },{
+      "key": "33°-40°",
+      "value": 2
+    },{
+      "key": "41°-45°",
+      "value": 2.25
+    },{
+      "key": "46°-55°",
+      "value": 2.55
+    },{
+      "key": "56°-65°",
+      "value": 2.85
+    },{
+      "key": "66°-70°",
+      "value": 3
+    },{
+      "key": "71°-75°",
+      "value": 3.15
+    },{
+      "key": "76°-80°",
+      "value": 3.3
+    },{
+      "key": "81°-90°",
+      "value": 3.6
+    },{
+      "key": "91°-100°",
+      "value": 3.75
+    },{
+      "key": "101°-110°",
+      "value": 3.9
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "外转角度",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "不能",
+      "value": 0
+    }, {
+      "key": "0°-5°",
+      "value": 0.2
+    }, {
+      "key": "6°-10°",
+      "value": 0.4
+    }, {
+      "key": "11°-15°",
+      "value": 0.6
+    }, {
+      "key": "16°-20°",
+      "value": 0.65
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }, {
+    "title": "外旋角度",
+    "summary": "",
+    "type": "radio",
+    "keys": [{
+      "key": "不能",
+      "value": 0
+    }, {
+      "key": "0°-5°",
+      "value": 0.1
+    }, {
+      "key": "6°-10°",
+      "value": 0.2
+    }],
+    "value": "",
+    "scored": true,
+    "checkedStyle": "dot"
+  }
+  ]
 }
 ]
 

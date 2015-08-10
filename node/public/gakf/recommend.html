@@ -14,6 +14,9 @@
 	<div class="container">
 		<span style="padding:5px 0px;display: inline-block;" >禁用</span>
 		<div style="padding:5px 0px;" ms-if="!d.isf">无禁用</div>
+		<div ms-if="d.irr == 1" class = "score" style="padding-left:0px;">
+			该患者可能存在药品过敏史，请注意询问。
+		</div>
 		<ul class="list-group reasonCon" >
 			  <li class="list-group-item" ms-repeat-el="d.safe" ms-if-loop="el.t == 'f'"  >
 			  	<div class="col-xs-5">
@@ -64,7 +67,8 @@
 		    $(".reasonCon").on("touchstart",".reasonItem",function(){
 		    	var s = $(this).attr("alt"),id = $(this).attr("data");
 		    	vmodel.click(s,id);
-		    })
+		    });
+		    data.irr = RC.parseOptions(window.location.href).irr;
 			$.ajax({ 
 				type:"get",
 				url: "/sick/sickdrug?sick_id="+id,
