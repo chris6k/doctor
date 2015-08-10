@@ -237,8 +237,8 @@ router.post('/savestatus', function(req, res, next) {
     var table = req.param('table');
     
     req.models.sick.get(sick_id, function(err, sick) {
-        if (err) res.json(result(false, 'err', err));
-        else if (!sick) res.json(result(false, 'no such sick[id=' + sick_id,null));
+        if (err) {res.json(result(false, 'err', err));}
+        else if (!sick) {res.json(result(false, 'no such sick[id=' + sick_id,null));}
         else {
             var bmi = calc.bmi(sick.weight || 0, sick.height || 0);
             var age = sick.age;
@@ -256,13 +256,20 @@ router.post('/savestatus', function(req, res, next) {
                     var level = calc.level(table_type, tablejson);
                     var pro_drug = recommend.prohibit(tablejson, gender, age);
                     var rec_drug = recommend.recomm(pro_drug);
+                    console.info("tableindex=" + table_type.indexOf('slywjj'));
                     if (table_type.indexOf('slywjj') >= 0) {
                         for (var i = 0;i < tablejson.items.length; i++) {
                         var it = tablejson.items[i];
                         it.value = it.value ? it.value : [];
                         for (var j = 0; j < it.value.length; j++) {
                             if (it.value[j] === "对药物过敏") {
-                                sick.save({irr: 1});
+                                sick.save({irr: 1}, function(err){
+                                    if (!err) {
+                                        console.info("save status succ");
+                                    } else {
+                                        console.info("save status failed");
+                                    }
+                                });
                             }
                         }
                          
@@ -302,9 +309,10 @@ router.post('/savestatus', function(req, res, next) {
                         res.json(result(false,'err', e));
                     }
                     
+                    }
                 }
             }
-    });
+        });
         }
     });
     
