@@ -57,7 +57,9 @@
 		  <li class="list-group-item my-collapse">
 		  	<a href="#operate_type"  data-toggle="collapse" >
 			  	<span>手术类型</span>
-			  	<span class="right detail" class="" >{{d.operate_type}}</span>
+			  	<span class="right detail" class="" ms-if="d.operate_type==''">其他</span>
+			  	<span class="right detail" class="" ms-if="d.operate_type">{{d.operate_type}}</span>
+
 		  	 	<input type="hidden" class="detailInput" value="" ms-duplex-string="d.operate_type">
 		  	</a>
 		  	<div id="operate_type" class="panel-collapse collapse text-center" role="tabpanel" >

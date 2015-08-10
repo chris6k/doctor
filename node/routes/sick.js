@@ -336,7 +336,7 @@ router.get('/sickscore', function(req, res, next) {
                 re.hss_left = item.level||'';
             }
             if (item.table_type === 'hss_right') {
-                re.hss_right += item.level||'';
+                re.hss_right = item.level||'';
             }
             if (item.table_type === 'rapt') {
                 re.rapt = item.level||'';

@@ -69,8 +69,8 @@
 		  		<a ms-href="/gakf/rapt.html?sick_id={{d.sickId}}">
   			  		<span>VTE评分</span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.caprini!=''">{{d.caprini}}</span>
-  					<span class="right orange sl8" ms-if="d.rapt!=''">{{d.rapt}}</span>
+  					<span class="right orange sl8" ms-if="d.caprini!=''">关节:{{d.caprini}}</span>
+  					<span class="right orange sl8" ms-if="d.rapt!=''"> 创伤:{{d.rapt}}</span>
   					<span class="right orange sl8" ms-if="d.caprini == ''&& d.rapt==''">无评分</span>
 		  		</a>
 		 	</li>
@@ -95,7 +95,7 @@
 		  		</a>
 		 	</li> -->
 		 	<li class="list-group-item">
-		  		<a ms-href="/gakf/recommend.html?sick_id={{d.sickId}}">
+		  		<a ms-href="/gakf/recommend.html?sick_id={{d.sickId}}&irr={{d.irr}}">
   			  		<span>安全用药建议 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
   					<span class="right orange sl8" ms-if="d.drug_count!=''">共 {{d.drug_count}} 条建议</span>
@@ -140,8 +140,9 @@
 			  		<a ms-href="/gakf/hss_left.html?sick_id={{d.sickId}}">
 	  			  		<span>膝关节HSS评分 </span>
 	  					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-	  					<span class="right orange sl8" ms-if="d.hss!=''">{{d.hss}}</span>
-	  					<span class="right orange sl8" ms-if="!d.hss">点击填写</span>
+	  					<span class="right orange sl8" ms-if="d.hss_left">左腿：{{d.hss_left}}</span>
+	  					<span class="right orange sl8" ms-if="d.hss_right">右腿：{{d.hss_right}}</span>
+	  					<span class="right orange sl8" ms-if="!d.hss_right && !d.hss_left">点击填写</span>
 			  		</a>
 			 	</li>
 			</ul>
