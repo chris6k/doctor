@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=no"/>
+	<title>髋关节Harris评分</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test" class="ms-controller">
+
+	<div class="" id="gradeList">
+		<div class="score" ms-if="d.score" ms-if="d.isshow">
+			总分：<span >{{d.score}}</span> 分 ， 等级：<span>{{d.level}}</span>
+		</div>
+		<div class="spacer5" ms-if="d.summary==''"></div>
+		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
+			<span class="my-title">{{el.title}}</span>
+			<ul class="list-group " ms-if="el.type == 'radio'">
+			  <li class="list-group-item radio" ms-repeat-el="el.keys"  ms-click="click">
+			  	<div class="col-xs-8">
+			  		<span class="qtitle">{{el.key}}</span>
+			  	</div>
+			  	<div class="col-xs-4">
+			  		<span ms-attr-alt= "{{el.value}}" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+		</div>
+		<div class="">{{d.summary|html}}</div>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" style="display:inline-block;width:100%;" ms-click="save">
+			    	<span style="color:#fff;">保存</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/javascript">
+		require(["store","avalon","index"],function(store){
+			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
+			$("#gradeList").on("tap",".radio",function(){
+				var temp = $(this).find(".tag"),p=$(this).parent().parent();
+				if(p.data("selected"))RC.remove(p.data("selected"));
+				RC.selected(this,temp.attr("alt"));
+				p.data("selected",this);
+			});
+
+			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
+			var temp = store.get("user"),id="";
+			if(temp.type =="doctor"){
+				data.isshow = true;
+			}else {
+				data.isshow = false;
+			}
+			id = RC.parseOptions(window.location.href).sick_id;
+			var vmodel ;
+			
+			$.ajax({ 
+				type:"get",
+				url: "/sick/sickstatus?table_type=harris&sick_id="+id,
+				dataType: "json", 
+				success: function(obj){
+					obj.content.value = $.parseJSON(obj.content.value);
+					tempobj = obj.content;
+					var d = obj.content.value;
+					d.isshow = data.isshow;
+					d.id = id;
+					d.type = temp.type;
+					RC.setvmodel(d,tempobj);
+					RC.setItem(d);
+					
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+		});
+	</script>
+</body>
+</html>
