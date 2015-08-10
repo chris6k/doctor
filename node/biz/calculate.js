@@ -78,6 +78,16 @@ var level = function(table_type, table) {
 		} else if (table.score > 14) {
 			table.level = 'DVT高风险';
 		}
+	} else if (table_type === 'harris') {
+		if (table.score >= 90) {
+			table.level = '优良';
+		} else if (table.score >= 80 && table.score < 90) {
+			table.level = '较好';
+		} else if (table.score >= 70 && table.score < 80 ) {
+			table.level = '尚可';
+		} else if (table.score < 70) {
+			table.level = '差';
+		}
 	}
 	return table.level;
 };
