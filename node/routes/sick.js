@@ -250,7 +250,8 @@ router.post('/savestatus', function(req, res, next) {
                 // console.info("5");
                 res.json(result(false, 'err', err));
             } else {
-                if (data && data.length > 0) {
+                
+                    if (data && data.length > 0) {
                     var tablejson = JSON.parse(table);
                     var score = calc.score(tablejson, table_type,  bmi, age);
                     var level = calc.level(table_type, tablejson);
@@ -261,18 +262,18 @@ router.post('/savestatus', function(req, res, next) {
                         for (var i = 0;i < tablejson.items.length; i++) {
                         var it = tablejson.items[i];
                         it.value = it.value ? it.value : [];
-                        for (var j = 0; j < it.value.length; j++) {
-                            if (it.value[j] === "对药物过敏") {
-                                sick.save({irr: 1}, function(err){
-                                    if (!err) {
-                                        console.info("save status succ");
-                                    } else {
-                                        console.info("save status failed");
-                                    }
-                                });
+                            for (var j = 0; j < it.value.length; j++) {
+                                if (it.value[j] === "对药物过敏") {
+                                    sick.save({irr: 1}, function(err){
+                                        if (!err) {
+                                            console.info("save status succ");
+                                        } else {
+                                            console.info("save status failed");
+                                        }
+                                    });
+                                }
                             }
                         }
-                         
                     }
                     
                     saveProhibitDrug(req, pro_drug, sick_id, table_type);
@@ -309,10 +310,10 @@ router.post('/savestatus', function(req, res, next) {
                         res.json(result(false,'err', e));
                     }
                     
-                    }
                 }
+           
             }
-        });
+            });
         }
     });
     
