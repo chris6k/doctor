@@ -41,7 +41,7 @@ router.get('/out_sicks', function (req, res, next) {
                 data[i].out_dur = data[i].out_duration();
                 sick_array.push(data[i]);
             }
-            req.model.sick.find({
+            req.models.sick.find({
                 doctor_id : doctor_id,
                 in_day: orm.gt(new Date())
             }, function(err, data2) {
