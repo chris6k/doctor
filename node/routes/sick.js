@@ -381,4 +381,21 @@ router.get('/sickdrugcount', function(req, res, next){
     });
 });
 
+router.post('/setnotify', function(req, res, next) {
+    var sick_id = req.param('sick_id');
+    var drug_name = req.param('drug_name');
+    var times = req.param('times');
+    var days = req.param('days') || 0;
+    var count = times * days;
+    var drug_per = req.param('drug_count') || 0;
+    req.models.drugnotify.create({sick_id: sick_id, times: times, days: days,
+     count: count, drug_per: drug_per, drug_name: drug_name}, function(err, data) {
+        if (err) {
+            res.json(result(false, 'err', err));
+        } else {
+            res.json(result(true, 'success', null));
+        }
+    });
+});
+
 module.exports = router;

@@ -48,7 +48,7 @@ defines.define = (function(defines){return function (db, models) {
         status: {type: 'text', defaultValue: 't'},
         avatar: {type: 'text', size: 256},
         title: {type: 'text', required: false},
-
+        sign: {type: 'text', szie:1024}
     });
     //病人信息表
     models.sick = db.define('sick', {
@@ -76,7 +76,8 @@ defines.define = (function(defines){return function (db, models) {
         drug_f: {type: 'integer', defaultValue: 0, required: false},
         height: {type: 'text', required: false},
         weight:{type: 'text', required: false},
-        irr : {type : 'integer', defaultValue: 0, required: false} //0-normal 1-irr
+        irr : {type : 'integer', defaultValue: 0, required: false}, //0-normal 1-irr
+        sign: {type: 'text', szie:1024}
     }, {
         methods: {
             in_duration: function () {
@@ -181,6 +182,14 @@ defines.define = (function(defines){return function (db, models) {
         type: {type: 'text'},
         value: {type: 'text'},
         content: {type: 'text'}
+    });
+    models.drugnotify = db.define('drug_notify', {
+        sick_id: {type: 'integer'},
+        drug_name: {type: 'text'},
+        times: {type: 'integer'},
+        days: {type: 'integer'},
+        count:{type:'integer'},
+        drug_per: {type: 'integer'}
     });
 
     defines.cachedModels = models;

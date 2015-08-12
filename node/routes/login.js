@@ -9,8 +9,7 @@ var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
 var unverifyUrl = '/gakf/msg.html';
 
-var WechatAPI = require('wechat-api');
-var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0');
+var api = require('../biz/weixin').api;
 
 
 //todo
@@ -78,7 +77,41 @@ var loginResp = function(type, id, url, doctor_id) {
     return {type:type, id:id, url:url, doctor_id: doctor_id};
 }
 
-router.post('/login', function (req, res, next) {
+router.post('/logout', function(req, res, next){
+    req.cookie('wx_id','null',{maxAge:0});
+    req.cookie('sick_id','null',{maxAge:0});
+    req.cookie('doctor_id','null',{maxAge:0});
+    res.json(result(true,null,null));
+});
+
+router.post('/update', function(req, res, next) {
+    var userId = req.param("user_id");
+    var type = req.param("type");
+    var name = req.param("name");
+    var newPassword = req.param("new_password");
+    var oldPassword = req.param("old_password");
+    var sign = req.param('sign');
+    req.models[type].get(userId, function(err, user){
+        if (err || !user) {
+            res.json(result(false, 'get user error', err));
+        } else {
+            if (user.password === oldPassword) {
+                user.save({sign:sign, password: newPassword, name: name}, function(err){
+                    if (!err) {
+                         res.json(result(true, null,null));
+                     } else {
+                        res.json(result(false, "save user info error", err));
+                     }
+                });
+               
+            } else {
+                res.json(result(false, "old password mismatch", null));
+            }
+        }
+    });
+});
+
+router.post('/login', function(req, res, next) {
     var username = req.param('username');
     var password = req.param('password');
     var type = req.param('type');
@@ -199,6 +232,8 @@ router.post('/reg', function (req, res, next) {
     });
 
 });
+
+
 
 
 module.exports = router;

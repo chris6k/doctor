@@ -252,5 +252,7 @@ var weixin_biz = function (app) {
         console.log('>>>>>>>>> viewEventMsg emit >>>>>>>>>');
         console.log(data);
     });
+
 };
+weixin_biz.api = api;
 module.exports = weixin_biz;
