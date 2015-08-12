@@ -3,6 +3,22 @@ var router = express.Router();
 var result = require('./result');
 var calc = require('../biz/calculate');
 var recommend = require('../biz/recommend');
+var weixin = require('../biz/weixin');
+router.get('/test', function(req, res, next){
+    var api = weixin.api;
+    var templateId = "F1kjgyVBU1K3JV-Vg0iPselzU7Ox9IOrRPMoY7cxx0M";
+    var url = '';
+    var topcolor = '#FF0000'; // 顶部颜色
+    var data = {
+        first: "用药提醒",
+        keyword1: "要你命3000",
+        keyword2: "一日1次，一次10片",
+        keyword3: "无",
+        remarks:"感谢您的使用"
+    };
+    api.sendTemplate(“”, templateId, url, topColor, data, callback);
+});
+
 router.get('/info', function (req, res, next) {
     req.models.sick.get(req.param('id'), function (err, data) {
         if (err || !data) {
@@ -388,12 +404,41 @@ router.post('/setnotify', function(req, res, next) {
     var days = req.param('days') || 0;
     var count = times * days;
     var drug_per = req.param('drug_count') || 0;
-    req.models.drugnotify.create({sick_id: sick_id, times: times, days: days,
-     count: count, drug_per: drug_per, drug_name: drug_name}, function(err, data) {
-        if (err) {
-            res.json(result(false, 'err', err));
+    var id = req.param('id');
+    if (id) {
+        req.models.drugnotify.get(id, function(err, notify){
+            if (err) {
+                res.json(result(false, 'err', err));
+            } else if (notify) {
+                notify.save({sick_id: sick_id, times: times, days: days,
+             count: count, drug_per: drug_per, drug_name: drug_name}, function(err){
+                if (err) {
+                    res.json(result(false, 'err', err));
+                } else {
+                    res.json(result(true,null,null));
+                }
+             });
+            }
+        });
+    } else {
+        req.models.drugnotify.create({sick_id: sick_id, times: times, days: days,
+         count: count, drug_per: drug_per, drug_name: drug_name}, function(err, data) {
+            if (err) {
+                res.json(result(false, 'err', err));
+            } else {
+                res.json(result(true, 'success', null));
+            }
+        });
+    }
+});
+
+router.get('/getnotify', function(req, res, next){
+    var sick_id = req.param('sick_id');
+    req.models.drugnotify.find({sick_id: sick_id}, function(err, data){
+        if (!err) {
+            res.json(result(true, '', data));
         } else {
-            res.json(result(true, 'success', null));
+            res.json(result(false,"err",err));
         }
     });
 });
