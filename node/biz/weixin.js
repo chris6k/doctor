@@ -2,8 +2,13 @@ var weixin = require('weixin-apis');
 var WechatAPI = require('wechat-api');
 var defines = require('../db/define');
 
+//wxaf3a162fe7e04d37,
+//2166e5441e7412dc7ebd4111635db0b7
 
-var api = new WechatAPI('wx9b2bbce36613b66e', 'b4c3079540dd4b57269a09b5e2d36dc0');
+//test
+//'wx9b2bbce36613b66e',
+//'b4c3079540dd4b57269a09b5e2d36dc0'
+var api = new WechatAPI('wxaf3a162fe7e04d37', '2166e5441e7412dc7ebd4111635db0b7');
 var _models;
 var models = function() {
     if (!_models) {
@@ -19,8 +24,8 @@ var weixin_biz = function (app) {
     weixin.configurate({
         app: app,
         token: 'guanai',
-        appid: 'wx9b2bbce36613b66e',//'wx9b2bbce36613b66e',
-        secret: 'b4c3079540dd4b57269a09b5e2d36dc0'//'b4c3079540dd4b57269a09b5e2d36dc0'
+        appid: 'wxaf3a162fe7e04d37',
+        secret: '2166e5441e7412dc7ebd4111635db0b7'
     });
    
 
