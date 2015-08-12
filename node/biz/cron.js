@@ -1,4 +1,4 @@
-var CronJob = require('cron').CronJob;
+var schedule = require('node-schedule');
 var defines = require('../db/define');
 var api = require('./weixin').api;
 var orm = require('orm');
@@ -22,8 +22,8 @@ var callback = function(){
 };
 
 var notifyInfo = function(sick, drugn) {
-	var templateId: template_id;
-	var url: '';
+	var templateId = template_id;
+	var url = '';
 	var topcolor = '#FF0000'; // 顶部颜色
 	var data = {
 	 	first: "用药提醒",
@@ -41,7 +41,7 @@ var notifyInfo = function(sick, drugn) {
 	api.sendTemplate(sick.wx_id, templateId, url, topColor, data, callback);
 }
 var jobs = [];
-var job8 = new CronJob('0 0 8 * * ?', function(){
+var job8 = schedule.scheduleJob('0 0 8 * * ?', function(){
 	var times_array = [4,3,2];
 	for (var j = 0; j < times_array.length; j++) {
 		_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -59,14 +59,10 @@ var job8 = new CronJob('0 0 8 * * ?', function(){
 		}
     	});
 	}
-  }, function () {
-    console.info("task 8 complete");
-  },
-  false /* Start the job right now */
-);
-jobs.push(json8);
+  });
+jobs.push(job8);
 
-var job12 = new CronJob('0 0 12 * * ?', function(){
+var job12 = schedule.scheduleJob('0 0 12 * * ?', function(){
 	var times_array = [4,3,1];
 	for (var j = 0; j < times_array.length; j++) {
 		_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -85,14 +81,10 @@ var job12 = new CronJob('0 0 12 * * ?', function(){
     	});
 	}
     
-  }, function () {
-    console.info("task 12 complete");
-  },
-  false /* Start the job right now */
-);
+  });
 jobs.push(job12);
 
-var job18 = new CronJob('0 0 18 * * ?', function(){
+var job18 = schedule.scheduleJob('0 0 18 * * ?', function(){
 	var times_array = [3];
 	for (var j = 0; j < times_array.length; j++) {
 	_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -110,14 +102,10 @@ var job18 = new CronJob('0 0 18 * * ?', function(){
 		}
     	});
 	}
-  }, function () {
-    console.info("task 18 complete");
-  },
-  false /* Start the job right now */
-);
+  });
 jobs.push(job18);
 
-var job20 = new CronJob('0 0 20 * * ?', function(){
+var job20 = schedule.scheduleJob('0 0 20 * * ?', function(){
 	var times_array = [4];
 	for (var j = 0; j < times_array.length; j++) {
 	_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -136,15 +124,7 @@ var job20 = new CronJob('0 0 20 * * ?', function(){
     	});
 	}
 
-  }, function () {
-    console.info("task 20 complete");
-  },
-  false /* Start the job right now */
-);
+  });
 jobs.push(job20);
-
-
-for(var i = 0; i < jobs.length; i++) {
-	jobs[i].start();
-}
+module.exports = jobs;
 
