@@ -25,11 +25,13 @@
 		{{if v.day}}
 					<div class="text-center">
 						<span class="titleBg">{{v.day | dateFormat:'yyyy年 MM月 dd日'}}
+						{{if iso != 0}}
 							{{if isout === "false"}}
 								住院第 1 天
 							{{else}}
 								出院第 1 天
 							{{/if}}
+						{{/if}}
 						</span>
 					</div>
 					<div class="panel panel-default my-panel">
@@ -115,6 +117,7 @@
 				success: function(obj){
 					data.d = obj.content;
 					data.isout = user.isout;
+					data.iso = user.iso;
 					var pics  = [];
 					//匹配json内容
 				    var html = render($("#test"),data);

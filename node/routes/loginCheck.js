@@ -1,4 +1,4 @@
-var urls = ['/gakf/flowSick.html', '/gakf/communicate.html', '/gakf/inpatientInfo.html'];
+var urls = [];//'/gakf/flowSick.html', '/gakf/communicate.html', '/gakf/inpatientInfo.html'
 var urlMap = {'/gakf/flowSick.html':'1', '/gakf/communicate.html':'2', '/gakf/inpatientInfo.html':'3'};
 var appid = 'wx9b2bbce36613b66e', redirectUrl = 'http://101.200.183.229/user/callback';
 //todo

@@ -2,60 +2,78 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=no"/>
 	<title>我的账号</title>
 	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
 	<script  type="text/javascript" src="./static/js/require.js"></script>
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<style type="text/css">
+	form em.error{
+		display: block;
+	    float: right;
+	    text-align: right;
+	}
+	</style>
 </head>
-<body ms-controller="test" >
+<body ms-controller="test" class="ms-controller">
 	<div class="container ">
 		<div class="spacer10"></div>
+		<form id="settingForm">
 		<ul class="list-group">
 		  <li class="list-group-item">
+		  	<span>用户名</span>
+		  	<span class="right ">{{d.username}}</span>
+		  </li>
+		  <li class="list-group-item">
 		  	<span>姓名</span>
-		  	<input class="right text-right my-input1 gray" type="text" placeholder="姓名" ms-duplex="d.name"/>
+		  	<input class="right text-right my-input1 gray" name="name" type="text" placeholder="姓名" ms-duplex="d.name"/>
 		  </li>
 		  <li class="list-group-item">
 		  	<span>签名</span>
-		  	<textarea class="right my-textarea1" ms-duplex="d.signature" placeholder="设置个性签名"></textarea>
+		  	<textarea class="right my-textarea1" name="sign" ms-duplex="d.signature" placeholder="设置个性签名"></textarea>
 		  </li>
 		  <li class="list-group-item">
 		  	<span>原始密码</span>
-		  	<input class="right text-right my-input1 gray" type="password" placeholder="原始密码" ms-duplex="d.psw"/>
+		  	<input class="right text-right my-input1 gray" name="old_password" type="password" placeholder="原始密码" ms-duplex="d.psw"/>
 		  </li>
 		  <li class="list-group-item">
 		  	<span>新密码</span>
-		  	<input class="right text-right my-input1 gray" type="password" placeholder="新密码" ms-duplex="d.npsw"/>
+		  	<input class="right text-right my-input1 gray" name="new_password" type="password" placeholder="新密码" ms-duplex="d.npsw"/>
 		  </li>
 		</ul>
 		<div class="spacer10"></div>
 		<ul class="list-group">
-			 <li class="list-group-item text-center">
-			  	<a href="login.html">退出登录</a>
+			 <li class="list-group-item text-center" ms-if="d.type">
+			  	<a href="javascript:void(0)" id="loginout">退出登录</a>
 			  </li>
 		</ul>
 	</div>
+	<input type="hidden" name="user_id" ms-attr-value="{{d.id}}">
+	<input type="hidden" name="type" ms-attr-value="{{d.userType}}">
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a href="#">
-			    	<span style="color:#fff;">保存</span>
-			    </a>
+	    		<input style="background:transparent;border:0px;color:#fff;" type="submit" value="保存" id="save">
 	    	</div>
 	    </div>
 	  </div>
 	</nav>
+	</form>
+	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
 	<script type="text/javascript">
-		require(["store","avalon"],function(store){
+	//user_id, type, name, new_password, old_password,sign
+		require(["store","validate.form","avalon"],function(store,reg){
 		var data = {},id,temp=store.get("user"),id,url;
+		reg.validate("settingForm");
+		data.userType = temp.type;
 		if(temp.type=="sick"){
-			id = temp.id;
+			id = data.id = temp.id;
 			url = "/sick/info?id="+id;
 		}else if(temp.type == "doctor"){
-			id = temp.doctor_id;
+			id = data.id = temp.doctor_id;
 			url = "/doctor/info?doctor_id="+id;
 		}
 	   	var vmodel = avalon.define({
@@ -63,6 +81,21 @@
 	          d:data
 	    });
 	    avalon.scan();
+	    $("#loginout").on("touchstart",function(){
+	    	$.ajax({
+	    		type:"post",
+				url: "/user/logout",
+				dataType: "json", 
+				success: function(obj){
+					store.set("user","");
+					window.location.href = "login.html";
+					
+	    		},
+	    		error:function(){
+
+	    		}
+	    	});
+	    })
 	    $.ajax({ 
 				type:"get",
 				url: url,

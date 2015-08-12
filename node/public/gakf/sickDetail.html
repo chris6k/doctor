@@ -160,7 +160,7 @@
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a ms-href="/gakf/flow.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}&isout={{d.isout}}">
+	    		<a ms-href="/gakf/flow.html?sick_id={{d.id}}&doctor_id={{d.doctor_id}}&isout={{d.isout}}&iso={{d.iso}}">
 			    	<span style="color:#fff;">随访</span>
 			    </a>
 	    	</div>
@@ -199,7 +199,9 @@
 				var data={isvisible:false,
 						  caprini:'',
 						  rapt:'',
-						isout:Boolean(RC.parseOptions(window.location.href).isout)||false},temp=store.get("user"),id;
+						  isout:Boolean(RC.parseOptions(window.location.href).isout)||false,
+						  iso:RC.parseOptions(window.location.href).iso||-1
+					},temp=store.get("user"),id;
 				if(temp.type=="sick"){
 					id = temp.id;
 				}else if(temp.type == "doctor"){

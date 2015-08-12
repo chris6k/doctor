@@ -16,7 +16,7 @@ router.get('/test', function(req, res, next){
         keyword3: "无",
         remarks:"感谢您的使用"
     };
-    api.sendTemplate(“”, templateId, url, topColor, data, callback);
+    api.sendTemplate("", templateId, url, topColor, data, callback);
 });
 
 router.get('/info', function (req, res, next) {

@@ -239,6 +239,73 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 			       }  
 				});
 			}
+			//user_id, type, name, new_password, old_password,sign
+			if(form == "settingForm"){
+				$("#settingForm").validate({
+					errorElement: "em",
+					rules:{
+						name:{
+							required:true,
+							userName:true
+						},
+						user_mobile:{
+							required:true,
+							isMobile:true
+						},
+						old_password:{
+							 required: true,
+	                		 minlength: 6
+						},
+						new_password:{
+							 required: true,
+	                		 minlength: 6
+						},sign:{
+							maxlength:128
+						}
+
+					},
+					messages:{
+						name:{
+							required:"请输入姓名"
+						},
+						old_password: {
+			                required: "请输入密码",
+			                minlength: $.format("密码不能小于{0}个字符")
+			            },
+			            new_password: {
+			                required: "请输入确认密码",
+			                minlength: "确认密码不能小于{0}个字符"
+			            },sign: {
+							maxlength:"不能超过128个字符"
+						}
+
+
+					},
+					errorPlacement: function(error, element) {
+				     	 error.insertAfter(element);
+				   },
+				   submitHandler:function(form){
+			            $.ajax({ 
+							type:"post",
+							url: "/user/update",
+							dataType: "json", 
+							data:$("#"+formName).serialize(),
+							success: function(d){
+								if(d.success){
+									$("#commesCom").html("保存成功").show();
+									setTimeout(function(){
+										$("#commesCom").html("").hide();
+									},1500);
+								}else{
+									alert(d.msg);
+								}
+				    		},
+				    		error:function(e){
+				    		}
+						});
+			       }  
+				});
+			}
 		}
 	}
 });
