@@ -158,6 +158,21 @@ var weixin_biz = function (app) {
                 }
             });
             
+        } else {
+            var articles = [];
+            articles[0] = {
+            title: "欢迎使用关艾康复微信平台",
+            description: "使用入门",
+            picUrl: "http://www.guanaikangfu.com/gakf/static/images/help.jpg",
+            url: "http://www.guanaikangfu.com/gakf/help.html"
+            };
+            var msg = {
+                toUserName: data.fromUserName,
+                fromUserName: data.toUserName,
+                msgType: 'news',
+                articles: articles
+            };
+            weixin.sendMsg(msg);
         }
         
     });
@@ -198,10 +213,10 @@ var weixin_biz = function (app) {
         console.log(data);
         var articles = [];
         articles[0] = {
-            title: "欢迎使用XXX",
+            title: "欢迎使用关艾康复微信平台",
             description: "使用入门",
-            picUrl: "http://cms.csdnimg.cn/article/201404/01/5339fcde7d200.jpg",
-            url: "http://www.csdn.net/article/2014-04-01/2819079-9-soft-skills-every-web-developer-should-master"
+            picUrl: "http://www.guanaikangfu.com/gakf/static/images/help.jpg",
+            url: "http://www.guanaikangfu.com/gakf/help.html"
         };
         var msg = {
             toUserName: data.fromUserName,
@@ -226,10 +241,10 @@ var weixin_biz = function (app) {
         console.log(data);
         var articles = [];
         articles[0] = {
-            title: "欢迎使用XXX",
+            title: "欢迎使用关艾康复微信平台",
             description: "使用入门",
-            picUrl: "http://cms.csdnimg.cn/article/201404/01/5339fcde7d200.jpg",
-            url: "http://www.csdn.net/article/2014-04-01/2819079-9-soft-skills-every-web-developer-should-master"
+            picUrl: "http://www.guanaikangfu.com/gakf/static/images/help.jpg",
+            url: "http://www.guanaikangfu.com/gakf/help.html"
         };
         var msg = {
             toUserName: data.fromUserName,
