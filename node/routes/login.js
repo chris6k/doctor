@@ -78,9 +78,9 @@ var loginResp = function(type, id, url, doctor_id) {
 }
 
 router.post('/logout', function(req, res, next){
-    req.cookie('wx_id','null',{maxAge:0});
-    req.cookie('sick_id','null',{maxAge:0});
-    req.cookie('doctor_id','null',{maxAge:0});
+    res.cookie('wx_id','null',{maxAge:0});
+    res.cookie('sick_id','null',{maxAge:0});
+    res.cookie('doctor_id','null',{maxAge:0});
     res.json(result(true,null,null));
 });
 
