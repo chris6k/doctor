@@ -128,8 +128,11 @@ router.post('/login', function(req, res, next) {
                     res.json(result(false, 'get user by name and password err', err));
                     // res.redirect(login_url + '?err=4&wx_id=' + wx_id);
                 } else if (data && data.length > 0) {
-                    data[0].wx_id = wx_id;
-                    data[0].save(function (err) {
+                    var updatedata = {};
+                    if (wx_id) {
+                        updatedata.wx_id = wx_id;
+                    }
+                    data[0].save(data, function (err) {
                         if (!err) {
                             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
                             if (data[0].status === 't') {
