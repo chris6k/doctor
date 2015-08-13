@@ -3,7 +3,7 @@ var router = express.Router();
 var request = require('request');
 var result = require('./result');
 var appid = 'wxaf3a162fe7e04d37', secret = '2166e5441e7412dc7ebd4111635db0b7';
-var urlMap = {'1':'/gakf/flowSick.html', '2':'/gakf/communicate.html', '3':'/gakf/inpatientInfo.html'};
+var urlMap = {'1':'/gakf/flowSick.html', '2':'/gakf/communicate.html', '3':'/gakf/inpatientInfo.html','4':'/gakf/setting.html', '5':'/gakf/pills.html'};
 var login_url = '/gakf/login.html';
 var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
@@ -128,8 +128,11 @@ router.post('/login', function(req, res, next) {
                     res.json(result(false, 'get user by name and password err', err));
                     // res.redirect(login_url + '?err=4&wx_id=' + wx_id);
                 } else if (data && data.length > 0) {
-                    data[0].wx_id = wx_id;
-                    data[0].save(function (err) {
+                    var updatedata = {};
+                    if (wx_id) {
+                        updatedata.wx_id = wx_id;
+                    }
+                    data[0].save(data, function (err) {
                         if (!err) {
                             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
                             if (data[0].status === 't') {
