@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=no"/>
+	<title>服药提醒</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<style type="text/css">
+		input{width: 140px;}
+		.row span{
+			line-height: 30px;
+		}
+	</style>
+</head>
+<body>
+	<div class="spacer10"></div>
+	<div class="container" id="questionCon">
+		
+	</div>
+	
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" >
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="javascript:void(0)" id="add">
+			    	<span style="color:#fff;">添加</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
+	<script type="text/html"  id="test">
+	<form>
+		<div class="panel panel-default my-panel">
+		  <div class="panel-body">
+		  	<div class="h5" style="margin-top:0px;">服药提醒</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<span>药名:</span>
+				</div>
+				<div class="col-xs-8">
+					<input type="text" name="drug_name" value="" />
+				</div>
+			</div>
+			<div class="spacer10"></div>
+			<div class="row">
+				<div class="col-xs-4">
+					<span>服药次数:</span>
+				</div>
+				<div class="col-xs-6">
+					<input type="number" name="times" value="" />
+				</div>
+				<div class="col-xs-2">
+					<span>次</span>
+				</div>
+			</div>
+			<div class="spacer10"></div>
+			<div class="row">
+				<div class="col-xs-4">
+					<span>服药片数:</span>
+				</div>
+				<div class="col-xs-6">
+					<input type="number" name="drug_count" value="" />
+				</div>
+				<div class="col-xs-2">
+					<span>片</span>
+				</div>
+			</div>
+			<div class="spacer10"></div>
+			<div class="row">
+				<div class="col-xs-4">
+					<span>服药天数:</span>
+				</div>
+				<div class="col-xs-6">
+					<input type="number" name="days" value="" />
+				</div>
+				<div class="col-xs-2">
+					<span>天</span>
+				</div>
+			</div>
+			<div class="spacer10"></div>
+			<div class="row">
+				<div class="col-xs-4">
+					
+				</div>
+				<div class="col-xs-6">
+					<input type="button" class="save"  value="保存" />
+				</div>
+			</div>
+		  </div>
+		</div>
+		<input type="hidden" value="{{sick_id}}" name="sick_id">
+	</form>
+	</script>
+	<script type="text/html"  id="test1">
+	{{each d as v i}}
+		<form >
+			<div class="panel panel-default my-panel">
+			  <div class="panel-body">
+			  	<div class="h5" style="margin-top:0px;">服药提醒</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>药名:</span>
+					</div>
+					<div class="col-xs-8">
+						<input type="text" name="drug_name" value="{{v.drug_name}}" />
+					</div>
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>服药次数:</span>
+					</div>
+					<div class="col-xs-6">
+						<input type="number" name="times" value="{{v.times}}" />
+					</div>
+					<div class="col-xs-2">
+						<span>次</span>
+					</div>
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>服药片数:</span>
+					</div>
+					<div class="col-xs-6">
+						<input type="number" name="drug_count" value="{{v.drug_per}}" />
+					</div>
+					<div class="col-xs-2">
+						<span>片</span>
+					</div>
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>服药天数:</span>
+					</div>
+					<div class="col-xs-6">
+						<input type="number" name="days" value="{{v.days}}" />
+					</div>
+					<div class="col-xs-2">
+						<span>天</span>
+					</div>
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						
+					</div>
+					<div class="col-xs-6">
+						<input type="button" class="save" value="保存"  />
+					</div>
+				</div>
+			  </div>
+			</div>
+			<input type="hidden" value="{{v.sick_id}}" name="sick_id">
+			<input type="hidden" value="{{v.id}}" name="id">
+		</form>
+	{{/each}}
+	</script>
+	<script type="text/javascript">
+
+    
+	///sick/setnotify post sick_id,drug_name,times,days,drug_count
+		require(["template","store"],function(template,store){
+			var data = {},temp=store.get("user");
+			if(temp.type == "doctor") {
+				$("body").html("<h4 class='text-center'>患者设置</h4>");
+				return ;
+			}
+			function render(dom,data){
+				var dd = data;
+				var tpl = dom.html();
+				var render = template.compile(tpl);
+				//匹配json内容
+			    var html = render(dd);
+			    return html;
+			}
+		    $.ajax({ 
+					type:"get",
+					url: "/sick/getnotify?sick_id="+temp.id,
+					dataType: "json", 
+					success: function(obj){
+						data.d = obj.content;
+						//匹配json内容
+					    var html = render($("#test1"),data);
+					    //输入模板
+					    $("#questionCon").append(html);
+		    		},
+		    		error:function(){
+
+		    		}
+			}); 
+
+		    $("#add").on("touchstart",function(){
+		    	var data ={},temp=store.get("user");
+		    	if(temp.type == "sick")data.sick_id = temp.id;
+		    	var h = $("#questionCon").height();
+		    	$("body").animate({scrollTop: h+'px'}, 800);
+		    	//匹配json内容
+			    var html = render($("#test"),data);
+			    //输入模板
+			    $("#questionCon").append(html);
+
+		    });
+		    function saveForm(obj){
+		    	var form = $(obj).parent().parent().parent().parent().parent();
+		    	$.ajax({ 
+					type:"post",
+					url: "/sick/setnotify",
+					dataType: "json", 
+					data:form.serialize(),
+					success: function(obj){
+						$("#commesCom").html("保存成功").show();
+						setTimeout(function(){
+							$("#commesCom").html("").hide();
+						},1500);
+		    		},
+		    		error:function(){
+
+		    		}
+				}); 
+		    }
+		    $(document).on("touchstart",".save",function(e){
+		    	saveForm(this);
+		    })
+		});
+	</script>
+</body>
+</html>
