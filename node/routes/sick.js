@@ -10,11 +10,11 @@ router.get('/test', function(req, res, next){
     var url = '';
     var topcolor = '#FF0000'; // 顶部颜色
     var data = {
-        first: "用药提醒",
-        keyword1: "要你命3000",
-        keyword2: "一日1次，一次10片",
-        keyword3: "无",
-        remarks:"感谢您的使用"
+        first: {value:"用药提醒"},
+        keyword1: {value:"要你命3000"},
+        keyword2: {value:"一日1次，一次10片"},
+        keyword3: {value:"无"},
+        remarks:{value:"感谢您的使用"}
     };
     api.sendTemplate("oRL_8tggmPtwTaAiWVadJUzOe3OM", templateId, url, topcolor, data, callback);
 });
