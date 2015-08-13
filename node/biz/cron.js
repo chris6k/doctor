@@ -26,11 +26,11 @@ var notifyInfo = function(sick, drugn) {
 	var url = '';
 	var topcolor = '#FF0000'; // 顶部颜色
 	var data = {
-	 	first: "用药提醒",
-	 	keyword1: drugn.drug_name,
-	 	keyword2: "一日" + drugn.times + "次，一次" + drugn.drug_per + "片",
-	 	keyword3: "无",
-	 	remarks:"感谢您的使用"
+	 	first: {value:"用药提醒"},
+	 	keyword1: {value:drugn.drug_name},
+	 	keyword2: {value:"一日" + drugn.times + "次，一次" + drugn.drug_per + "片"},
+	 	keyword3: {value:"无"},
+	 	remarks: {value:"感谢您的使用"}
 	};
 	drugn.save({"times": drugn.times - 1}, function(err){
 		if (!err)
@@ -38,7 +38,7 @@ var notifyInfo = function(sick, drugn) {
 		else
 			console.info("minus drug times failed");
 	});
-	api.sendTemplate(sick.wx_id, templateId, url, topColor, data, callback);
+	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
 }
 var jobs = [];
 var job8 = schedule.scheduleJob('0 0 8 * * ?', function(){
