@@ -16,7 +16,9 @@ router.get('/test', function(req, res, next){
         keyword3: {value:"无"},
         remarks:{value:"感谢您的使用"}
     };
-    api.sendTemplate("oRL_8tggmPtwTaAiWVadJUzOe3OM", templateId, url, topcolor, data, callback);
+    api.sendTemplate("oRL_8tggmPtwTaAiWVadJUzOe3OM", templateId, url, topcolor, data, function(err){
+        res.json(result(true,'',err||'ok'));
+    });
 });
 
 router.get('/info', function (req, res, next) {
