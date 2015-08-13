@@ -69,11 +69,10 @@
 		var data = {},id,temp=store.get("user"),id,url;
 		reg.validate("settingForm");
 		data.userType = temp.type;
+		id = data.id = temp.id;
 		if(temp.type=="sick"){
-			id = data.id = temp.id;
 			url = "/sick/info?id="+id;
 		}else if(temp.type == "doctor"){
-			id = data.id = temp.doctor_id;
 			url = "/doctor/info?doctor_id="+id;
 		}
 	   	var vmodel = avalon.define({
