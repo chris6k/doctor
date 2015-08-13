@@ -26,11 +26,11 @@ var notifyInfo = function(sick, drugn) {
 	var url = '';
 	var topcolor = '#FF0000'; // 顶部颜色
 	var data = {
-	 	first: {value:"用药提醒"},
-	 	keyword1: {value:drugn.drug_name},
-	 	keyword2: {value:"一日" + drugn.times + "次，一次" + drugn.drug_per + "片"},
-	 	keyword3: {value:"无"},
-	 	remarks: {value:"感谢您的使用"}
+	 	first: {"value":"用药提醒"},
+	 	keyword1: {"value":drugn.drug_name},
+	 	keyword2: {"value":"一日" + drugn.times + "次，一次" + drugn.drug_per + "片"},
+	 	keyword3: {"value":"无"},
+	 	remarks: {"value":"感谢您的使用"}
 	};
 	drugn.save({"times": drugn.times - 1}, function(err){
 		if (!err)
