@@ -38,7 +38,7 @@ var notifyInfo = function(sick, drugn) {
 		else
 			console.info("minus drug times failed");
 	});
-	api.sendTemplate(sick.wx_id, templateId, url, topColor, data, callback);
+	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
 }
 var jobs = [];
 var job8 = schedule.scheduleJob('0 0 8 * * ?', function(){
