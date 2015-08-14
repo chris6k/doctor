@@ -26,36 +26,37 @@ var getOpenId = function (req, res, code) {
             var openid = data.openid;
             if (openid) {
                 res.cookie('wx_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                req.models.doctor.find({wx_id: openid}, function (err, data) {
-                    if (err) {
-                        console.error(err);
-                        res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
-                    } else {
-                        if (data && data.length > 0) {
-                            res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('type', 'doctor', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.redirect(cb + '?wx_id=' + openid + '&doctor_id=' + data[0].id);
-                        } else {
-                            req.models.sick.find({wx_id: openid}, function (err, data) {
-                                if (err || !data || data.length == 0) {
-                                    res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
-                                } else {
-                                    res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                                    res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                                    res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                                    if (data[0].status === 't') {
-                                        res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
-                                    } else if (data[0].status === 'f') {
-                                        res.redirect(login_url);
-                                    } else {
-                                        res.redirect(unverifyUrl); 
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+                // req.models.doctor.find({wx_id: openid}, function (err, data) {
+
+                    // if (err) {
+                        // console.error(err);
+                    res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
+                    // } else {
+                    //     if (data && data.length > 0) {
+                    //         res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //         res.cookie('type', 'doctor', {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //         res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //         res.redirect(cb + '?wx_id=' + openid + '&doctor_id=' + data[0].id);
+                    //     } else {
+                    //         req.models.sick.find({wx_id: openid}, function (err, data) {
+                    //             if (err || !data || data.length == 0) {
+                    //                 res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
+                    //             } else {
+                    //                 res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //                 res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //                 res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //                 if (data[0].status === 't') {
+                    //                     res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
+                    //                 } else if (data[0].status === 'f') {
+                    //                     res.redirect(login_url);
+                    //                 } else {
+                    //                     res.redirect(unverifyUrl); 
+                    //                 }
+                    //             }
+                    //         });
+                    //     }
+                    // }
+                // });
             }
         } else {
             console.error(error);
@@ -78,9 +79,9 @@ var loginResp = function(type, id, url, doctor_id) {
 }
 
 router.post('/logout', function(req, res, next){
-    res.cookie('wx_id','null',{maxAge:0});
-    res.cookie('sick_id','null',{maxAge:0});
-    res.cookie('doctor_id','null',{maxAge:0});
+    res.cookie('wx_id','',{maxAge:0});
+    res.cookie('sick_id','',{maxAge:0});
+    res.cookie('doctor_id','',{maxAge:0});
     res.json(result(true,null,null));
 });
 
@@ -92,22 +93,22 @@ router.post('/update', function(req, res, next) {
     var oldPassword = req.param("old_password");
     var sign = req.param('sign');
     req.models[type].get(userId, function(err, user){
-        // if (err || !user) {
+         if (err || !user) {
             res.json(result(false, 'get user error', err));
-        // } else {
-        //     if (user.password === oldPassword) {
-        //         user.save({sign:sign, password: newPassword, name: name}, function(err){
-        //             if (!err) {
-        //                  res.json(result(true, null,null));
-        //              } else {
-        //                 res.json(result(false, "save user info error", err));
-        //              }
-        //         });
+        } else {
+            if (user.password === oldPassword) {
+                user.save({sign:sign, password: newPassword, name: name}, function(err){
+                    if (!err) {
+                         res.json(result(true, null,null));
+                     } else {
+                        res.json(result(false, "save user info error", err));
+                     }
+                });
                
-        //     } else {
-        //         res.json(result(false, "old password mismatch", null));
-        //     }
-        // }
+            } else {
+                res.json(result(false, "old password mismatch", null));
+            }
+        }
     });
 });
 
