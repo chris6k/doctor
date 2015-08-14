@@ -246,3 +246,15 @@ form em.error{width: 200px;margin-left: 10px; color: red;}
 .score span{
 	color: #f18e35;
 }
+
+.vertical-container {
+  min-height: 400px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  text-align:center;
+  padding:5px;
+}
