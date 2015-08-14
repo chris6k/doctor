@@ -10,10 +10,12 @@ var reg_url = '/gakf/register.html';
 var unverifyUrl = '/gakf/msg.html';
 
 var api = require('../biz/weixin').api;
-
+var weixin = require('../biz/weixin').weixin;
+var signtool = require("weixin-signature").sign;
 
 //todo
 var unreg_url = '/gakf/msg.html';
+
 
 var getOpenId = function (req, res, code) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + appid + '&secret='
@@ -64,6 +66,45 @@ var getOpenId = function (req, res, code) {
         }
     });
 };
+
+var apiJs;
+var timeout = 0;
+var getSign = function(ticket, timestamp, url) {
+    var config = {
+    noncestr    : "Wm3WZYTPz0wzccnW",
+    jsapi_ticket: ticket,
+    timestamp   : timestamp,
+    url         : url
+    };
+    return signtool(config);
+};
+
+router.get('/weixin_sign', function(req, res, next){
+    var url = req.param('url');
+    var timestamp = Date.now();
+
+    if (apiJs && Date.now() < timeout) {
+        res.json(result(true, '', getSign(apiJs, timestamp, url)));    
+    } else {
+        weixin.getCacheAccessToken(function(accessToken) {
+            if (accessToken) {
+                var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + accessToken.access_token + "&type=jsapi";
+                request(jsapiurl, function (error, response, body) {
+                    if (error) {
+                        res.json(result(false,'err',error));
+                    } else {
+                        r = JSON.parse(body);
+                        apiJs = r.ticket;
+                        timeout = Date.now() + r.expires_in * 1000;
+                        res.json(result(true, '', getSign(apiJs, timestamp, url)));
+                    }
+                });
+             } else {
+                res.json(result(false,'get token failed',null));
+            }
+        });
+    }
+});
 
 router.get('/callback', function (req, res, next) {
     var code = req.param('code');
