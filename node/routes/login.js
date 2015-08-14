@@ -92,22 +92,22 @@ router.post('/update', function(req, res, next) {
     var oldPassword = req.param("old_password");
     var sign = req.param('sign');
     req.models[type].get(userId, function(err, user){
-        if (err || !user) {
+        // if (err || !user) {
             res.json(result(false, 'get user error', err));
-        } else {
-            if (user.password === oldPassword) {
-                user.save({sign:sign, password: newPassword, name: name}, function(err){
-                    if (!err) {
-                         res.json(result(true, null,null));
-                     } else {
-                        res.json(result(false, "save user info error", err));
-                     }
-                });
+        // } else {
+        //     if (user.password === oldPassword) {
+        //         user.save({sign:sign, password: newPassword, name: name}, function(err){
+        //             if (!err) {
+        //                  res.json(result(true, null,null));
+        //              } else {
+        //                 res.json(result(false, "save user info error", err));
+        //              }
+        //         });
                
-            } else {
-                res.json(result(false, "old password mismatch", null));
-            }
-        }
+        //     } else {
+        //         res.json(result(false, "old password mismatch", null));
+        //     }
+        // }
     });
 });
 
@@ -132,43 +132,26 @@ router.post('/login', function(req, res, next) {
                     if (wx_id) {
                         updatedata.wx_id = wx_id;
                     }
-                    data[0].save(data, function (err) {
+                    data[0].save(updatedata, function (err) {
                         if (!err) {
                             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('type', type, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
                             if (data[0].status === 't') {
-                                res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
+                                res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
+                                    data[0].doctor_id)));
                             } else {
                                 res.json(result(false, 'user status is f or u', {}));
                             }
-                            // res.redirect(target_url[type] || decodeURIComponent(cb));
                         } else {
                            res.json(result(false,'bind wx_id err',err));
-                            // res.redirect(login_url + '?err=5&wx_id=' + wx_id);
                         }
                     });
                 } else {
                     res.json(result(false,'no user',{}));
-                    // res.redirect(login_url + '?err=6&wx_id=' + wx_id);
                 }
     });
-    // req.models[type].find({wx_id: wx_id}, function (err, data) {
-    //     if (err) {
-    //         res.json(result(false, 'get user by wx_id err', err));
-    //         // res.redirect(login_url + '?err=2&wx_id=' + wx_id);
-    //     } 
-    //     else if (data && data.length > 0) {
-    //         if (data[0].status === 't') {
-    //             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-    //             res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
-    //             // res.redirect(target_url[type] || decodeURIComponent(cb));
-    //         } else {
-    //             res.json(result(false, 'user status is f or u', {}));
-    //             // res.redirect(login_url + '?err=3&wx_id=' + wx_id);
-    //         }
-    //     } else {
-            
-    //     }
-    // });
+   
 });
 
 router.post('/reg', function (req, res, next) {
