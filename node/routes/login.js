@@ -10,10 +10,12 @@ var reg_url = '/gakf/register.html';
 var unverifyUrl = '/gakf/msg.html';
 
 var api = require('../biz/weixin').api;
-
+var weixin = require('../biz/weixin').weixin;
+var signtool = require("weixin-signature").sign;
 
 //todo
 var unreg_url = '/gakf/msg.html';
+
 
 var getOpenId = function (req, res, code) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + appid + '&secret='
@@ -26,36 +28,37 @@ var getOpenId = function (req, res, code) {
             var openid = data.openid;
             if (openid) {
                 res.cookie('wx_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                req.models.doctor.find({wx_id: openid}, function (err, data) {
-                    if (err) {
-                        console.error(err);
-                        res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
-                    } else {
-                        if (data && data.length > 0) {
-                            res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('type', 'doctor', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.redirect(cb + '?wx_id=' + openid + '&doctor_id=' + data[0].id);
-                        } else {
-                            req.models.sick.find({wx_id: openid}, function (err, data) {
-                                if (err || !data || data.length == 0) {
-                                    res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
-                                } else {
-                                    res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                                    res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                                    res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                                    if (data[0].status === 't') {
-                                        res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
-                                    } else if (data[0].status === 'f') {
-                                        res.redirect(login_url);
-                                    } else {
-                                        res.redirect(unverifyUrl); 
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+                // req.models.doctor.find({wx_id: openid}, function (err, data) {
+
+                    // if (err) {
+                        // console.error(err);
+                    res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
+                    // } else {
+                    //     if (data && data.length > 0) {
+                    //         res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //         res.cookie('type', 'doctor', {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //         res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //         res.redirect(cb + '?wx_id=' + openid + '&doctor_id=' + data[0].id);
+                    //     } else {
+                    //         req.models.sick.find({wx_id: openid}, function (err, data) {
+                    //             if (err || !data || data.length == 0) {
+                    //                 res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
+                    //             } else {
+                    //                 res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //                 res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //                 res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                    //                 if (data[0].status === 't') {
+                    //                     res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
+                    //                 } else if (data[0].status === 'f') {
+                    //                     res.redirect(login_url);
+                    //                 } else {
+                    //                     res.redirect(unverifyUrl); 
+                    //                 }
+                    //             }
+                    //         });
+                    //     }
+                    // }
+                // });
             }
         } else {
             console.error(error);
@@ -63,6 +66,45 @@ var getOpenId = function (req, res, code) {
         }
     });
 };
+
+var apiJs;
+var timeout = 0;
+var getSign = function(ticket, timestamp, url) {
+    var config = {
+    noncestr    : "Wm3WZYTPz0wzccnW",
+    jsapi_ticket: ticket,
+    timestamp   : timestamp,
+    url         : url
+    };
+    return signtool(config);
+};
+
+router.get('/weixin_sign', function(req, res, next){
+    var url = req.param('url');
+    var timestamp = Date.now();
+
+    if (apiJs && Date.now() < timeout) {
+        res.json(result(true, '', getSign(apiJs, timestamp, url)));    
+    } else {
+        weixin.getCacheAccessToken(function(accessToken) {
+            if (accessToken) {
+                var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + accessToken.access_token + "&type=jsapi";
+                request(jsapiurl, function (error, response, body) {
+                    if (error) {
+                        res.json(result(false,'err',error));
+                    } else {
+                        r = JSON.parse(body);
+                        apiJs = r.ticket;
+                        timeout = Date.now() + r.expires_in * 1000;
+                        res.json(result(true, '', getSign(apiJs, timestamp, url)));
+                    }
+                });
+             } else {
+                res.json(result(false,'get token failed',null));
+            }
+        });
+    }
+});
 
 router.get('/callback', function (req, res, next) {
     var code = req.param('code');
@@ -78,9 +120,9 @@ var loginResp = function(type, id, url, doctor_id) {
 }
 
 router.post('/logout', function(req, res, next){
-    res.cookie('wx_id','null',{maxAge:0});
-    res.cookie('sick_id','null',{maxAge:0});
-    res.cookie('doctor_id','null',{maxAge:0});
+    res.cookie('wx_id','',{maxAge:0});
+    res.cookie('sick_id','',{maxAge:0});
+    res.cookie('doctor_id','',{maxAge:0});
     res.json(result(true,null,null));
 });
 
@@ -92,7 +134,7 @@ router.post('/update', function(req, res, next) {
     var oldPassword = req.param("old_password");
     var sign = req.param('sign');
     req.models[type].get(userId, function(err, user){
-        if (err || !user) {
+         if (err || !user) {
             res.json(result(false, 'get user error', err));
         } else {
             if (user.password === oldPassword) {
@@ -132,43 +174,26 @@ router.post('/login', function(req, res, next) {
                     if (wx_id) {
                         updatedata.wx_id = wx_id;
                     }
-                    data[0].save(data, function (err) {
+                    data[0].save(updatedata, function (err) {
                         if (!err) {
                             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('type', type, {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
                             if (data[0].status === 't') {
-                                res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
+                                res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
+                                    data[0].doctor_id)));
                             } else {
                                 res.json(result(false, 'user status is f or u', {}));
                             }
-                            // res.redirect(target_url[type] || decodeURIComponent(cb));
                         } else {
                            res.json(result(false,'bind wx_id err',err));
-                            // res.redirect(login_url + '?err=5&wx_id=' + wx_id);
                         }
                     });
                 } else {
                     res.json(result(false,'no user',{}));
-                    // res.redirect(login_url + '?err=6&wx_id=' + wx_id);
                 }
     });
-    // req.models[type].find({wx_id: wx_id}, function (err, data) {
-    //     if (err) {
-    //         res.json(result(false, 'get user by wx_id err', err));
-    //         // res.redirect(login_url + '?err=2&wx_id=' + wx_id);
-    //     } 
-    //     else if (data && data.length > 0) {
-    //         if (data[0].status === 't') {
-    //             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-    //             res.json(result(true, loginResp(type, data[0].id, decodeURIComponent(cb||''), data[0].doctor_id)));
-    //             // res.redirect(target_url[type] || decodeURIComponent(cb));
-    //         } else {
-    //             res.json(result(false, 'user status is f or u', {}));
-    //             // res.redirect(login_url + '?err=3&wx_id=' + wx_id);
-    //         }
-    //     } else {
-            
-    //     }
-    // });
+   
 });
 
 router.post('/reg', function (req, res, next) {
