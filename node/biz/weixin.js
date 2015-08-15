@@ -1,6 +1,7 @@
 var weixin = require('weixin-apis');
 var WechatAPI = require('wechat-api');
 var defines = require('../db/define');
+var signtool = require('weixin-signature');
 
 //wxaf3a162fe7e04d37,
 //2166e5441e7412dc7ebd4111635db0b7
@@ -274,5 +275,7 @@ var weixin_biz = function (app) {
     });
 
 };
+
 weixin_biz.api = api;
+weixin_biz.weixin = weixin;
 module.exports = weixin_biz;
