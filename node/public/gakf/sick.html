@@ -71,15 +71,15 @@
 		    });
 		    $.ajax({
 		    	type:"get",
-		    	url:"/user/weixin_sign?url=www.guanaikangfu.com",
+		    	url:"/user/weixin_sign?url=http://www.guanaikangfu.com/gakf/sick.html",
 		    	dataType: "json", 
 				success: function(obj){
 					var dd = obj.content;
 					wx.config({
-					    debug: true,
+					    debug: false,
 					    appId: 'wxaf3a162fe7e04d37',
 					    timestamp: dd.timestamp,
-					    nonceStr: dd.nonceStr,
+					    nonceStr: dd.noncestr,
 					    signature: dd.signature,
 					    jsApiList: ["scanQRCode"]
 					});
