@@ -33,7 +33,8 @@ require.config({
         "store":"store.min",
         'index':'index',
         "jquery.qrcode":"jquery.qrcode",
-        "qrcode":"qrcode"
+        "qrcode":"qrcode",
+        "wx":"jweixin-1.0.0"
 	}
 });
 
