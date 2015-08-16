@@ -41,6 +41,19 @@ var notifyInfo = function(sick, drugn) {
 	});
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
 }
+
+var notifySick = function(sick) {
+	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
+	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day;
+	var topcolor = '#FF0000'; // 顶部颜色
+	var data = {
+	 	first: {"value":"健康小贴士"},
+	 	keyword1: {"value":“给您的健康小贴士，请点击阅读”},
+	 	remarks: {"value":"请点击阅读"}
+	};
+	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
+}
+
 var jobs = [];
 var rule8 = later.parse.cron("0 8 * * ?");
 later.setInterval(function(){
@@ -106,8 +119,7 @@ later.setInterval(function(){
 }, rule18);
 
 
-var rule20 = later.parse.cron("0 20 * * ?");;
-rule20.hour = 20;
+var rule20 = later.parse.cron("0 20 * * ?");
 later.setInterval(function(){
 	var times_array = [4];
 	for (var j = 0; j < times_array.length; j++) {
@@ -127,5 +139,28 @@ later.setInterval(function(){
     	});
 	}
 }, rule20);
+
+var ruleDay = later.parse.cron("0 10 * * ?");
+later.setInterval(function(){
+	models().sick_notify.find({"status":1}, function(err, data){
+		if (err || !data) {
+			console.error("err or no data");
+		} else {
+			for (var i=0;i<data.length;i++) {
+				var item = data[i];
+				if (item.day == 8) {
+					item.save({"status":0},function(err){
+						console.info(err || "ok");
+					});
+				} else {
+					notifySick(item);
+					item.save({"day": item.day + 1}, function(err){
+						console.info(err||"ok");
+					});
+				}
+			}
+		}
+	});
+}, ruleDay);
 module.exports = jobs;
 

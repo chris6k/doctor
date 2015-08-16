@@ -107,6 +107,14 @@ var weixin_biz = function (app) {
                                         if (err) {
                                             weixin.sendMsg(msg);
                                         } else {
+                                            models().sick_notify.create({
+                                                "sick_id" : sick.id,
+                                                "day" : 1,
+                                                "wx_id" : sick.wx_id,
+                                                "status" : 1
+                                            }, function(err){
+                                                console.error(err);
+                                            });
                                             if (sick.wx_id) {
                                                 var templateId = "qYe34Nu4PM505KmbFaduJ3bf82hcgmNDtczROaDOCAU";
                                                 var url = 'http://www.guanaikangfu.com/gakf/video.html';
