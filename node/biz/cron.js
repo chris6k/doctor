@@ -11,6 +11,7 @@ var template_id = 'F1kjgyVBU1K3JV-Vg0iPselzU7Ox9IOrRPMoY7cxx0M';
 一天两次 发送时间节点  早晨8点，晚上8点
 一天一次服用药物时间节点 中午12点
 **/
+later.date.localTime();
 var models = function() {
     if (!_models) {
         _models = defines.cachedModels;
