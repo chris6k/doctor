@@ -194,6 +194,7 @@ defines.define = (function(defines){return function (db, models) {
 
     defines.cachedModels = models;
     console.info("init defines.cachedModels=" + defines.cachedModels + ",doctor=" + defines.cachedModels);
+    require("../biz/cron");
 };
 
 

@@ -27,7 +27,6 @@ app.use(orm.express("mysql://guanai:guanai@rdsnsbba6rlncdjwb97bd.mysql.rds.aliyu
 
 var weixin = require('./biz/weixin');
 weixin(app);
-var cron = require('./biz/cron');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

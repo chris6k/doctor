@@ -15,7 +15,8 @@ require.config({
         'upload':['css!../css/zyUpload.css','jquery','zyUpload','zyFile'],
         'avalon':["jquery"],
         'template':['jquery'],
-        'validate.form':['store']
+        'validate.form':['store'],
+        "qrcode":["jquery","jquery.qrcode"]
     },
 	paths: {
 		"jquery": "jquery-1.11.1.min",
@@ -30,7 +31,10 @@ require.config({
         "avalon":"avalon",
         "resource":"resource",
         "store":"store.min",
-        'index':'index'
+        'index':'index',
+        "jquery.qrcode":"jquery.qrcode",
+        "qrcode":"qrcode",
+        "wx":"jweixin-1.0.0"
 	}
 });
 

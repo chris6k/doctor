@@ -41,16 +41,18 @@ var notifyInfo = function(sick, drugn) {
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
 }
 var jobs = [];
-var job8 = schedule.scheduleJob('0 0 8 * * ?', function(){
+var rule8 = new schedule.RecurrenceRule();
+rule8.hour = 8;
+var job8 = schedule.scheduleJob(rule, function(){
 	var times_array = [4,3,2];
 	for (var j = 0; j < times_array.length; j++) {
-		_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
+		models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
 		if (err || data.length === 0) {
 			console.info("err or no data");
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				_models.sick.get(drugn.sick_id, function(err, sick){
+				models().sick.get(drugn.sick_id, function(err, sick){
 					if (!err) {
 						notifyInfo(sick, drugn);
 					}
@@ -62,16 +64,18 @@ var job8 = schedule.scheduleJob('0 0 8 * * ?', function(){
   });
 jobs.push(job8);
 
-var job12 = schedule.scheduleJob('0 0 12 * * ?', function(){
+var rule12 = new schedule.RecurrenceRule();
+rule12.hour = 12;
+var job12 = schedule.scheduleJob(rule12, function(){
 	var times_array = [4,3,1];
 	for (var j = 0; j < times_array.length; j++) {
-		_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
+		models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
 		if (err || data.length === 0) {
 			console.info("err or no data");
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				_models.sick.get(drugn.sick_id, function(err, sick){
+				models().sick.get(drugn.sick_id, function(err, sick){
 					if (!err) {
 						notifyInfo(sick, drugn);
 					}
@@ -84,16 +88,18 @@ var job12 = schedule.scheduleJob('0 0 12 * * ?', function(){
   });
 jobs.push(job12);
 
-var job18 = schedule.scheduleJob('0 0 18 * * ?', function(){
+var rule18 = new schedule.RecurrenceRule();
+rule18.hour = 18;
+var job18 = schedule.scheduleJob(rule18, function(){
 	var times_array = [3];
 	for (var j = 0; j < times_array.length; j++) {
-	_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
+	models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
 		if (err || data.length === 0) {
 			console.info("err or no data");
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				_models.sick.get(drugn.sick_id, function(err, sick){
+				models().sick.get(drugn.sick_id, function(err, sick){
 					if (!err) {
 						notifyInfo(sick, drugn);
 					}
@@ -105,16 +111,19 @@ var job18 = schedule.scheduleJob('0 0 18 * * ?', function(){
   });
 jobs.push(job18);
 
-var job20 = schedule.scheduleJob('0 0 20 * * ?', function(){
+
+var rule20 = new schedule.RecurrenceRule();
+rule20.hour = 20;
+var job20 = schedule.scheduleJob(rule20, function(){
 	var times_array = [4];
 	for (var j = 0; j < times_array.length; j++) {
-	_models.drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
+	models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
 		if (err || data.length === 0) {
 			console.info("err or no data");
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				_models.sick.get(drugn.sick_id, function(err, sick){
+				models().sick.get(drugn.sick_id, function(err, sick){
 					if (!err) {
 						notifyInfo(sick, drugn);
 					}

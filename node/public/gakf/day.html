@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<script type="text/javascript" src="./static/js/day.js"></script>
+</head>
+<body>
+	<div class="" id="questionCon">
+		
+	</div>
+	<script type="text/html" id="test">
+			<h3>{{title}}</h3>
+			<div>{{content}}</div>
+	</script>
+	<script type="text/javascript">
+		require(["template","store"],function(template,store){
+			var temp = RC.parseOptions(window.location.href),day = temp.day;
+			var data = dayArray[+day-1];
+			function render(dom,data){
+				var dd = data;
+
+				var tpl = dom.html();
+				var render = template.compile(tpl);
+				
+				//匹配json内容
+			    var html = render(dd);
+			    return html;
+			}
+			//匹配json内容
+		    var html = render($("#test"),data);
+		    //输入模板
+		    $("#questionCon").html(html);
+
+		});
+	</script>
+</body>
+</html>
