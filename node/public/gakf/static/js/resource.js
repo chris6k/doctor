@@ -115,8 +115,14 @@ RC['setItem'] = function (d){
             var temp = d.items[i];
             if(temp.type == "checkbox"|| temp.type == "radio"){
                 for(var j = 0;j<temp.value.length;j++){
-                   var list = $(".list-group")[i];
-                   var contains = $(list).find("span:contains("+temp.value[j]+")");
+                   var con = $("span:contains("+temp.value[j]+")"),contains;
+                   if(con.length>1){
+                        var list = $(".list-group")[i];
+                        contains = $(list).find("span:contains("+temp.value[j]+")");
+                   }else{
+                        contains = con;
+                   }
+                   
                    $(contains).parent().parent().trigger("tap");
                 }
             }else if(temp.type == "input"){
