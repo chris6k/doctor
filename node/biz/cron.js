@@ -1,4 +1,4 @@
-var schedule = require('node-schedule');
+var later = require('later');
 var defines = require('../db/define');
 var api = require('./weixin').api;
 var orm = require('orm');
@@ -32,7 +32,7 @@ var notifyInfo = function(sick, drugn) {
 	 	keyword3: {"value":"无"},
 	 	remarks: {"value":"感谢您的使用"}
 	};
-	drugn.save({"times": drugn.times - 1}, function(err){
+	drugn.save({"times": drugn.count - 1}, function(err){
 		if (!err)
 			console.info("minus drug times succ");
 		else
@@ -41,9 +41,8 @@ var notifyInfo = function(sick, drugn) {
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
 }
 var jobs = [];
-var rule8 = new schedule.RecurrenceRule();
-rule8.hour = 8;
-var job8 = schedule.scheduleJob(rule, function(){
+var rule8 = later.parse.cron("0 8 * * ?");
+later.setInterval(function(){
 	var times_array = [4,3,2];
 	for (var j = 0; j < times_array.length; j++) {
 		models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -61,12 +60,10 @@ var job8 = schedule.scheduleJob(rule, function(){
 		}
     	});
 	}
-  });
-jobs.push(job8);
+}, rule8);
 
-var rule12 = new schedule.RecurrenceRule();
-rule12.hour = 12;
-var job12 = schedule.scheduleJob(rule12, function(){
+var rule12 = later.parse.cron("0 12 * * ?");
+later.setInterval(function(){
 	var times_array = [4,3,1];
 	for (var j = 0; j < times_array.length; j++) {
 		models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -84,13 +81,10 @@ var job12 = schedule.scheduleJob(rule12, function(){
 		}
     	});
 	}
-    
-  });
-jobs.push(job12);
+}, rule12);
 
-var rule18 = new schedule.RecurrenceRule();
-rule18.hour = 18;
-var job18 = schedule.scheduleJob(rule18, function(){
+var rule18 = later.parse.cron("0 18 * * ?");
+later.setInterval(function(){
 	var times_array = [3];
 	for (var j = 0; j < times_array.length; j++) {
 	models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -108,13 +102,12 @@ var job18 = schedule.scheduleJob(rule18, function(){
 		}
     	});
 	}
-  });
-jobs.push(job18);
+}, rule18);
 
 
-var rule20 = new schedule.RecurrenceRule();
+var rule20 = later.parse.cron("0 20 * * ?");;
 rule20.hour = 20;
-var job20 = schedule.scheduleJob(rule20, function(){
+later.setInterval(function(){
 	var times_array = [4];
 	for (var j = 0; j < times_array.length; j++) {
 	models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
@@ -132,8 +125,6 @@ var job20 = schedule.scheduleJob(rule20, function(){
 		}
     	});
 	}
-
-  });
-jobs.push(job20);
+}, rule20);
 module.exports = jobs;
 
