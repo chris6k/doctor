@@ -48,7 +48,7 @@ var notifySick = function(sick) {
 	var topcolor = '#FF0000'; // 顶部颜色
 	var data = {
 	 	first: {"value":"健康小贴士"},
-	 	keyword1: {"value":“给您的健康小贴士，请点击阅读”},
+	 	keyword1: {"value":"给您的健康小贴士，请点击阅读"},
 	 	remarks: {"value":"请点击阅读"}
 	};
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
@@ -148,7 +148,7 @@ later.setInterval(function(){
 		} else {
 			for (var i=0;i<data.length;i++) {
 				var item = data[i];
-				if (item.day == 8) {
+				if (item.day == 9) {
 					item.save({"status":0},function(err){
 						console.info(err || "ok");
 					});
