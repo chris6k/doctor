@@ -90,7 +90,7 @@ var weixin_biz = function (app) {
                 if (err || dat.length === 0) {
                     weixin.sendMsg(msg);
                 } else {
-                    models().sickRequest.find({doctorId: dat[0].id, sickName: name}, function(err, dat2){
+                    models().sickRequest.find({doctorId: dat[0].id, sickName: name, status:'f'}, function(err, dat2){
                         if (err) {
                             weixin.sendMsg(msg);
                         } else if (dat2.length === 0) {
