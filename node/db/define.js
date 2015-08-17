@@ -191,9 +191,16 @@ defines.define = (function(defines){return function (db, models) {
         count:{type:'integer'},
         drug_per: {type: 'integer'}
     });
+    models.sick_notify = db.define('sick_notify', {
+        sick_id: {type: 'integer'},
+        wx_id : {type: 'text'},
+        day : {type: 'integer'},
+        status : {type: 'integer'}
+    });
 
     defines.cachedModels = models;
     console.info("init defines.cachedModels=" + defines.cachedModels + ",doctor=" + defines.cachedModels);
+    require("../biz/cron");
 };
 
 

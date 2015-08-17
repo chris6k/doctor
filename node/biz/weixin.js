@@ -1,6 +1,7 @@
 var weixin = require('weixin-apis');
 var WechatAPI = require('wechat-api');
 var defines = require('../db/define');
+var signtool = require('weixin-signature');
 
 //wxaf3a162fe7e04d37,
 //2166e5441e7412dc7ebd4111635db0b7
@@ -89,7 +90,7 @@ var weixin_biz = function (app) {
                 if (err || dat.length === 0) {
                     weixin.sendMsg(msg);
                 } else {
-                    models().sickRequest.find({doctorId: dat[0].id, sickName: name}, function(err, dat2){
+                    models().sickRequest.find({doctorId: dat[0].id, sickName: name, status:'f'}, function(err, dat2){
                         if (err) {
                             weixin.sendMsg(msg);
                         } else if (dat2.length === 0) {
@@ -106,6 +107,30 @@ var weixin_biz = function (app) {
                                         if (err) {
                                             weixin.sendMsg(msg);
                                         } else {
+                                            models().sick_notify.create({
+                                                "sick_id" : sick.id,
+                                                "day" : 1,
+                                                "wx_id" : sick.wx_id,
+                                                "status" : 1
+                                            }, function(err){
+                                                console.error(err);
+                                            });
+                                            if (sick.wx_id) {
+                                                var templateId = "qYe34Nu4PM505KmbFaduJ3bf82hcgmNDtczROaDOCAU";
+                                                var url = 'http://www.guanaikangfu.com/gakf/video.html';
+                                                var topcolor = '#FF0000'; // 顶部颜色
+                                                var datetime = new Date();
+                                                var data = {
+                                                    "first": {"value":"医生审核通过"},
+                                                    "keyword1": {"value":"医生通过了您的申请，点击查看帮助视频"},
+                                                    "keyword2": {"value":dat[0].name},
+                                                    "keyword3" :{"value":datetime.toString()},
+                                                    "remarks":{"value":"请点击查看帮助视频"}
+                                                };
+                                                api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, function(err){
+                                                    console.info(err||'ok');
+                                                });
+                                            }
                                             msg.content="操作成功";
                                             weixin.sendMsg(msg);
                                         }
@@ -274,5 +299,7 @@ var weixin_biz = function (app) {
     });
 
 };
+
 weixin_biz.api = api;
+weixin_biz.weixin = weixin;
 module.exports = weixin_biz;
