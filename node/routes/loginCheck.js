@@ -24,6 +24,7 @@ var check = function (req, res, next) {
     var type = req.cookies.type;
     var missInfo = !open_id || open_id === 'undefined' || !uid || uid === 'undefined' 
     || !status || status === 'undefined' || !type || type === 'undefined';
+    var expiresTime = 360*24*3600*1000;
 
     console.log("path=" + path + ",checkUrl=" + checkUrl(path));
     console.log("missinfo=" + missInfo);
@@ -32,7 +33,7 @@ var check = function (req, res, next) {
         if (missInfo) {
             var redirectUri = encodeURIComponent(redirectUrl);
             console.info('redirectUri=' + redirectUri);
-            res.cookie('cb_key', urlMap[path], {expires: new Date(Date.now() + 900000), httpOnly: false});
+            res.cookie('cb_key', urlMap[path], {expires: new Date(Date.now() + expiresTime), httpOnly: false});
             res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appid
                 + '&redirect_uri=' + redirectUri + '&state=' + urlMap[path]
                 + '&response_type=code&scope=snsapi_base#wechat_redirect');
@@ -43,12 +44,12 @@ var check = function (req, res, next) {
                     return;
                 }
                 if (sick.status === 't'){
-                    res.cookie('status', sick.status, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                    res.cookie('status', sick.status, {expires: new Date(Date.now() + expiresTime), httpOnly: false});
                     next();
                     return;
                 }
                 if (sick.status === 'f'){
-                    res.cookie('status', sick.status, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                    res.cookie('status', sick.status, {expires: new Date(Date.now() + expiresTime), httpOnly: false});
                     res.redirect(loginUrl);
                     return;
                 }

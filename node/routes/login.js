@@ -198,12 +198,12 @@ router.post('/login', function(req, res, next) {
                         console.info(data[0]);
                         if (!err) {
 
-
-                            res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 90000000)});
-                            res.cookie('type', type, {expires: new Date(Date.now() + 90000000)});
-                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 90000000)});
-                            res.cookie('id', data[0].id, {expires: new Date(Date.now() + 90000000)});
-                            res.cookie('doctor_id', data[0].doctor_id, {expires: new Date(Date.now() + 90000000)});
+                            var expiresTime = 360*24*3600*1000;
+                            res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
+                            res.cookie('type', type, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
+                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
+                            res.cookie('id', data[0].id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
+                            res.cookie('doctor_id', data[0].doctor_id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
 
                             if (data[0].status === 't') {
                                 res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
