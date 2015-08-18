@@ -195,10 +195,16 @@ router.post('/login', function(req, res, next) {
                         updatedata.wx_id = wx_id;
                     }
                     data[0].save(updatedata, function (err) {
+                        console.info(data[0]);
                         if (!err) {
-                            res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: false});
-                            res.cookie('type', type, {expires: new Date(Date.now() + 900000), httpOnly: false});
-                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: false});
+
+
+                            res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 90000000)});
+                            res.cookie('type', type, {expires: new Date(Date.now() + 90000000)});
+                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 90000000)});
+                            res.cookie('id', data[0].id, {expires: new Date(Date.now() + 90000000)});
+                            res.cookie('doctor_id', data[0].doctor_id, {expires: new Date(Date.now() + 90000000)});
+
                             if (data[0].status === 't') {
                                 res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
                                     data[0].doctor_id)));

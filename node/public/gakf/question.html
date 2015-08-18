@@ -108,7 +108,7 @@
 	</form>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
-			var url = "",temp = store.get("user");
+			var url = "",temp = store.get("user") || RC["user"]();
 			var data = {localType:temp.type};
 			// /answer/message?session_id=1
 			var vmodel = avalon.define({

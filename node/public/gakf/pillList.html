@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=no"/>
+	<title>服药提醒</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+	<style type="text/css">
+		input{width: 100px;}
+		.row span{
+			line-height: 30px;
+		}
+		.edit,.remove{
+			color:#f99159;
+		}
+	</style>
+</head>
+<body>
+	<div class="spacer10"></div>
+	<div class="container" id="questionCon">
+		
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" >
+	  <div class="container text-center" style="height: 42px; line-height: 42px;">
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<a href="/gakf/pills.html">
+			    	<span style="color:#fff;">添加</span>
+			    </a>
+	    	</div>
+	    </div>
+	  </div>
+	</nav>
+	<script type="text/html"  id="test1">
+	{{each d as v i}}
+		<form >
+			<div class="panel panel-default my-panel">
+			  <div class="panel-body">
+			  	<div class="h5" style="margin-top:0px;">服药提醒</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>药名:</span>
+					</div>
+					<div class="col-xs-8">
+						{{v.drug_name}}
+					</div>
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>服药次数:</span>
+					</div>
+					<div class="col-xs-8">
+						{{v.times}} 次
+					</div>
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>服药片数:</span>
+					</div>
+					<div class="col-xs-8">
+						{{v.drug_per}} 片
+					</div>
+					
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-4">
+						<span>服药天数:</span>
+					</div>
+					<div class="col-xs-8">
+						{{v.days}} 天
+					</div>
+					
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-6 text-center">
+						<a href="pills.html?sick_id={{v.sick_id}}&id={{v.id}}" class="edit"  >修改</a>
+					</div>
+					<div class="col-xs-6 text-center">
+						<a href="javascript:void(0)" alt="{{v.id}}" class="remove"  >删除</a>
+					</div>
+				</div>
+			  </div>
+			</div>
+			<input type="hidden" value="{{v.sick_id}}" name="sick_id">
+			<input type="hidden" value="{{v.id}}" name="id">
+		</form>
+	{{/each}}
+	</script>
+	<script type="text/javascript">
+
+    
+	///sick/setnotify post sick_id,drug_name,times,days,drug_count
+		require(["template","store"],function(template,store){
+			var data = {},temp=store.get("user") || RC["user"]();
+			if(temp.type == "doctor") {
+				$("body").html("<h4 class='text-center'>患者设置</h4>");
+				return ;
+			}
+			function render(dom,data){
+				var dd = data;
+				var tpl = dom.html();
+				var render = template.compile(tpl);
+				//匹配json内容
+			    var html = render(dd);
+			    return html;
+			}
+		    $.ajax({ 
+					type:"get",
+					url: "/sick/getnotify?sick_id="+temp.id,
+					dataType: "json", 
+					success: function(obj){
+						data.d = obj.content;
+						//匹配json内容
+					    var html = render($("#test1"),data);
+					    //输入模板
+					    $("#questionCon").append(html);
+		    		},
+		    		error:function(){
+
+		    		}
+			}); 
+
+		    
+		    function delForm(obj){
+		    	var form = $(obj).parent().parent().parent().parent().parent(),id = $(obj).attr("alt");
+		    	$.ajax({ 
+					type:"post",
+					url: "/sick/delnotify",
+					dataType: "json", 
+					data:{sick_id:temp.id,id:id},
+					success: function(obj){
+						form.remove();
+		    		},
+		    		error:function(){
+
+		    		}
+				}); 
+		    }
+		    $(document).on("touchstart",".remove",function(e){
+		    	delForm(this);
+		    })
+		});
+	</script>
+</body>
+</html>

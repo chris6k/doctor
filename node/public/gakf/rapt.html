@@ -31,7 +31,7 @@
 	<div class="" id="gradeList">
 		<div class="spacer5" ></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
-			<span class="my-title">{{el.title}}</span>
+			<b class="my-title">{{el.title}}</b>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
@@ -81,7 +81,7 @@
 	<script type="text/javascript">
 		require(["store","avalon","index"],function(store){
 			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
-			var user=store.get("user");
+			var user=store.get("user") || RC["user"]();
 			$("#gradeList").on("tap",".checkbox",function(){
 				var score="",temp = $(this).find(".tag");
 				if(user.type == "doctor"){
@@ -103,7 +103,7 @@
 
 			var data = {};
 			 //sick has save btn doctor hasn't save btn
-			var temp = store.get("user"),id="";
+			var temp = store.get("user") || RC["user"](),id="";
 			if(temp.type =="doctor"){
 				data.isshow = false;
 			}else {

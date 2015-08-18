@@ -34,7 +34,7 @@
 	require(["store","avalon"],function(store){
 				var data = [];
 				//
-				var temp = store.get("user"),id="";
+				var temp = store.get("user")||RC["user"](),id="";
 				if(temp.type =="doctor"){
 					id = temp.id;
 				}else {

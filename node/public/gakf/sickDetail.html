@@ -199,12 +199,13 @@
 	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
 	<script type="text/javascript">
 		require(["store","avalon"],function(store){
+
 				var data={isvisible:false,
 						  caprini:'',
 						  rapt:'',
 						  isout:Boolean(RC.parseOptions(window.location.href).isout)||false,
 						  iso:RC.parseOptions(window.location.href).iso||-1
-					},temp=store.get("user"),id;
+					},temp=store.get("user")||RC["user"](),id;
 				if(temp.type=="sick"){
 					id = temp.id;
 				}else if(temp.type == "doctor"){

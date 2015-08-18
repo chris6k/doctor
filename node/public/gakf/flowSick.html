@@ -16,7 +16,7 @@
 	require(["store"],function(store){
 				var data = [];
 				//
-				var temp = store.get("user"),id="";
+				var temp = store.get("user")||RC["user"](),id="";
 				if(temp.type =="doctor"){
 					window.location.href = "/gakf/doctorFlow.html";
 				}else {

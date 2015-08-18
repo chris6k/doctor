@@ -46,7 +46,7 @@
 	</div>
 	<script type="text/javascript">
 	require(["store","wx","avalon"],function(store,wx){
-			var data = [],doctor_id = store.get("user").id;
+			var data = [],user = store.get("user") || RC["user"](),doctor_id = user.id;
 		   	var vmodel = avalon.define({
 		          $id: "test",
 		          d:data

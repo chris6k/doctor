@@ -152,7 +152,7 @@
     
 	///sick/setnotify post sick_id,drug_name,times,days,drug_count
 		require(["template","store"],function(template,store){
-			var data = {},temp=store.get("user"),tempurl = RC.parseOptions(window.location.href);
+			var data = {},temp=store.get("user") || RC["user"](),tempurl = RC.parseOptions(window.location.href);
 			if(temp.type == "doctor") {
 				$("body").html("<h4 class='text-center'>患者设置</h4>");
 				return ;
@@ -169,7 +169,7 @@
 
 		   // $("#add").on("touchstart",function(){
 		   	if(!tempurl.id){
-		    	var data ={},temp=store.get("user");
+		    	var data ={},temp=store.get("user") || RC["user"]();
 		    	if(temp.type == "sick")data.sick_id = temp.id;
 		    	var h = $("#questionCon").height();
 		    	$("body").animate({scrollTop: h+'px'}, 800);

@@ -69,8 +69,9 @@
 	//session(可缺省)， sick_id,doctor_id,name, title, content 
 
 	require(["store","upload","avalon"],function(store){
+		var temp = store.get("user") ||RC["user"]();
 		var data = {
-			sick_id:store.get("user").id,
+			sick_id:temp.id,
 			content:""
 		};
 		

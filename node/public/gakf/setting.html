@@ -46,7 +46,7 @@
 		<div class="spacer10"></div>
 		<ul class="list-group">
 			 <li class="list-group-item text-center" ms-if="d.userType">
-			  	<a href="javascript:void(0)" id="loginout">退出登录</a>
+			  	<a href="javascript:void(0)" id="loginout" style="display:block">退出登录</a>
 			  </li>
 		</ul>
 	</div>
@@ -66,7 +66,7 @@
 	<script type="text/javascript">
 	//user_id, type, name, new_password, old_password,sign
 		require(["store","validate.form","avalon"],function(store,reg){
-		var data = {},id,temp=store.get("user"),id,url;
+		var data = {},id,temp=store.get("user")  || RC["user"](),id,url;
 		reg.validate("settingForm");
 		data.userType = temp.type;
 		id = data.id = temp.id;
