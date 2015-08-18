@@ -4,6 +4,8 @@ var result = require('./result');
 var calc = require('../biz/calculate');
 var recommend = require('../biz/recommend');
 var weixin = require('../biz/weixin');
+var dateFormat = require('dateformat');
+
 router.get('/test', function(req, res, next){
     var api = weixin.api;
     var templateId = "F1kjgyVBU1K3JV-Vg0iPselzU7Ox9IOrRPMoY7cxx0M";
@@ -13,7 +15,7 @@ router.get('/test', function(req, res, next){
         "first": "用药提醒",
         "keyword1": "要你命3000",
         "keyword2": "一日1次，一次10片",
-        "keyword3": "无",
+        "keyword3": dateFormat(new Date(),"yyyy/mm/dd hh:MM:ss"),
         "remarks":"感谢您的使用"
     };
     api.sendTemplate("oRL_8tggmPtwTaAiWVadJUzOe3OM", templateId, url, topcolor, data, function(err){
