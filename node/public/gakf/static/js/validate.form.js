@@ -148,6 +148,9 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						gender:{
 							required: true
+						},
+						agree:{
+							required:true
 						}
 
 					},
@@ -200,12 +203,17 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						gender:{
 							required: "请选择性别"
+						},
+						agree:{
+							required: "请阅读协议"
 						}
 
 					},
 					errorPlacement: function(error, element) {
 				     	if (element.attr("name") == "phone_vali")
 					       error.insertAfter($(element).parent());
+					    else if(element.attr("name") == "agree")
+					    	error.insertAfter($(element).parent());
 					     else
 					       error.insertAfter(element);
 					   

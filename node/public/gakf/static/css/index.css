@@ -176,7 +176,7 @@ form em.error { width: 200px; margin-left: 10px; color: red; }
 .my-button, .my-button:active { background-color: #75174b !important; border-color: #75174b !important; height: 35px; border-radius: 18px; width: 230px; }
 
 .my-nav { min-height: 42px; }
-.my-nav.my-nav-bottom { background-color: #75174b; }
+.my-nav.my-nav-bottom, .my-nav.my-nav-top { background-color: #75174b; }
 .my-nav.my-nav-top .container { margin-top: 12px; }
 .my-nav .my-nav-line { height: 42px; line-height: 42px; padding: 0px; }
 .my-nav .my-nav-line.selected { border-bottom: 2px solid #f18e35; }
