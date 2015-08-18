@@ -21,13 +21,14 @@ router.get('/info', function (req, res, next) {
     });
 });
 
-var findForArea = function(doctor_id, callback) {
+var findForArea = function(req, res, doctor_id, callback) {
     req.models.hospitalDoctor.find({"doctor_id":doctor_id}, function(err, doctors){
         if (err || !doctors || doctors.length == 0) {
             res.json(result(false,'no such doctor',err));
         } else {
             var name = doctors[0].name;
             var area = doctors[0].area;
+            console.info("name=" + name + ", area=" + area);
             req.models.hospitalDoctor.find({"area":area, "name":name}, function(err, others){
                 if (err || !others) {
                     res.json(result(false,'get data error', err));
@@ -53,7 +54,7 @@ router.get('/out_sicks', function (req, res, next) {
     var getSick = function(ids) {
         var sick_array = [];
         req.models.sick.find({
-            doctor_id: orm.in(ids),
+            doctor_id: ids,
             out_day: orm.lte(new Date())
         }, function (err, data) {
             if (err || !data) {
@@ -65,7 +66,7 @@ router.get('/out_sicks', function (req, res, next) {
                     sick_array.push(data[i]);
                 }
                 req.models.sick.find({
-                    doctor_id : orm.in(ids),
+                    doctor_id : ids,
                     in_day: null,
                 }, function(err, data2) {
                     if (err || !data) {
@@ -82,7 +83,7 @@ router.get('/out_sicks', function (req, res, next) {
             }
         });
     };
-    findForArea(getSick);
+    findForArea(req,res,doctor_id,getSick);
 });
 
 //获取入院的病人
@@ -92,9 +93,9 @@ router.get('/in_sicks', function (req, res, next) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
-    findForArea(function(ids){
+    findForArea(req,res,doctor_id,function(ids){
         req.models.sick.find({
-            doctor_id: orm.in(ids),
+            doctor_id: ids,
             in_day: orm.lte(new Date()),
             out_day: orm.gte(new Date())
         }, function (err, data) {
@@ -118,8 +119,8 @@ router.get('/sicks', function (req, res, next) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
-    findForArea(function(ids){
-        req.models.sick.find({doctor_id: orm.in(ids)}, function (err, data) {
+    findForArea(req,res,doctor_id,function(ids){
+        req.models.sick.find({doctor_id: ids}, function (err, data) {
         if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
