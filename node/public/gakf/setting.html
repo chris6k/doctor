@@ -86,8 +86,8 @@
 				url: "/user/logout",
 				dataType: "json", 
 				success: function(obj){
-					store.set("user","");
-					window.location.href = "login.html";
+					store.remove("user");
+					window.location.href = "/gakf/login.html";
 					
 	    		},
 	    		error:function(){

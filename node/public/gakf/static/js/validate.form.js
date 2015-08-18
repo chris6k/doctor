@@ -64,32 +64,35 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 					submitHandler:function(form){
 
 						$("#name").val($("#username").val());
-						$.ajax({ 
-							type:"post",
-							url: "/user/login",
-							dataType: "json", 
-							data:$("#"+formName).serialize(),
-							success: function(d){
-								if(d.success){
-									var d = d.content || d.msg;
-									store.set('user', { type:d.type,id: d.id,doctor_id:d.doctor_id});
-					        		if(d.url){
-					        			url =  d.url;
-					        		}else{
-					        			if(d.type == "sick"){
-					        				url = "/gakf/inpatientSick.html";
-					        			}else if(d.type == "doctor"){
-					        				url = "/gakf/sick.html";
-					        			}
-					        		}
-					        		window.location.href = url;
-								}else{
-									alert(d.msg);
-								}
-				    		},
-				    		error:function(e){
-				    		}
-						});
+						var username = $("#username").val(),pass = $("#password").val();
+						if(username != "" && pass != ""){
+								$.ajax({ 
+								type:"post",
+								url: "/user/login",
+								dataType: "json", 
+								data:$("#"+formName).serialize(),
+								success: function(d){
+									if(d.success){
+										var d = d.content || d.msg;
+										store.set('user', { type:d.type,id: d.id,doctor_id:d.doctor_id});
+						        		if(d.url){
+						        			url =  d.url;
+						        		}else{
+						        			if(d.type == "sick"){
+						        				url = "/gakf/inpatientSick.html";
+						        			}else if(d.type == "doctor"){
+						        				url = "/gakf/sick.html";
+						        			}
+						        		}
+						        		window.location.href = url;
+									}else{
+										alert(d.msg);
+									}
+					    		},
+					    		error:function(e){
+					    		}
+							});
+						}
 			        }    
 				});
 			}
