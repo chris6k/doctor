@@ -29,7 +29,7 @@ var getOpenId = function (req, res, code) {
             if (openid) {
                 res.cookie('wx_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: false});
                 req.models.doctor.find({wx_id: openid}, function (err, data) {
-
+                
                     if (err) {
                         console.error(err);
                         res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));

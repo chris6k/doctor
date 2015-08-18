@@ -21,6 +21,29 @@ router.get('/info', function (req, res, next) {
     });
 });
 
+var findForArea = function(req, res, doctor_id, callback) {
+    req.models.hospitalDoctor.find({"doctor_id":doctor_id}, function(err, doctors){
+        if (err || !doctors || doctors.length == 0) {
+            res.json(result(false,'no such doctor',err));
+        } else {
+            var name = doctors[0].name;
+            var area = doctors[0].area;
+            console.info("name=" + name + ", area=" + area);
+            req.models.hospitalDoctor.find({"area":area, "name":name}, function(err, others){
+                if (err || !others) {
+                    res.json(result(false,'get data error', err));
+                } else {
+                    var ids = [];
+                    for (var i = 0; i < others.length; i++) {
+                        ids.push(others[i].doctor_id);
+                    }
+                    callback(ids);
+                }
+            });
+        }
+    });
+}
+
 //获取出院的病人
 router.get('/out_sicks', function (req, res, next) {
     var doctor_id = req.param('doctor_id');
@@ -28,36 +51,39 @@ router.get('/out_sicks', function (req, res, next) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
-    var sick_array = [];
-    req.models.sick.find({
-        doctor_id: doctor_id,
-        out_day: orm.lte(new Date())
-    }, function (err, data) {
-        if (err || !data) {
-            console.error(err);
-            res.json(result(false, '', {}));
-        } else {
-            for (var i = 0; i< data.length; i++) {
-                data[i].out_dur = data[i].out_duration();
-                sick_array.push(data[i]);
-            }
-            req.models.sick.find({
-                doctor_id : doctor_id,
-                in_day: null,
-            }, function(err, data2) {
-                if (err || !data) {
-                    res.json(result(true, '', sick_array));
-                } else {
-                    for (var i = 0; i < data2.length; i++) {
-                        data2[i].out_dur = 0;
-                        sick_array.push(data2[i]);
-                    }
-                    res.json(result(true, '', sick_array));
+    var getSick = function(ids) {
+        var sick_array = [];
+        req.models.sick.find({
+            doctor_id: ids,
+            out_day: orm.lte(new Date())
+        }, function (err, data) {
+            if (err || !data) {
+                console.error(err);
+                res.json(result(false, '', {}));
+            } else {
+                for (var i = 0; i< data.length; i++) {
+                    data[i].out_dur = data[i].out_duration();
+                    sick_array.push(data[i]);
                 }
-            });
-           
-        }
-    });
+                req.models.sick.find({
+                    doctor_id : ids,
+                    in_day: null,
+                }, function(err, data2) {
+                    if (err || !data) {
+                        res.json(result(true, '', sick_array));
+                    } else {
+                        for (var i = 0; i < data2.length; i++) {
+                            data2[i].out_dur = 0;
+                            sick_array.push(data2[i]);
+                        }
+                        res.json(result(true, '', sick_array));
+                    }
+                });
+               
+            }
+        });
+    };
+    findForArea(req,res,doctor_id,getSick);
 });
 
 //获取入院的病人
@@ -67,20 +93,22 @@ router.get('/in_sicks', function (req, res, next) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
-    req.models.sick.find({
-        doctor_id: doctor_id,
-        in_day: orm.lte(new Date()),
-        out_day: orm.gte(new Date())
-    }, function (err, data) {
-        if (err || !data) {
-            console.error(err);
-            res.json(result(false, '', {}));
-        } else {
-            for (var i = 0; i< data.length; i++) {
-                data[i].in_dur = data[i].in_duration();
+    findForArea(req,res,doctor_id,function(ids){
+        req.models.sick.find({
+            doctor_id: ids,
+            in_day: orm.lte(new Date()),
+            out_day: orm.gte(new Date())
+        }, function (err, data) {
+            if (err || !data) {
+                console.error(err);
+                res.json(result(false, '', {}));
+            } else {
+                for (var i = 0; i< data.length; i++) {
+                    data[i].in_dur = data[i].in_duration();
+                }
+                res.json(result(true, '', data));
             }
-            res.json(result(true, '', data));
-        }
+        });
     });
 });
 
@@ -91,7 +119,8 @@ router.get('/sicks', function (req, res, next) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
-    req.models.sick.find({doctor_id: doctor_id}, function (err, data) {
+    findForArea(req,res,doctor_id,function(ids){
+        req.models.sick.find({doctor_id: ids}, function (err, data) {
         if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
@@ -101,6 +130,7 @@ router.get('/sicks', function (req, res, next) {
             }
             res.json(result(true, '', data));
         }
+    });
     });
 });
 
