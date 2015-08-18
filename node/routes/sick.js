@@ -438,9 +438,32 @@ router.post('/setnotify', function(req, res, next) {
 
 router.get('/getnotify', function(req, res, next){
     var sick_id = req.param('sick_id');
-    req.models.drugnotify.find({sick_id: sick_id}, function(err, data){
+    var id = req.param('id');
+    if(!id){
+        req.models.drugnotify.find({sick_id: sick_id}, function(err, data){
+            if (!err) {
+                res.json(result(true, '', data));
+            } else {
+                res.json(result(false,"err",err));
+            }
+        });
+    }else{
+        req.models.drugnotify.find({sick_id: sick_id,id:id}, function(err, data){
+            if (!err) {
+                res.json(result(true, '', data));
+            } else {
+                res.json(result(false,"err",err));
+            }
+        });
+    }
+});
+
+router.post('/delnotify',function(req,res,next){
+    var sick_id = req.param('sick_id');
+    var id = req.param('id');
+    req.models.drugnotify.find({sick_id: sick_id,id:id}).remove(function (err) {
         if (!err) {
-            res.json(result(true, '', data));
+            res.json(result(true, '', 'del'));
         } else {
             res.json(result(false,"err",err));
         }

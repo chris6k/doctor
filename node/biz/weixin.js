@@ -124,12 +124,23 @@ var weixin_biz = function (app) {
                                                 var datetime = new Date();
                                                 var data = {
                                                     "first": {"value":"医生审核通过"},
-                                                    "keyword1": {"value":"医生通过了您的申请，点击查看帮助视频"},
+                                                    "keyword1": {"value":"医生通过了您的申请"},
                                                     "keyword2": {"value":dat[0].name},
                                                     "keyword3" :{"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
-                                                    "remarks":{"value":"请点击查看帮助视频"}
+                                                    "remarks":{"value":""}
                                                 };
-                                                api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, function(err){
+                                                api.sendTemplate(sick.wx_id, templateId, "", topcolor, data, function(err){
+                                                    console.info(err||'ok');
+                                                });
+                                                // 视频模板
+                                                templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
+                                                data = {
+                                                    first: {"value":"帮助视频"},
+                                                    keyword1: {"value":"给您的帮助视频，请点击观看"},
+                                                    keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
+                                                    remarks: {"value":"请点击观看"}
+                                                };
+                                                api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,function(err){
                                                     console.info(err||'ok');
                                                 });
                                             }

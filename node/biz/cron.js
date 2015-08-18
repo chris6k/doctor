@@ -47,7 +47,7 @@ var notifySick = function(sick) {
 	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_1';
 	var topcolor = '#FF0000'; // 顶部颜色
 	var data = {
-	 	first: {"value":"健康小贴士"},
+	 	first: {"value":"健康小贴士，第 "+sick.day+" 天"},
 	 	keyword1: {"value":"给您的健康小贴士，请点击阅读"},
 	 	keyword2: {"value":new Date().toString()},
 	 	remarks: {"value":"请点击阅读"}

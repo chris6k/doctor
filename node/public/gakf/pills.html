@@ -27,8 +27,8 @@
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a href="javascript:void(0)" id="add">
-			    	<span style="color:#fff;">添加</span>
+	    		<a href="javascript:void(0)" id="save">
+			    	<span style="color:#fff;">保存</span>
 			    </a>
 	    	</div>
 	    </div>
@@ -36,7 +36,7 @@
 	</nav>
 	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
 	<script type="text/html"  id="test">
-	<form>
+	<form id="addForm">
 		<div class="panel panel-default my-panel">
 		  <div class="panel-body">
 		  	<div class="h5" style="margin-top:0px;">服药提醒</div>
@@ -84,15 +84,7 @@
 					<span>天</span>
 				</div>
 			</div>
-			<div class="spacer10"></div>
-			<div class="row">
-				<div class="col-xs-4">
-					
-				</div>
-				<div class="col-xs-6">
-					<input type="button" class="save"  value="保存" />
-				</div>
-			</div>
+			
 		  </div>
 		</div>
 		<input type="hidden" value="{{sick_id}}" name="sick_id">
@@ -100,7 +92,7 @@
 	</script>
 	<script type="text/html"  id="test1">
 	{{each d as v i}}
-		<form >
+		<form id="addForm">
 			<div class="panel panel-default my-panel">
 			  <div class="panel-body">
 			  	<div class="h5" style="margin-top:0px;">服药提醒</div>
@@ -148,15 +140,6 @@
 						<span>天</span>
 					</div>
 				</div>
-				<div class="spacer10"></div>
-				<div class="row">
-					<div class="col-xs-4">
-						
-					</div>
-					<div class="col-xs-6">
-						<input type="button" class="save" value="保存"  />
-					</div>
-				</div>
 			  </div>
 			</div>
 			<input type="hidden" value="{{v.sick_id}}" name="sick_id">
@@ -169,7 +152,7 @@
     
 	///sick/setnotify post sick_id,drug_name,times,days,drug_count
 		require(["template","store"],function(template,store){
-			var data = {},temp=store.get("user");
+			var data = {},temp=store.get("user"),tempurl = RC.parseOptions(window.location.href);
 			if(temp.type == "doctor") {
 				$("body").html("<h4 class='text-center'>患者设置</h4>");
 				return ;
@@ -182,23 +165,10 @@
 			    var html = render(dd);
 			    return html;
 			}
-		    $.ajax({ 
-					type:"get",
-					url: "/sick/getnotify?sick_id="+temp.id,
-					dataType: "json", 
-					success: function(obj){
-						data.d = obj.content;
-						//匹配json内容
-					    var html = render($("#test1"),data);
-					    //输入模板
-					    $("#questionCon").append(html);
-		    		},
-		    		error:function(){
+		
 
-		    		}
-			}); 
-
-		    $("#add").on("touchstart",function(){
+		   // $("#add").on("touchstart",function(){
+		   	if(!tempurl.id){
 		    	var data ={},temp=store.get("user");
 		    	if(temp.type == "sick")data.sick_id = temp.id;
 		    	var h = $("#questionCon").height();
@@ -207,27 +177,44 @@
 			    var html = render($("#test"),data);
 			    //输入模板
 			    $("#questionCon").append(html);
+			}else{
+				    $.ajax({ 
+						type:"get",
+						url: "/sick/getnotify?sick_id="+temp.id+"&id="+tempurl.id,
+						dataType: "json", 
+						success: function(obj){
+							data.d = obj.content;
+							//匹配json内容
+						    var html = render($("#test1"),data);
+						    //输入模板
+						    $("#questionCon").append(html);
+			    		},
+			    		error:function(){
 
-		    });
+			    		}
+				}); 
+			}
+		   // });
 		    function saveForm(obj){
-		    	var form = $(obj).parent().parent().parent().parent().parent();
+		    	var form = $("#addForm");
 		    	$.ajax({ 
 					type:"post",
 					url: "/sick/setnotify",
 					dataType: "json", 
 					data:form.serialize(),
 					success: function(obj){
-						$("#commesCom").html("保存成功").show();
-						setTimeout(function(){
-							$("#commesCom").html("").hide();
-						},1500);
+						// $("#commesCom").html("保存成功").show();
+						// setTimeout(function(){
+						// 	$("#commesCom").html("").hide();
+						// },1500);
+		    			window.location.href = "/gakf/pillList.html";
 		    		},
 		    		error:function(){
 
 		    		}
 				}); 
 		    }
-		    $(document).on("touchstart",".save",function(e){
+		    $(document).on("touchstart","#save",function(e){
 		    	saveForm(this);
 		    })
 		});
