@@ -27,38 +27,38 @@ var getOpenId = function (req, res, code) {
             var data = JSON.parse(body);
             var openid = data.openid;
             if (openid) {
-                res.cookie('wx_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                // req.models.doctor.find({wx_id: openid}, function (err, data) {
+                res.cookie('wx_id', openid, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                req.models.doctor.find({wx_id: openid}, function (err, data) {
 
-                    // if (err) {
-                        // console.error(err);
-                    res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
-                    // } else {
-                    //     if (data && data.length > 0) {
-                    //         res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                    //         res.cookie('type', 'doctor', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                    //         res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                    //         res.redirect(cb + '?wx_id=' + openid + '&doctor_id=' + data[0].id);
-                    //     } else {
-                    //         req.models.sick.find({wx_id: openid}, function (err, data) {
-                    //             if (err || !data || data.length == 0) {
-                    //                 res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
-                    //             } else {
-                    //                 res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                    //                 res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                    //                 res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                    //                 if (data[0].status === 't') {
-                    //                     res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
-                    //                 } else if (data[0].status === 'f') {
-                    //                     res.redirect(login_url);
-                    //                 } else {
-                    //                     res.redirect(unverifyUrl); 
-                    //                 }
-                    //             }
-                    //         });
-                    //     }
-                    // }
-                // });
+                    if (err) {
+                        console.error(err);
+                        res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
+                    } else {
+                        if (data && data.length > 0) {
+                            res.cookie('doctor_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                            res.cookie('type', 'doctor', {expires: new Date(Date.now() + 900000), httpOnly: false});
+                            res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                            res.redirect(cb + '?wx_id=' + openid + '&doctor_id=' + data[0].id);
+                        } else {
+                            req.models.sick.find({wx_id: openid}, function (err, data) {
+                                if (err || !data || data.length == 0) {
+                                    res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
+                                } else {
+                                    res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                                    res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: false});
+                                    res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                                    if (data[0].status === 't') {
+                                        res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
+                                    } else if (data[0].status === 'f') {
+                                        res.redirect(login_url);
+                                    } else {
+                                        res.redirect(unverifyUrl); 
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             }
         } else {
             console.error(error);
@@ -120,6 +120,26 @@ var loginResp = function(type, id, url, doctor_id) {
 }
 
 router.post('/logout', function(req, res, next){
+    var type = req.cookies.type;
+    if (type === "sick") {
+        var sick_id = req.cookies.sick_id;
+        req.models.sick.get(sick_id, function(err, sick){
+            if (!err && sick) {
+                sick.save({"wx_id":""}, function(err){
+                    console.info(err || "ok");
+                })
+            }
+        });
+    } else if (type === "doctor") {
+        var doctor_id = req.cookies.doctor_id;
+        req.models.doctor.get(doctor_id, function(err, doctor){
+            if (!err && doctor) {
+                doctor.save({"wx_id":""}, function(err){
+                    console.info(err || "ok");
+                })
+            }
+        });
+    }
     res.cookie('wx_id','',{maxAge:0});
     res.cookie('sick_id','',{maxAge:0});
     res.cookie('doctor_id','',{maxAge:0});
@@ -177,11 +197,14 @@ router.post('/login', function(req, res, next) {
                     data[0].save(updatedata, function (err) {
                         console.info(data[0]);
                         if (!err) {
+
+
                             res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + 90000000)});
                             res.cookie('type', type, {expires: new Date(Date.now() + 90000000)});
                             res.cookie('status', data[0].status, {expires: new Date(Date.now() + 90000000)});
                             res.cookie('id', data[0].id, {expires: new Date(Date.now() + 90000000)});
                             res.cookie('doctor_id', data[0].doctor_id, {expires: new Date(Date.now() + 90000000)});
+
                             if (data[0].status === 't') {
                                 res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
                                     data[0].doctor_id)));
@@ -250,9 +273,9 @@ router.post('/reg', function (req, res, next) {
                                     }
                                });
                             }
-                            res.cookie('sick_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: true});
-                            res.cookie('status', 'u', {expires: new Date(Date.now() + 900000), httpOnly: true});
+                            res.cookie('sick_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: false});
+                            res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: false});
+                            res.cookie('status', 'u', {expires: new Date(Date.now() + 900000), httpOnly: false});
                             res.json(result(true, '', loginResp('sick', item.id, '', item.doctor_id)));       
                         }
                     });
