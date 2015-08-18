@@ -2,6 +2,8 @@ var weixin = require('weixin-apis');
 var WechatAPI = require('wechat-api');
 var defines = require('../db/define');
 var signtool = require('weixin-signature');
+var dateFormat = require('dateformat');
+
 
 //wxaf3a162fe7e04d37,
 //2166e5441e7412dc7ebd4111635db0b7
@@ -124,7 +126,7 @@ var weixin_biz = function (app) {
                                                     "first": {"value":"医生审核通过"},
                                                     "keyword1": {"value":"医生通过了您的申请，点击查看帮助视频"},
                                                     "keyword2": {"value":dat[0].name},
-                                                    "keyword3" :{"value":datetime.toString()},
+                                                    "keyword3" :{"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
                                                     "remarks":{"value":"请点击查看帮助视频"}
                                                 };
                                                 api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, function(err){

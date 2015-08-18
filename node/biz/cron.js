@@ -44,7 +44,7 @@ var notifyInfo = function(sick, drugn) {
 
 var notifySick = function(sick) {
 	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
-	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day;
+	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_1';
 	var topcolor = '#FF0000'; // 顶部颜色
 	var data = {
 	 	first: {"value":"健康小贴士"},
@@ -53,6 +53,10 @@ var notifySick = function(sick) {
 	 	remarks: {"value":"请点击阅读"}
 	};
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
+
+	url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_2';
+	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
+	
 }
 
 var jobs = [];
@@ -149,7 +153,7 @@ later.setInterval(function(){
 		} else {
 			for (var i=0;i<data.length;i++) {
 				var item = data[i];
-				if (item.day >= 9) {
+				if (item.day >= 11) {
 					item.save({"status":0},function(err){
 						console.info(err || "ok");
 					});
