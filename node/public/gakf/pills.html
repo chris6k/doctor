@@ -11,9 +11,12 @@
 	<script type="text/javascript" src="./static/js/main.js"></script>
 	<script type="text/javascript" src="./static/js/resource.js"></script>
 	<style type="text/css">
-		input{width: 140px;}
+		input{width: 100px;}
 		.row span{
 			line-height: 30px;
+		}
+		.edit,.remove{
+			color:#f99159;
 		}
 	</style>
 </head>
@@ -22,77 +25,20 @@
 	<div class="container" id="questionCon">
 		
 	</div>
-	
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" >
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
 	    	<div class="col-xs-12">
-	    		<a href="javascript:void(0)" id="save">
-			    	<span style="color:#fff;">保存</span>
+	    		<a href="/gakf/addPill.html">
+			    	<span style="color:#fff;">添加</span>
 			    </a>
 	    	</div>
 	    </div>
 	  </div>
 	</nav>
-	<div  id ="commesCom" style="display:none;" class=" alert alert-success" role="alert"></div>
-	<script type="text/html"  id="test">
-	<form id="addForm">
-		<div class="panel panel-default my-panel">
-		  <div class="panel-body">
-		  	<div class="h5" style="margin-top:0px;">服药提醒</div>
-			<div class="row">
-				<div class="col-xs-4">
-					<span>药名:</span>
-				</div>
-				<div class="col-xs-8">
-					<input type="text" name="drug_name" value="" />
-				</div>
-			</div>
-			<div class="spacer10"></div>
-			<div class="row">
-				<div class="col-xs-4">
-					<span>服药次数:</span>
-				</div>
-				<div class="col-xs-6">
-					<input type="number" name="times" value="" />
-				</div>
-				<div class="col-xs-2">
-					<span>次</span>
-				</div>
-			</div>
-			<div class="spacer10"></div>
-			<div class="row">
-				<div class="col-xs-4">
-					<span>服药片数:</span>
-				</div>
-				<div class="col-xs-6">
-					<input type="number" name="drug_count" value="" />
-				</div>
-				<div class="col-xs-2">
-					<span>片</span>
-				</div>
-			</div>
-			<div class="spacer10"></div>
-			<div class="row">
-				<div class="col-xs-4">
-					<span>服药天数:</span>
-				</div>
-				<div class="col-xs-6">
-					<input type="number" name="days" value="" />
-				</div>
-				<div class="col-xs-2">
-					<span>天</span>
-				</div>
-			</div>
-			
-		  </div>
-		</div>
-		<input type="hidden" value="{{sick_id}}" name="sick_id">
-	</form>
-	</script>
 	<script type="text/html"  id="test1">
 	{{each d as v i}}
-		<form id="addForm">
+		<form >
 			<div class="panel panel-default my-panel">
 			  <div class="panel-body">
 			  	<div class="h5" style="margin-top:0px;">服药提醒</div>
@@ -101,7 +47,7 @@
 						<span>药名:</span>
 					</div>
 					<div class="col-xs-8">
-						<input type="text" name="drug_name" value="{{v.drug_name}}" />
+						{{v.drug_name}}
 					</div>
 				</div>
 				<div class="spacer10"></div>
@@ -109,11 +55,8 @@
 					<div class="col-xs-4">
 						<span>服药次数:</span>
 					</div>
-					<div class="col-xs-6">
-						<input type="number" name="times" value="{{v.times}}" />
-					</div>
-					<div class="col-xs-2">
-						<span>次</span>
+					<div class="col-xs-8">
+						{{v.times}} 次
 					</div>
 				</div>
 				<div class="spacer10"></div>
@@ -121,23 +64,28 @@
 					<div class="col-xs-4">
 						<span>服药片数:</span>
 					</div>
-					<div class="col-xs-6">
-						<input type="number" name="drug_count" value="{{v.drug_per}}" />
+					<div class="col-xs-8">
+						{{v.drug_per}} 片
 					</div>
-					<div class="col-xs-2">
-						<span>片</span>
-					</div>
+					
 				</div>
 				<div class="spacer10"></div>
 				<div class="row">
 					<div class="col-xs-4">
 						<span>服药天数:</span>
 					</div>
-					<div class="col-xs-6">
-						<input type="number" name="days" value="{{v.days}}" />
+					<div class="col-xs-8">
+						{{v.days}} 天
 					</div>
-					<div class="col-xs-2">
-						<span>天</span>
+					
+				</div>
+				<div class="spacer10"></div>
+				<div class="row">
+					<div class="col-xs-6 text-center">
+						<a href="addPill.html?sick_id={{v.sick_id}}&id={{v.id}}" class="edit"  >修改</a>
+					</div>
+					<div class="col-xs-6 text-center">
+						<a href="javascript:void(0)" alt="{{v.id}}" class="remove"  >删除</a>
 					</div>
 				</div>
 			  </div>
@@ -152,7 +100,7 @@
     
 	///sick/setnotify post sick_id,drug_name,times,days,drug_count
 		require(["template","store"],function(template,store){
-			var data = {},temp=store.get("user") || RC["user"](),tempurl = RC.parseOptions(window.location.href);
+			var data = {},temp=store.get("user") || RC["user"]();
 			if(temp.type == "doctor") {
 				$("body").html("<h4 class='text-center'>患者设置</h4>");
 				return ;
@@ -165,57 +113,40 @@
 			    var html = render(dd);
 			    return html;
 			}
-		
+		    $.ajax({ 
+					type:"get",
+					url: "/sick/getnotify?sick_id="+temp.id,
+					dataType: "json", 
+					success: function(obj){
+						data.d = obj.content;
+						//匹配json内容
+					    var html = render($("#test1"),data);
+					    //输入模板
+					    $("#questionCon").append(html);
+		    		},
+		    		error:function(){
 
-		   // $("#add").on("touchstart",function(){
-		   	if(!tempurl.id){
-		    	var data ={},temp=store.get("user") || RC["user"]();
-		    	if(temp.type == "sick")data.sick_id = temp.id;
-		    	var h = $("#questionCon").height();
-		    	$("body").animate({scrollTop: h+'px'}, 800);
-		    	//匹配json内容
-			    var html = render($("#test"),data);
-			    //输入模板
-			    $("#questionCon").append(html);
-			}else{
-				    $.ajax({ 
-						type:"get",
-						url: "/sick/getnotify?sick_id="+temp.id+"&id="+tempurl.id,
-						dataType: "json", 
-						success: function(obj){
-							data.d = obj.content;
-							//匹配json内容
-						    var html = render($("#test1"),data);
-						    //输入模板
-						    $("#questionCon").append(html);
-			    		},
-			    		error:function(){
+		    		}
+			}); 
 
-			    		}
-				}); 
-			}
-		   // });
-		    function saveForm(obj){
-		    	var form = $("#addForm");
+		    
+		    function delForm(obj){
+		    	var form = $(obj).parent().parent().parent().parent().parent(),id = $(obj).attr("alt");
 		    	$.ajax({ 
 					type:"post",
-					url: "/sick/setnotify",
+					url: "/sick/delnotify",
 					dataType: "json", 
-					data:form.serialize(),
+					data:{sick_id:temp.id,id:id},
 					success: function(obj){
-						// $("#commesCom").html("保存成功").show();
-						// setTimeout(function(){
-						// 	$("#commesCom").html("").hide();
-						// },1500);
-		    			window.location.href = "/gakf/pillList.html";
+						form.remove();
 		    		},
 		    		error:function(){
 
 		    		}
 				}); 
 		    }
-		    $(document).on("touchstart","#save",function(e){
-		    	saveForm(this);
+		    $(document).on("touchstart",".remove",function(e){
+		    	delForm(this);
 		    })
 		});
 	</script>
