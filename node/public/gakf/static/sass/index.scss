@@ -118,7 +118,7 @@ form em.error{width: 200px;margin-left: 10px; color: red;}
 
 .my-nav{
 	  min-height: 42px;
-	  &.my-nav-bottom{
+	  &.my-nav-bottom,&.my-nav-top{
 	  	background-color: #75174b;
 	  }
 	  &.my-nav-top{
