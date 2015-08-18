@@ -13,7 +13,7 @@
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
-			<span style="margin: 10px;display: inline-block;">{{el.title}}</span>
+			<b style="margin: 10px;display: inline-block;">{{el.title}}</b>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
 			  <li class="list-group-item checkbox" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">
@@ -78,7 +78,7 @@
 			});
 
 			var data = {},tempobj={}; //sick has save btn doctor hasn't save btn
-			var temp = store.get("user"),id="";
+			var temp = store.get("user")||RC["user"](),id="";
 			if(temp.type =="doctor"){
 				data.isshow = false;
 			}else {

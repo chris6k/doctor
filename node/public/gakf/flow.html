@@ -99,7 +99,7 @@
 			    return html;
 			}
 			if(!user.sick_id){
-				user = store.get("user");
+				user = store.get("user")||RC["user"]();
 				if(user.type == "sick"){
 					url = "/doctor/outCheckList?sick_id="+user.id;
 				}

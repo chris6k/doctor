@@ -16,7 +16,9 @@ require.config({
         'avalon':["jquery"],
         'template':['jquery'],
         'validate.form':['store'],
-        "qrcode":["jquery","jquery.qrcode"]
+        "qrcode":["jquery","jquery.qrcode"],
+        "cookie":["jquery"],
+        "store":["cookie","resource"]
     },
 	paths: {
 		"jquery": "jquery-1.11.1.min",
@@ -34,7 +36,8 @@ require.config({
         'index':'index',
         "jquery.qrcode":"jquery.qrcode",
         "qrcode":"qrcode",
-        "wx":"jweixin-1.0.0"
+        "wx":"jweixin-1.0.0",
+        "cookie":"jquery.cookie"
 	}
 });
 

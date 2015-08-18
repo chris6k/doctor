@@ -175,7 +175,7 @@
 	            "vteUrl":"dd",
 	            "cxpgUrl":""
 			}
-			var temp = store.get("user");
+			var temp = store.get("user")||RC["user"]();
 			var id = temp.id,doctor_id = temp.doctor_id;
 			data.sickId = id;
 			data.cxpgUrl = "/gakf/cxgwpg.html?sick_id="+id;

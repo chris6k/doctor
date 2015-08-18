@@ -158,3 +158,11 @@ RC['remove'] = function (obj){
     $(obj).data("isSelected",false);
     $(obj).find(".tagcon").html("");
 }
+RC["user"] = function(){
+    var user = {
+        type:$.cookie("type"),
+        doctor_id:$.cookie("doctor_id"),
+        id:$.cookie("id")
+    };
+    return user; 
+}
