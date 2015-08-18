@@ -169,10 +169,14 @@
 	          		 	if(list[i][name] == value){
 	          		 		var li = vmodel.d[key];
 	          		 		if(li.length>0){
+	          		 			var isadd = true;
 	          		 			for(var j=0;j<li.length;j++){
-	          		 				if(li[j] != list[i][key]){
-	          		 					li.push(list[i][key]);
+	          		 				if(li[j] == list[i][key]){
+	          		 					isadd = false;
 	          		 				}
+	          		 			}
+	          		 			if(isadd){
+	          		 				li.push(list[i][key]);
 	          		 			}
 	          		 		}else{
 	          		 			vmodel.d[key].push(list[i][key]);
