@@ -80,7 +80,7 @@
 	          d:data
 	    });
 	    avalon.scan();
-	    $("#loginout").on("touchstart",function(){
+	    $("#loginout").on("touchend",function(){
 	    	$.ajax({
 	    		type:"post",
 				url: "/user/logout",

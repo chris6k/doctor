@@ -12,7 +12,7 @@
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="container">
-		<span style="padding:5px 0px;display: inline-block;" >禁用</span>
+		<span style="padding:5px 0px;display: inline-block;" ms-if="d.isf">禁用</span>
 		<div style="padding:5px 0px;" ms-if="!d.isf">无禁用</div>
 		<div ms-if="d.irr == 1" class = "score" style="padding-left:0px;">
 			该患者可能存在药品过敏史，请注意询问。
