@@ -42,6 +42,7 @@ var getOpenId = function (req, res, code) {
                         } else {
                             req.models.sick.find({wx_id: openid}, function (err, data) {
                                 if (err || !data || data.length == 0) {
+                                    console.info("no wx_id user found, id=" + openid);
                                     res.redirect(login_url + '?wx_id=' + openid + '&cb=' + encodeURIComponent(cb));
                                 } else {
                                     res.cookie('sick_id', data[0].id, {expires: new Date(Date.now() + 900000), httpOnly: false});
@@ -61,8 +62,11 @@ var getOpenId = function (req, res, code) {
                 });
             }
         } else {
+
             console.error(error);
-            res.redirect(login_url);
+            res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appid
+                        + '&redirect_uri=' + redirectUri + '&state='
+                        + '&response_type=code&scope=snsapi_base#wechat_redirect');
         }
     });
 };
@@ -121,20 +125,21 @@ var loginResp = function(type, id, url, doctor_id) {
 
 router.post('/logout', function(req, res, next){
     var type = req.cookies.type;
+    console.info("type=" + type + ",id=" + req.cookies[type + "_id"]);
     if (type === "sick") {
         var sick_id = req.cookies.sick_id;
-        req.models.sick.get(sick_id, function(err, sick){
-            if (!err && sick) {
-                sick.save({"wx_id":""}, function(err){
+        req.models.sick.get(sick_id, function(err, data){
+            if (!err && data) {
+                data.save({"wx_id":""}, function(err){
                     console.info(err || "ok");
                 })
             }
         });
     } else if (type === "doctor") {
         var doctor_id = req.cookies.doctor_id;
-        req.models.doctor.get(doctor_id, function(err, doctor){
-            if (!err && doctor) {
-                doctor.save({"wx_id":""}, function(err){
+        req.models.doctor.get(doctor_id, function(err, data){
+            if (!err && data) {
+                data.save({"wx_id":""}, function(err){
                     console.info(err || "ok");
                 })
             }
@@ -179,7 +184,7 @@ router.post('/login', function(req, res, next) {
     var type = req.param('type');
     var cb = req.param('cb');
     var wx_id = req.cookies.wx_id || '';
-    console.info("wx_id=" + wx_id);
+    console.info("cookie_wx_id=[" + wx_id + "]");
     if (!username || !password || !type) {
         res.json(result(false,'empty username or password',{}));
         // res.redirect(login_url + '?err=1&wx_id=' + wx_id);
@@ -193,17 +198,17 @@ router.post('/login', function(req, res, next) {
                     var updatedata = {};
                     if (wx_id) {
                         updatedata.wx_id = wx_id;
-                    }
+                    } 
                     data[0].save(updatedata, function (err) {
                         console.info(data[0]);
                         if (!err) {
 
                             var expiresTime = 360*24*3600*1000;
-                            res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
+                            res.cookie('doctor_id', data[0].doctor_id || '', {expires: new Date(Date.now() + expiresTime),httpOnly: false});
                             res.cookie('type', type, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
                             res.cookie('status', data[0].status, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
                             res.cookie('id', data[0].id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
-                            res.cookie('doctor_id', data[0].doctor_id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
+                            res.cookie(type + '_id', data[0].id, {expires: new Date(Date.now() + expiresTime),httpOnly: false});
 
                             if (data[0].status === 't') {
                                 res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
