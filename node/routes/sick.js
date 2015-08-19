@@ -388,14 +388,18 @@ router.get('/sickdrugcount', function(req, res, next){
             res.json(result(false, 'err', err));
         } else {
             var sick_name = {};
+            var f_name={};
             var reason = {};
             for (var i = 0;i < data.length;i++) {
+
                 sick_name[data[i].drug_name] = 1;
+                //统计禁忌药物总数和禁忌理由
                 if (data[i].type==='f') {
+                    f_name[data[i].drug_name] = 1
                     reason[data[i].drug_reason] = 1;
                 }
             }
-            res.json(result(true, '', {"drug_count":Object.keys(sick_name).length, "select_count" : Object.keys(reason).length}));
+            res.json(result(true, '', {"drug_count":Object.keys(sick_name).length,"f_drug_count":Object.keys(f_name).length, "select_count" : Object.keys(reason).length}));
 
         }
     });
