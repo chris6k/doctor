@@ -29,10 +29,13 @@ var recomm = function(prohibit_list) {
 		console.info("rec_one=>" + rec_one);
 		var prohibit_item_list = prohibit_list['抗凝药'];
 		console.info("prohibit_item_list=>" + JSON.stringify(prohibit_item_list));
-		for (var j = 0; j < prohibit_item_list.length;j++) {
-			if (prohibit_item_list[j].contains(rec_one)) {
+		for (var key in prohibit_item_list) {
+			var plist = prohibit_item_list[key];
+			for (var j = 0; j<plist.length; j++) {
+				if (plist[j] === rec_one) {
 				rec_one = null;
 				break;
+				}
 			}
 		}
 		if (rec_one) {
