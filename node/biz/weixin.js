@@ -57,14 +57,14 @@ var weixin_biz = function (app) {
                             console.log(msg);
                             weixin.sendMsg(msg);
                         } else if (da2.length == 0) {
-                            msg.content = "暂时没有需要审核的病人";
+                            msg.content = "暂时没有需要审核的患者";
                             weixin.sendMsg(msg);
                         } else {
                             for (var i = 0; i< da2.length; i++) {
-                                msg.content += "病人[" + da2[i].sickName + "]申请成为您的病人\n";
+                                msg.content += "患者[" + da2[i].sickName + "]申请成为您的患者\n";
                             }
                             
-                            msg.content += "请回复‘同意+病人姓名'审核通过，回复'拒绝+病人姓名'拒绝请求";
+                            msg.content += "请回复‘同意+患者姓名'审核通过，回复'拒绝+患者姓名'拒绝请求";
                             
                             weixin.sendMsg(msg);
                         }
@@ -96,13 +96,13 @@ var weixin_biz = function (app) {
                         if (err) {
                             weixin.sendMsg(msg);
                         } else if (dat2.length === 0) {
-                            msg.content = "找不到该病人的审核申请";
+                            msg.content = "找不到该患者的审核申请";
                             weixin.sendMsg(msg);
                         } else {
                             dat2[0].save({status:'t'});
                             models().sick.get(dat2[0].sickId, function(err, sick) {
                                 if (err || !sick) {
-                                    msg.content="找不到该病人的信息";
+                                    msg.content="找不到该患者的信息";
                                     weixin.sendMsg(msg);
                                 } else {
                                     sick.save({status:'t'}, function(err){
@@ -172,13 +172,13 @@ var weixin_biz = function (app) {
                         if (err) {
                             weixin.sendMsg(msg);
                         } else if (dat2.length === 0) {
-                            msg.content = "找不到该病人的审核申请";
+                            msg.content = "找不到该患者的审核申请";
                             weixin.sendMsg(msg);
                         } else {
                             dat2[0].save({status:'t'});
                             models().sick.get(dat2[0].sickId, function(err, sick) {
                                 if (err || !sick) {
-                                    msg.content="找不到该病人的信息";
+                                    msg.content="找不到该患者的信息";
                                     weixin.sendMsg(msg);
                                 } else {
                                     sick.save({status:'f'}, function(err){
