@@ -46,10 +46,11 @@ var notifySick = function(sick) {
 	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
 	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_1';
 	var topcolor = '#FF0000'; // 顶部颜色
+	var datetime = new Date();
 	var data = {
 	 	first: {"value":"健康小贴士，第 "+sick.day+" 天 第一篇"},
 	 	keyword1: {"value":"给您的健康小贴士，请点击阅读"},
-	 	keyword2: {"value":new Date().toString()},
+	 	keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
 	 	remarks: {"value":"请点击阅读"}
 	};
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
