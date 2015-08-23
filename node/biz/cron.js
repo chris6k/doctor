@@ -59,6 +59,12 @@ var notifySick = function(sick) {
 	data.first.value = "健康小贴士，第 "+sick.day+" 天 第二篇";
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
 	
+	if(sick.day == "3"){
+		url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_3';
+		data.first.value = "健康小贴士，第 "+sick.day+" 天 第三篇";
+		api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
+	}
+	
 }
 
 var jobs = [];
