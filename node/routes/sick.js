@@ -5,6 +5,7 @@ var calc = require('../biz/calculate');
 var recommend = require('../biz/recommend');
 var weixin = require('../biz/weixin');
 var dateFormat = require('dateformat');
+var feieyun = require('../biz/print');
 
 router.get('/test', function(req, res, next){
     var api = weixin.api;
@@ -106,6 +107,23 @@ router.get('/print', function (req, res, next) {
             res.json(result(true, '', sick));
         }
     })
+});
+
+router.get('/feieprint', function(req, res, next){
+    var id = req.param('id');
+    req.models.sick.get(id, function(err, sick){
+        if (err || !sick) {
+            res.json(result(false, '', err || 'no sick by id'));
+        } else {
+            feieyun.printQRCode(sick.name, "http://www.guanaikangfu.com/gakf/sick.html?sick_id=" + id, function(err,resp){
+                if (!err) {
+                    res.json(result(true,null,resp));
+                } else {
+                    res.json(result(false,null,err));
+                }
+            });
+        }
+    });
 });
 
 router.get('/sickdrug', function (req, res, next) {
