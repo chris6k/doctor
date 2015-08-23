@@ -45,7 +45,7 @@ router.get('/info', function (req, res, next) {
 router.post('/create', function (req, res, next) {
     var sick = JSON.parse(req.param('sick'));
     if (!sick.out_day && sick.in_day) {
-        sick.out_day = new Date(sick.in_day.getTime() + 18 * 24 * 3600 * 1000);
+        sick.out_day = new Date((new Date(sick.in_day)).getTime() + 18 * 24 * 3600 * 1000);
     }
     var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id, sick_id = sick.id;
     if (sick_id && sick_id > 0) {
