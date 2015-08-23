@@ -98,8 +98,8 @@
 		  		<a ms-href="/gakf/recommend.html?sick_id={{d.sickId}}&irr={{d.irr}}">
   			  		<span>安全用药建议 </span>
   					<span class="right glyphicon glyphicon-chevron-right gray_arrow"></span>
-  					<span class="right orange sl8" ms-if="d.drug_count!=''">共 {{d.drug_count}} 条建议</span>
-  					<span class="right orange sl8" ms-if="!d.drug_count">无建议</span>
+  					<span class="right orange sl8" ms-if="d.f_drug_count!=''">共 {{d.f_drug_count}} 条建议</span>
+  					<span class="right orange sl8" ms-if="!d.f_drug_count">无建议</span>
 		  		</a>
 		 	</li>
 		</ul>
@@ -218,6 +218,8 @@
 			          $id: "test",
 			          d:data,
 			           save:function(){
+			           	if(vmodel.d.in_day == "") vmodel.d.in_day = null;
+			           	if(vmodel.d.out_day == "") vmodel.d.out_day = null;
 			          	var d = JSON.stringify(vmodel.d.$model);
 			          	$.ajax({
 			          		type:"post",
