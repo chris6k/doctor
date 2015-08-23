@@ -102,7 +102,7 @@
 		require(["template","store"],function(template,store){
 			var data = {},temp=store.get("user") || RC["user"]();
 			if(temp.type == "doctor") {
-				$("body").html("<h4 class='text-center'>患者设置</h4>");
+				$("body").html("<div style='padding:10px;'><div class='spacer20'></div><h4 style='text-align: center;'>使用说明</h4><span class='text-left' style='padding:10px;'>服药提醒是根据患者的用药情况为患者提供个性化的定时提醒和服药指导</span><div class='spacer5'></div><span>  患者可以在自己的应用界面编辑服药计划，为了更好的服务患者，请您提醒患者及时填写。</span></div>");
 				return ;
 			}
 			function render(dom,data){
