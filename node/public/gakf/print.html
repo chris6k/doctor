@@ -86,7 +86,12 @@
 				url: "/sick/feieprint?id="+id,
 				dataType: "json", 
 				success: function(obj){
-					alert("打印成功");
+					if(obj.success){
+						alert("打印成功");
+					}else{
+						var con = JSON.parse(obj.content);
+						alert(con.msg);
+					}
 	    		},
 	    		error:function(){
 
