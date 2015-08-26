@@ -37,7 +37,7 @@
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom" >
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
 	    <div class="row">
-	    	<div class="col-xs-12 text-center">
+	    	<div class="col-xs-12 text-center" id="print">
 	    		<a href="javascript:void(0)">
 			    	<span style="color:#fff;" >打印</span>
 			    </a>
@@ -46,6 +46,7 @@
 	  </div>
 	</nav>
 	<script type="text/javascript">
+
 	require(["qrcode","avalon"],function(){
 		var data = {
 			ewurl:"./static/images/ew.png"
@@ -79,6 +80,19 @@
 	    		}
 			}); 
 	    $('#qrcode').qrcode({width: 162,height: 162,text: "http://www.guanaikangfu.com/gakf/sickDetail.html?id="+id});
+	    $("#print").on("touchstart",function(){
+	    	$.ajax({ 
+				type:"get",
+				url: "/sick/feieprint?id="+id,
+				dataType: "json", 
+				success: function(obj){
+					alert("打印成功");
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+	    })
 	});
 	</script>
 </body>
