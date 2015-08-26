@@ -204,8 +204,14 @@
 						  caprini:'',
 						  rapt:'',
 						  isout:Boolean(RC.parseOptions(window.location.href).isout)||false,
-						  iso:RC.parseOptions(window.location.href).iso||-1
+						  iso:RC.parseOptions(window.location.href).iso||-1,
+						  isQ:RC.parseOptions(window.location.href).isQ||0
 					},temp=store.get("user")||RC["user"](),id;
+				if(data.isQ == 1 && temp.type == "sick"){
+					$("body").html("<h3 style='line-height:150px;'>患者无权访问</h3>").removeClass("ms-controller").css({"text-align":"center"});
+					return ;
+				}
+
 				if(temp.type=="sick"){
 					id = temp.id;
 				}else if(temp.type == "doctor"){
