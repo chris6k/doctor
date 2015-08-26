@@ -115,7 +115,7 @@ router.get('/feieprint', function(req, res, next){
         if (err || !sick) {
             res.json(result(false, '', err || 'no sick by id'));
         } else {
-            feieyun.printQRCode(sick.name, "http://www.guanaikangfu.com/gakf/sick.html?sick_id=" + id, function(err,resp){
+            feieyun.print(sick.name, "http://www.guanaikangfu.com/gakf/sick.html?sick_id=" + id, function(err,resp){
                 if (!err) {
                     res.json(result(true,null,resp));
                 } else {
