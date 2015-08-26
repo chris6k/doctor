@@ -1,8 +1,8 @@
 //PRINTER_SN：打印机编号9位,查看飞鹅打印机底部贴纸上面的打印机编号
 //KEY：去飞鹅打印机官方网站 www.feieyun.com 注册帐号，添加打印机编号，自动生成KEY
-var PRINTER_SN = "xxxxxxxxx";
-var KEY = "xxxxxxxx";
-var IP = "**********";
+var PRINTER_SN = "915501027";
+var KEY = "nu7phmhL";
+var IP = "dzp.feieyun.com";
 var HOSTNAME = "/FeieServer";
 //-------------------------------------------------
 
