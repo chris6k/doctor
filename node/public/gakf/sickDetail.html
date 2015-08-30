@@ -246,12 +246,12 @@
 			          	})
 			          }
 			    });
-			   if(temp.type == "doctor"){
+			   // if(temp.type == "doctor" || temp.type == "sick"){
 			   	 avalon.scan();
-			   }else{
-			   	 $("body").html("<span style='line-height:150px;'>关注“关艾康复”微信公众号</span>").removeClass("ms-controller").css({"text-align":"center"});
-					return ;
-			   }
+			  //  }else{
+			  //  	 $("body").html("<span style='line-height:150px;'>关注“关艾康复”微信公众号</span>").removeClass("ms-controller").css({"text-align":"center"});
+					// return ;
+			  //  }
 			    $.ajax({ 
 					type:"get",
 					url: "/sick/info?id="+id,
