@@ -4,7 +4,29 @@ var api = require('./weixin').api;
 var orm = require('orm');
 var _models;
 var template_id = 'F1kjgyVBU1K3JV-Vg0iPselzU7Ox9IOrRPMoY7cxx0M';
-
+var articleList = {
+	"1_1":"什么是关节置换术",
+	"1_2":"入院后需要做哪些影像学检查",
+	"2_1":"得了什么病需要关节置换术",
+	"2_2":"哪种关节置换人工材料最适合我",
+	"3_1":"什么是静脉血栓栓塞症",
+	"3_2":"我会不会得静脉血栓栓塞症",
+	"3_3":"静脉血栓栓塞症的危害",
+	"4_1":"术前心理干预",
+	"4_2":"术后尽早进行功能恢复训练",
+	"5_1":"术后应该注意什么",
+	"5_2":"术后积极药物抗感染",
+	"6_1":"术后如何预防静脉血栓栓塞症",
+	"6_2":"新型口服抗凝药优势大",
+	"7_1":"如何有效进行术后恢复锻炼",
+	"7_2":"术后随访切莫忘",
+	"8_1":"术后积极预防静脉血栓栓塞症",
+	"8_2":"术后心理干预",
+	"9_1":"小心术后便秘",
+	"9_2":"术后合理饮食防便秘",
+	"10_1":"膝关节功能HSS评分",
+	"10_2":"髋关节功能Harris评分"
+};
 /**
  一天四次，早上8点，中午12点，下午4点，晚上8点
 一天三次 发送时间节点  早晨8点，中午12点，晚上6点
@@ -44,24 +66,26 @@ var notifyInfo = function(sick, drugn) {
 
 var notifySick = function(sick) {
 	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
-	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_1';
+	var day = sick.day + '_1';
+	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
 	var topcolor = '#FF0000'; // 顶部颜色
 	var datetime = new Date();
 	var data = {
-	 	first: {"value":"健康小贴士，第 "+sick.day+" 天 第一篇"},
+	 	first: {"value":"健康小贴士，第 "+sick.day+" 天 " + articleList[day]},
 	 	keyword1: {"value":"给您的健康小贴士，请点击阅读"},
 	 	keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
 	 	remarks: {"value":"请点击阅读"}
 	};
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
-
-	url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_2';
-	data.first.value = "健康小贴士，第 "+sick.day+" 天 第二篇";
+	day = sick.day + '_2';
+	url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
+	data.first.value = "健康小贴士，第 "+sick.day+" 天 "+ articleList[day];
 	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
-	
+
 	if(sick.day == "3"){
-		url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + sick.day + '_3';
-		data.first.value = "健康小贴士，第 "+sick.day+" 天 第三篇";
+		day = sick.day + '_3';
+		url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
+		data.first.value = "健康小贴士，第 "+sick.day+" 天 " + articleList[day];
 		api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
 	}
 	
