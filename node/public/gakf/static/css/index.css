@@ -199,7 +199,7 @@ form em.error { width: 200px; margin-left: 10px; color: red; }
 
 .my-textarea1 { border: 0px; text-align: right; }
 
-.list-group-item { line-height: 20px; overflow: hidden; padding: 11px 15px; }
+.list-group-item { padding: 11px 15px; }
 .list-group-item div { padding: 0px; }
 .list-group-item.selected { background-color: #fddcc8; }
 
