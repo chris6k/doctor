@@ -181,6 +181,7 @@ form em.error{width: 200px;margin-left: 10px; color: red;}
 }
 .list-group-item{
 	padding:11px 15px;
+	overflow:hidden;
 	& div{
 		padding:0px;
 	}
