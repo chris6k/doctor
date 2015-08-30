@@ -1,5 +1,7 @@
-var urls = ['/gakf/flowSick.html', '/gakf/communicate.html', '/gakf/inpatientInfo.html', '/gakf/setting.html', '/gakf/pills.html','/gakf/sickDetail.html'];
-var urlMap = {'/gakf/flowSick.html':'1', '/gakf/communicate.html':'2', '/gakf/inpatientInfo.html':'3','/gakf/setting.html':'4', '/gakf/pills.html':'5'};
+var urls = ['/gakf/flowSick.html', '/gakf/communicate.html', '/gakf/inpatientInfo.html',
+ '/gakf/setting.html', '/gakf/pills.html','/gakf/sickDetail.html'];
+var urlMap = {'/gakf/flowSick.html':'1', '/gakf/communicate.html':'2', '/gakf/inpatientInfo.html':'3',
+'/gakf/setting.html':'4', '/gakf/pills.html':'5', '/gakf/sickDetail.html' : '6'};
 var appid = 'wxaf3a162fe7e04d37', redirectUrl = 'http://www.guanaikangfu.com/user/callback';
 //todo
 var unverifyUrl = '/gakf/msg.html';
