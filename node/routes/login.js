@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var result = require('./result');
+var getCb = require('./loginCheck').getCb;
 var appid = 'wxaf3a162fe7e04d37', secret = '2166e5441e7412dc7ebd4111635db0b7';
-var urlMap = {'1':'/gakf/flowSick.html', '2':'/gakf/communicate.html', '3':'/gakf/inpatientInfo.html',
-'4':'/gakf/setting.html', '5':'/gakf/pills.html','6':'/gakf/sickDetail.html'};
+// var urlMap = {'1':'/gakf/flowSick.html', '2':'/gakf/communicate.html', '3':'/gakf/inpatientInfo.html',
+// '4':'/gakf/setting.html', '5':'/gakf/pills.html','6':'/gakf/sickDetail.html'};
 var login_url = '/gakf/login.html';
 var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
@@ -22,7 +23,7 @@ var getOpenId = function (req, res, code) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + appid + '&secret='
         + secret + '&code=' + code + '&grant_type=authorization_code';
     console.log('cb_key=' + req.cookies.cb_key);
-    var cb = urlMap[req.cookies.cb_key];
+    var cb = getCb(req.cookies.cb_key);
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var data = JSON.parse(body);

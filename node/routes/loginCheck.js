@@ -10,7 +10,16 @@ var checkUrl = function(path) {
         return true;
     } 
     return false;
-}
+};
+
+var getCb = function(code) {
+    for(var key in urlMap) {
+        if (urlMap[key] == code) {
+            return key;
+        }
+    }
+    return null;
+};
 
 var check = function (req, res, next) {
     console.log("check in");
@@ -62,6 +71,8 @@ var check = function (req, res, next) {
     }
 };
 
+var loginCheck = {};
+loginCheck.check = check;
+loginCheck.getCb = getCb;
 
-
-module.exports = check;
+module.exports = loginCheck;
