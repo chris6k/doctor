@@ -1,19 +1,25 @@
-var urls = ['/gakf/flowSick.html', '/gakf/communicate.html', '/gakf/inpatientInfo.html', '/gakf/setting.html', '/gakf/pills.html','/gakf/sickDetail.html'];
-var urlMap = {'/gakf/flowSick.html':'1', '/gakf/communicate.html':'2', '/gakf/inpatientInfo.html':'3','/gakf/setting.html':'4', '/gakf/pills.html':'5'};
+var urlMap = {'/gakf/flowSick.html':'1', '/gakf/communicate.html':'2', '/gakf/inpatientInfo.html':'3',
+'/gakf/setting.html':'4', '/gakf/pills.html':'5', '/gakf/sickDetail.html' : '6'};
 var appid = 'wxaf3a162fe7e04d37', redirectUrl = 'http://www.guanaikangfu.com/user/callback';
 //todo
 var unverifyUrl = '/gakf/msg.html';
 var loginUrl = '/gakf/login.html';
 
 var checkUrl = function(path) {
-    for (var i = 0;i<urls.length;i++) {
-        var url = urls[i];
-        if (path === url) {
-            return true;
+    if (urlMap[path]) {
+        return true;
+    } 
+    return false;
+};
+
+var getCb = function(code) {
+    for(var key in urlMap) {
+        if (urlMap[key] == code) {
+            return key;
         }
     }
-    return false;
-}
+    return null;
+};
 
 var check = function (req, res, next) {
     console.log("check in");
@@ -65,6 +71,8 @@ var check = function (req, res, next) {
     }
 };
 
+var loginCheck = {};
+loginCheck.check = check;
+loginCheck.getCb = getCb;
 
-
-module.exports = check;
+module.exports = loginCheck;
