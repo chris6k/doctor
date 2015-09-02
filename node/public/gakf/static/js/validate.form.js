@@ -125,7 +125,7 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							 required: true
 						},
 						bed_no:{
-							required: true
+							required: false
 						},
 						hospital:{
 							required: true
