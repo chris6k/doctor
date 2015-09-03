@@ -55,7 +55,7 @@ var notifyInfo = function(sick, drugn) {
 	 	keyword3: {"value":"无"},
 	 	remarks: {"value":"感谢您的使用"}
 	};
-	drugn.save({"times": drugn.count - 1}, function(err){
+	drugn.save({"count": drugn.count - 1}, function(err){
 		if (!err)
 			console.info("minus drug times succ");
 		else

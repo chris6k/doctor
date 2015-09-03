@@ -81,7 +81,7 @@ defines.define = (function(defines){return function (db, models) {
     }, {
         methods: {
             in_duration: function () {
-                if (!this.in_day) {
+                if (!this.in_day || !this.in_day.getTime) {
                     return 0;
                 }
                 var today = new Date();
@@ -89,7 +89,7 @@ defines.define = (function(defines){return function (db, models) {
                 return Math.floor(date3 / (24 * 3600 * 1000))
             },
             out_duration: function () {
-                if (!this.out_day) {
+                if (!this.out_day || !this.out_day.getTime) {
                     return 0;
                 }
                 var today = new Date();
