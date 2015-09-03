@@ -48,6 +48,12 @@ router.post('/create', function (req, res, next) {
     if (!sick.out_day && sick.in_day) {
         sick.out_day = new Date((new Date(sick.in_day)).getTime() + 18 * 24 * 3600 * 1000);
     }
+    if (!sick.out_day || sick.out_day === '0000-00-00') {
+        sick.out_day = null;
+    }
+    if (!sick.in_day || sick.in_day === '0000-00-00') {
+        sick.in_day = null;
+    }
     var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id, sick_id = sick.id;
     if (sick_id && sick_id > 0) {
         req.models.sick.get(sick_id, function (err, item) {
