@@ -124,9 +124,6 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						doctor_id:{
 							 required: true
 						},
-						bed_no:{
-							required: false
-						},
 						hospital:{
 							required: true
 						},
@@ -179,9 +176,6 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 			            doctor_id:{
 			            	required:"请选择主治医生"
 			            },
-			            bed_no:{
-							required: "请输入床号"
-						},
 			            hospital:{
 							required: "请选择医院"
 						},

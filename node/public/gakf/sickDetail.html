@@ -105,11 +105,11 @@
 			<ul class="list-group">
 				<li class="list-group-item gray" >
 				  	<span  style="float:left;line-height: 20px;">入院日期</span>
-				  	<input  type="date" class="right text-right my-input1 gray" ms-duplex="d.in_day" style="line-height:20px;display:block;">
+				  	<input id="in_day"  type="date" class="right text-right my-input1 gray" ms-duplex="d.in_day" style="line-height:20px;display:block;">
 				</li>
 				<li class="list-group-item">
 				  	<span style="float:left;line-height: 20px;">出院日期</span>
-					<input  type="date" class="right text-right my-input1" ms-duplex="d.out_day" style="line-height:20px;display:block;">
+					<input  id="out_day" type="date" class="right text-right my-input1" ms-duplex="d.out_day" style="line-height:20px;display:block;">
 				</li>
 				
 				<li class="list-group-item">
@@ -221,8 +221,8 @@
 			          $id: "test",
 			          d:data,
 			           save:function(){
-			           	if(vmodel.d.in_day == "") vmodel.d.in_day = null;
-			           	if(vmodel.d.out_day == "") vmodel.d.out_day = null;
+			          	vmodel.d.in_day = new Date($("#in_day").val()).Format("yyyy-MM-dd");
+			          	vmodel.d.out_day =new Date( $("#out_day").val()).Format("yyyy-MM-dd");
 			          	var d = JSON.stringify(vmodel.d.$model);
 			          	$.ajax({
 			          		type:"post",
@@ -240,7 +240,7 @@
 				    		error:function(){
 
 				    		}
-			          	})
+			          	});
 			          }
 			    });
 			   // if(temp.type == "doctor" || temp.type == "sick"){
