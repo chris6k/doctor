@@ -4,10 +4,8 @@ var request = require('request');
 var result = require('./result');
 var getCb = require('./loginCheck').getCb;
 var appid = 'wxaf3a162fe7e04d37', secret = '2166e5441e7412dc7ebd4111635db0b7';
-// var urlMap = {'1':'/gakf/flowSick.html', '2':'/gakf/communicate.html', '3':'/gakf/inpatientInfo.html',
-// '4':'/gakf/setting.html', '5':'/gakf/pills.html','6':'/gakf/sickDetail.html'};
 var login_url = '/gakf/login.html';
-var target_url = {sick: '/gakf/sickDetail.html'};
+// var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
 var unverifyUrl = '/gakf/msg.html';
 
@@ -15,7 +13,6 @@ var api = require('../biz/weixin').api;
 var weixin = require('../biz/weixin').weixin;
 var signtool = require("weixin-signature").sign;
 
-//todo
 var unreg_url = '/gakf/msg.html';
 
 
@@ -51,7 +48,7 @@ var getOpenId = function (req, res, code) {
                                     res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: false});
                                     res.cookie('status', data[0].status, {expires: new Date(Date.now() + 900000), httpOnly: false});
                                     if (data[0].status === 't') {
-                                        res.redirect(target_url.sick + '?wx_id=' + openid + '&sick_id=' + data[0].id);
+                                        res.redirect(cb + '?wx_id=' + openid + '&sick_id=' + data[0].id);
                                     } else if (data[0].status === 'f') {
                                         res.redirect(login_url);
                                     } else {

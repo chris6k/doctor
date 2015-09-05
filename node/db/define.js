@@ -68,8 +68,8 @@ defines.define = (function(defines){return function (db, models) {
         level: {type: 'text', required: false},
         care_level: {type: 'text', required: false},
         operate_type: {type: 'text', required: false},
-        in_day: {type: 'date', required: false},
-        out_day: {type: 'date', required: false},
+        in_day: {type: 'date', required: false, defaultValue:null},
+        out_day: {type: 'date', required: false, defaultValue:null},
         wx_id: {type: 'text', required: false},
         status: {type: 'text', defaultValue: 'u'},//t,f,u
         drug_s: {type: 'integer', defaultValue: 0, required: false},
@@ -81,7 +81,7 @@ defines.define = (function(defines){return function (db, models) {
     }, {
         methods: {
             in_duration: function () {
-                if (!this.in_day) {
+                if (!this.in_day || !this.in_day.getTime) {
                     return 0;
                 }
                 var today = new Date();
@@ -89,7 +89,7 @@ defines.define = (function(defines){return function (db, models) {
                 return Math.floor(date3 / (24 * 3600 * 1000))
             },
             out_duration: function () {
-                if (!this.out_day) {
+                if (!this.out_day || !this.out_day.getTime) {
                     return 0;
                 }
                 var today = new Date();

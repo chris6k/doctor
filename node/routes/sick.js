@@ -32,9 +32,11 @@ router.get('/info', function (req, res, next) {
         } else {
             req.models.doctor.get(data.doctor_id, function(err, doctor) {
                 if (err) {
+                    data.title='';
                     res.json(result(true, '', data));        
                 } else {
                     data.title = doctor.title;
+                    console.info("sick_info=>" + JSON.stringify(data));
                     res.json(result(true, '', data));
                 }
             });
@@ -44,9 +46,18 @@ router.get('/info', function (req, res, next) {
 });
 
 router.post('/create', function (req, res, next) {
+    console.info("sick=>" + req.param("sick"));
     var sick = JSON.parse(req.param('sick'));
     if (!sick.out_day && sick.in_day) {
         sick.out_day = new Date((new Date(sick.in_day)).getTime() + 18 * 24 * 3600 * 1000);
+    }
+    if (sick.in_day && sick.out_day) {
+        var inDay = new Date(sick.in_day);
+        var outDay = new Date(sick.out_day);
+        if (!inDay.getTime || !outDay.getTime || inDay.getTime() === 0 || outDay.getTime() === 0) {
+            sick.in_day = null;
+            sick.out_day = null;
+        }
     }
     var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id, sick_id = sick.id;
     if (sick_id && sick_id > 0) {
@@ -54,7 +65,9 @@ router.post('/create', function (req, res, next) {
             if (err) {
                 res.json(result(false,err.msg,err));
             } else {
-
+                if (!sick.doctor_name) {
+                    sick.doctor_name = item.doctor_name;
+                }
                 item.save(sick, function (err) {
                     if (err) {
                         res.json(result(false, err.msg, {}));
@@ -68,7 +81,9 @@ router.post('/create', function (req, res, next) {
         req.models.sick.find({name: sick_name, bed_id: bed_id, doctor_id: doctor_id}, function (err, data) {
             if (!err && data && data.length > 0) {
                 //merge info
-                sick.doctor_name = data[0].doctor_name;
+                if (!sick.doctor_name) {
+                    sick.doctor_name = data[0].doctor_name;
+                }
                 data[0].save(sick, function (err, item) {
                     if (err) {
                         res.json(result(false, 'save failed', {}));
@@ -77,23 +92,11 @@ router.post('/create', function (req, res, next) {
                     }
                 });
             } else {
-                req.models.sick.create(sick, function (err, data) {
-                    if (err) {
-                        res.json(result(false, 'save failed', {}));
-                    } else {
-                        res.json(result(true, '', data));
-                    }
-                });
+                res.json(result(false, 'save failed', {}));
             }
         });
     } else {
-        req.models.sick.create(sick, function (err, data) {
-            if (err || !data) {
-                res.json(result(false, 'save failed', {}));
-            } else {
-                res.json(result(true, '', data));
-            }
-        });
+        res.json(result(false, 'save failed', {}));   
     }
 });
 
