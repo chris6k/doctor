@@ -15,7 +15,7 @@ var signtool = require("weixin-signature").sign;
 
 var unreg_url = '/gakf/msg.html';
 var bed_num_reg = /[a-zA-Z0-9]+/;
-var name_reg = /[\[\]\?\,\.\+\*\-]+/;
+var name_reg = /[\[\]\?\,\+\*\-]+/;
 var username_reg = /[a-zA-Z0-9_]+/;
 
 var getOpenId = function (req, res, code) {
@@ -160,19 +160,28 @@ router.post('/update', function(req, res, next) {
     var sign = req.param('sign');
     req.models[type].get(userId, function(err, user){
          if (err || !user) {
-            res.json(result(false, 'get user error', err));
+            res.json(result(false, '未能获取到用户信息', err));
         } else {
-            if (user.password === oldPassword) {
-                user.save({sign:sign, password: newPassword, name: name}, function(err){
+            var savedata = {};
+            if (newPassword) {
+                savedata.password = newPassword;
+            }
+            if (name) {
+                savedata.name = name;
+            }
+            if (sign) {
+                savedata.sign = sign;
+            }
+            if (oldPassrod && user.password != oldPassword) {                
+                res.json(result(false, "旧密码不匹配，请重新输入", null));
+            } else {
+                user.save(savedata, function(err){
                     if (!err) {
                          res.json(result(true, null,null));
                      } else {
-                        res.json(result(false, "save user info error", err));
+                        res.json(result(false, "保存信息失败", err));
                      }
                 });
-               
-            } else {
-                res.json(result(false, "old password mismatch", null));
             }
         }
     });
@@ -186,13 +195,13 @@ router.post('/login', function(req, res, next) {
     var wx_id = req.cookies.wx_id || '';
     console.info("cookie_wx_id=[" + wx_id + "]");
     if (!username || !password || !type) {
-        res.json(result(false,'empty username or password',{}));
+        res.json(result(false,'请输入用户名和密码',{}));
         // res.redirect(login_url + '?err=1&wx_id=' + wx_id);
         return;
     }
     req.models[type].find({username: username, password: password}, function (err, data) {
                 if (err) {
-                    res.json(result(false, 'get user by name and password err', err));
+                    res.json(result(false, '错误的用户名或密码', err));
                     // res.redirect(login_url + '?err=4&wx_id=' + wx_id);
                 } else if (data && data.length > 0) {
                     var updatedata = {};
@@ -216,14 +225,14 @@ router.post('/login', function(req, res, next) {
                                 res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
                                     data[0].doctor_id)));
                             } else {
-                                res.json(result(false, 'user status is f or u', {}));
+                                res.json(result(false, '用户审核中，请等待医生审核通过', {}));
                             }
                         } else {
-                           res.json(result(false,'bind wx_id err',err));
+                           res.json(result(false,'绑定微信账户失败',err));
                         }
                     });
                 } else {
-                    res.json(result(false,'no user',{}));
+                    res.json(result(false,'错误的用户名或密码',{}));
                 }
     });
    
@@ -242,22 +251,22 @@ router.post('/reg', function (req, res, next) {
     var age = req.param("age");
     var gender = req.param('gender');
     var wx_id = req.cookies.wx_id;
-    if (!username || !password || !doctor_id || !bed_no) {
-        res.json(result(false, 'require username, password, bed_no', null));
+    if (!username || !password || !doctor_id) {
+        res.json(result(false, '请填写用户名、密码和医生信息', null));
         return;
     }
-    if (!bed_num_reg.test(bed_no)) {
-        res.json(result(false, 'invalid bed no, only allow [a-zA-Z0-9]', null));
+    if (bed_no && !bed_num_reg.test(bed_no)) {
+        res.json(result(false, '错误的床号格式，仅允许[a-zA-Z0-9]', null));
         return;
     }
     if (name_reg.test(name)) {
-        res.json(result(false, '不允许名称包含下列字符 [*-],*.)', null));
+        res.json(result(false, '姓名不允许名称包含下列字符 [*-],*)', null));
         return;
     }
 
     req.models.doctor.find({id: doctor_id}, function (err, doctor) {
         if (err || !doctor || doctor.length == 0) {
-            res.json(result(false, 'get doctor err', err));
+            res.json(result(false, '找不到该医生信息', err));
             // res.redirect(reg_url + '?err=2&wx_id=' + wx_id);
         } else {
             req.models.sick.create({
@@ -267,7 +276,7 @@ router.post('/reg', function (req, res, next) {
                 height: height, weight:weight, age:age, gender:gender
             }, function (err, item) {
                 if (err) {
-                    res.json(result(false, 'err', err));
+                    res.json(result(false, '注册失败，可能有相同的用户名，请换一个用户名再试', err));
                     // res.redirect(reg_url + '?err=2&wx_id=' + wx_id);
                 } else {
                     console.error('create succ');
@@ -276,11 +285,16 @@ router.post('/reg', function (req, res, next) {
                         function(err, sickRequest) {
                         if (err) {
                             console.error('send request failed');
-                            res.json(result(false, 'err', err));
+                            item.remove(function(err){
+                                if (err) {
+                                    console.error(err);
+                                }
+                            });
+                            res.json(result(false, '注册失败，请重试', err));
                         } else {
                             console.info("doctor_open_id=" + doctor[0].wx_id);
                             if (doctor[0].wx_id) {
-                               api.sendText(doctor[0].wx_id, "有新病人(" + name + ")申请成为您的病人，请回复‘同意+病人姓名'审核通过，回复'拒绝+病人姓名'拒绝请求", function(err){
+                               api.sendText(doctor[0].wx_id, "有新病人(" + name + ")申请成为您的病人，请回复‘同意和病人姓名'审核通过，回复'拒绝和病人姓名'拒绝请求", function(err){
                                     if (err) {
                                         console.error(err);
                                     } else {

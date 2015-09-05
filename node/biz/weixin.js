@@ -189,6 +189,22 @@ var weixin_biz = function (app) {
                                             weixin.sendMsg(msg);
                                         }
                                     });
+                                    if (sick.wx_id) {
+                                        var templateId = "-Vyr7il3acv0WRMneuSANWib1wCcB4c9WWnWL1JL1-w";
+                                        var url = 'http://www.guanaikangfu.com/gakf/video.html';
+                                        var topcolor = '#FF0000'; // 顶部颜色
+                                        var datetime = new Date();
+                                        var data = {
+                                            "first": {"value":"医生审核未通过"},
+                                            "keyword1": {"value":dat[0].name},
+                                            "keyword2": {"value":""},
+                                            "keyword3" :{"value":"医生拒绝了您的申请"},
+                                            "remarks":{"value":""}
+                                        };
+                                        api.sendTemplate(sick.wx_id, templateId, "", topcolor, data, function(err){
+                                            console.info(err||'ok');
+                                        });
+                                    }
                                 }
                             });
                         }
