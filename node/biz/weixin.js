@@ -61,7 +61,7 @@ var weixin_biz = function (app) {
                             weixin.sendMsg(msg);
                         } else {
                             for (var i = 0; i< da2.length; i++) {
-                                msg.content += "患者[" + da2[i].sickName + "]申请成为您的患者\n";
+                                msg.content += "患者(" + da2[i].sickName + ")申请成为您的患者\n";
                             }
                             
                             msg.content += "请回复‘同意+患者姓名'审核通过，回复'拒绝+患者姓名'拒绝请求";

@@ -66,6 +66,7 @@ router.get('/out_sicks', function (req, res, next) {
                     sick_array.push(data[i]);
                 }
                 req.models.sick.find({
+                    status: 't',
                     doctor_id : ids,
                     in_day: null,
                 }, function(err, data2) {
@@ -95,6 +96,7 @@ router.get('/in_sicks', function (req, res, next) {
     }
     findForArea(req,res,doctor_id,function(ids){
         req.models.sick.find({
+            status:'t',
             doctor_id: ids,
             in_day: orm.lte(new Date()),
             out_day: orm.gte(new Date())
@@ -120,7 +122,7 @@ router.get('/sicks', function (req, res, next) {
         return;
     }
     findForArea(req,res,doctor_id,function(ids){
-        req.models.sick.find({doctor_id: ids}, function (err, data) {
+        req.models.sick.find({status:'t', doctor_id: ids}, function (err, data) {
         if (err || !data) {
             console.error(err);
             res.json(result(false, '', {}));
