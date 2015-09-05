@@ -231,7 +231,15 @@
 			          	}else{
 			          		vmodel.d.out_day = "";	
 			          	}
-			          	
+			          	var validate = (new Date($("#out_day").val())).getTime() - (new Date($("#in_day").val())).getTime();
+			          	if(validate < 0){
+			          		$("#commesCom").html("请输入正确日期").show();
+							setTimeout(function(){
+								$("#commesCom").html("").hide();
+							},1500);
+							return ;
+			          	}
+
 			          	var d = JSON.stringify(vmodel.d.$model);
 			          	$.ajax({
 			          		type:"post",
@@ -263,8 +271,17 @@
 					url: "/sick/info?id="+id,
 					dataType: "json", 
 					success: function(obj){
-						obj.content.in_day = new Date(obj.content.in_day).Format("yyyy-MM-dd");
-						obj.content.out_day = new Date(obj.content.out_day).Format("yyyy-MM-dd");
+						if(obj.content.in_day){
+							obj.content.in_day = new Date(obj.content.in_day).Format("yyyy-MM-dd");
+						}else{
+							obj.content.in_day = "";
+						}
+						if(obj.content.out_day){
+							obj.content.out_day = new Date(obj.content.out_day).Format("yyyy-MM-dd");
+						}else{
+							obj.content.out_day = "";
+						}
+						
 						vmodel.d = $.extend(data,obj.content);
 						if(temp.type == "doctor"){
 							$.ajax({ 
