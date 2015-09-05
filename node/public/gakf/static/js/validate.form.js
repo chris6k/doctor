@@ -135,7 +135,9 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						height:{
 							required: true,
-							maxlength:3
+							maxlength:3,
+							min:1,
+							max:250
 						},
 						weight:{
 							required: true,
@@ -187,7 +189,9 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						height:{
 							required: "请输入身高",
-							maxlength: "请输入正常身高，单位为cm"
+							maxlength: "请输入正常身高，单位为cm",
+							min:"请输入正常身高，单位为cm",
+							max:"请输入正常身高，单位为cm"
 						},
 						weight:{
 							required: "请输入体重",
@@ -258,11 +262,11 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							isMobile:true
 						},
 						old_password:{
-							 required: true,
+							 //required: true,
 	                		 minlength: 6
 						},
 						new_password:{
-							 required: true,
+							 //required: true,
 	                		 minlength: 6
 						},sign:{
 							maxlength:128
@@ -274,11 +278,11 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 							required:"请输入姓名"
 						},
 						old_password: {
-			                required: "请输入密码",
+			                //required: "请输入密码",
 			                minlength: $.format("密码不能小于{0}个字符")
 			            },
 			            new_password: {
-			                required: "请输入确认密码",
+			                //required: "请输入确认密码",
 			                minlength: "确认密码不能小于{0}个字符"
 			            },sign: {
 							maxlength:"不能超过128个字符"
