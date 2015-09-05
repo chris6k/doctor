@@ -2,6 +2,7 @@ var later = require('later');
 var defines = require('../db/define');
 var api = require('./weixin').api;
 var orm = require('orm');
+var dateFormat = require('dateformat');
 var _models;
 var template_id = 'F1kjgyVBU1K3JV-Vg0iPselzU7Ox9IOrRPMoY7cxx0M';
 var articleList = {
@@ -66,7 +67,8 @@ var notifyInfo = function(sick, drugn) {
 
 var notifySick = function(sick) {
 	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
-	var day = sick.day + '_1';
+	var sick_day = sick.day;
+	var day = sick_day + '_1';
 	var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
 	var topcolor = '#FF0000'; // 顶部颜色
 	var datetime = new Date();
@@ -76,18 +78,26 @@ var notifySick = function(sick) {
 	 	keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
 	 	remarks: {"value":"请点击阅读"}
 	};
-	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
-	day = sick.day + '_2';
-	url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
-	data.first.value = "健康小贴士，第 "+sick.day+" 天 "+ articleList[day];
-	api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
 
-	if(sick.day == "3"){
-		day = sick.day + '_3';
-		url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
-		data.first.value = "健康小贴士，第 "+sick.day+" 天 " + articleList[day];
-		api.sendTemplate(sick.wx_id, templateId, url, topcolor,data,callback);
-	}
+	models().sick.get(sick.sick_id, function(err, sick_item){
+		if (!err && sick_item) {
+				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
+				day = sick_day + '_2';
+				url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
+				data.first.value = "健康小贴士，第 "+ sick_day +" 天 "+ articleList[day];
+				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
+
+				if(sick_day == "3"){
+					day = sick_day + '_3';
+					url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
+					data.first.value = "健康小贴士，第 "+ sick_day +" 天 " + articleList[day];
+					api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
+				}
+		}
+
+	});
+
+	
 	
 }
 
@@ -192,12 +202,13 @@ later.setInterval(function(){
 				} else {
 					notifySick(item);
 					item.save({"day": item.day + 1}, function(err){
-						console.info(err||"ok");
+					console.info(err||"ok");
 					});
 				}
 			}
 		}
 	});
 }, ruleDay);
+
 module.exports = jobs;
 
