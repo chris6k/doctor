@@ -32,10 +32,22 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 				return source; 
 			}; 
 		},
+		isPassword:function(){
+			$.validator.addMethod("isPassword", function(value, element,params) {    
+				//默认值 : {trim:true,minLength:-1,maxLength:-1
+			    params = $.extend([true,-1,-1],params); //对于默认参数支持
+			    if(params[0]){  //过滤首尾空格
+			        value=$.trim(value);
+			    }
+			    value = value.replace(/<(?:.)*?>/g,""); //验证时过滤标签
+			    return this.optional(element) || ((params[1]<0 || value.length>=params[1]));
+			}, jQuery.format("长度不能小于{1}个字符"));
+		},
 		validate:function(form){
 			this.userName();
 			this.isPhone();
 			this.format();
+			this.isPassword();
 			var formName = form;
 			if(form == "signForm"){
 				$("#signForm").validate({
@@ -114,11 +126,11 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						password:{
 							 required: true,
-	                		 minlength: 6
+	                		 isPassword:["true",6]
 						},
 						login_repwd:{
 							 required: true,
-	                		 minlength: 6,
+	                		 isPassword:["true",6],
 	                		 equalTo: "#password"
 						},
 						doctor_id:{
@@ -168,11 +180,11 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						password: {
 			                required: "请输入密码",
-			                minlength: $.format("密码不能小于{0}个字符")
+			                isPassword: $.format("密码不能小于{1}个字符,不能包含空格，括号，* 等特殊字符")
 			            },
 			            login_repwd: {
 			                required: "请输入确认密码",
-			                minlength: "确认密码不能小于{0}个字符",
+			                isPassword: $.format("密码不能小于{1}个字符,不能包含空格，括号，* 等特殊字符"),
 			                equalTo: "两次输入密码不一致吆"
 			            },
 			            doctor_id:{
@@ -263,11 +275,11 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						old_password:{
 							 //required: true,
-	                		 minlength: 6
+	                		 isPassword:["true",6]
 						},
 						new_password:{
 							 //required: true,
-	                		 minlength: 6
+	                		 isPassword:["true",6]
 						},sign:{
 							maxlength:128
 						}
@@ -279,11 +291,11 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 						},
 						old_password: {
 			                //required: "请输入密码",
-			                minlength: $.format("密码不能小于{0}个字符")
+			                isPassword: $.format("密码不能小于{1}个字符,不能包含空格，括号，* 等特殊字符")
 			            },
 			            new_password: {
 			                //required: "请输入确认密码",
-			                minlength: "确认密码不能小于{0}个字符"
+			                isPassword: $.format("密码不能小于{1}个字符,不能包含空格，括号，* 等特殊字符")
 			            },sign: {
 							maxlength:"不能超过128个字符"
 						}
