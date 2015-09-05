@@ -33,11 +33,12 @@ require.config({
         "avalon":"avalon",
         "resource":"resource",
         "store":"store.min",
-        'index':'index',
+        'index':'zepto.min',
         "jquery.qrcode":"jquery.qrcode",
         "qrcode":"qrcode",
         "wx":"jweixin-1.0.0",
-        "cookie":"jquery.cookie"
+        "cookie":"jquery.cookie",
+        "zepto":"zepto.min"
 	}
 });
 

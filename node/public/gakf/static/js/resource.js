@@ -123,7 +123,7 @@ RC['setItem'] = function (d){
                         contains = con;
                    }
                    
-                   $(contains).parent().parent().trigger("click");
+                   $(contains).parent().parent().trigger("tap");
                 }
             }else if(temp.type == "input"){
                 for(var j = 0;j<temp.keys.length;j++){

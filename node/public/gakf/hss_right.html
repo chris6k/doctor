@@ -67,8 +67,8 @@
 	</nav>
 	<script type="text/javascript">
 		require(["store","avalon","index"],function(store){
-			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
-			$("#gradeList").on("click",".radio",function(){
+			//Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
+			$("#gradeList").on("tap",".radio",function(){
 				var temp = $(this).find(".tag"),p=$(this).parent().parent();
 				if(p.data("selected"))RC.remove(p.data("selected"));
 				RC.selected(this,temp.attr("alt"));
