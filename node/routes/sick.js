@@ -57,7 +57,11 @@ router.post('/create', function (req, res, next) {
         if (!inDay.getTime || !outDay.getTime || inDay.getTime() === 0 || outDay.getTime() === 0) {
             sick.in_day = null;
             sick.out_day = null;
+        } else if (inDay.getTime() < outDay.getTime()) {
+            res.json(result(false, '出院日期应大于入院日期',null));
+            return;
         }
+
     }
     var sick_name = sick.name, bed_id = sick.bed_id, doctor_id = sick.doctor_id, sick_id = sick.id;
     if (sick_id && sick_id > 0) {
