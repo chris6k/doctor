@@ -221,8 +221,17 @@
 			          $id: "test",
 			          d:data,
 			           save:function(){
-			          	vmodel.d.in_day = new Date($("#in_day").val()).Format("yyyy-MM-dd");
-			          	vmodel.d.out_day =new Date( $("#out_day").val()).Format("yyyy-MM-dd");
+			           	if($("#in_day").val() != ""){
+			           		vmodel.d.in_day = new Date($("#in_day").val()).Format("yyyy-MM-dd");
+			           	}else{
+			           		vmodel.d.in_day = "";
+			           	}
+			          	if($("#out_day").val() != ""){
+			          		vmodel.d.out_day =new Date( $("#out_day").val()).Format("yyyy-MM-dd");
+			          	}else{
+			          		vmodel.d.out_day = "";	
+			          	}
+			          	
 			          	var d = JSON.stringify(vmodel.d.$model);
 			          	$.ajax({
 			          		type:"post",

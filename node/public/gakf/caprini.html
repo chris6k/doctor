@@ -71,7 +71,7 @@
 		require(["store","avalon","index"],function(store){
 			Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
 			var user=store.get("user")||RC["user"]();
-			$("#gradeList").on("tap",".checkbox",function(){
+			$("#gradeList").on("click",".checkbox",function(){
 				var score="",temp = $(this).find(".tag");
 				if(user.type == "doctor"){
 					score = temp.attr("alt");
