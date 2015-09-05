@@ -59,7 +59,7 @@ var check = function (req, res, next) {
                     res.redirect(loginUrl);
                     return;
                 }
-                res.redirect(unverifyUrl);
+                res.redirect(unverifyUrl + "?doctor_name=" + encodeURIComponent(sick.doctor_name));
             });
         } else if (status === 'f') {
             res.redirect(loginUrl);
