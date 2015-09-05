@@ -14,7 +14,9 @@ var weixin = require('../biz/weixin').weixin;
 var signtool = require("weixin-signature").sign;
 
 var unreg_url = '/gakf/msg.html';
-
+var bed_num_reg = /[a-zA-Z0-9]+/;
+var name_reg = /[\[\]\?\,\.\+\*\-]+/;
+var username_reg = /[a-zA-Z0-9_]+/;
 
 var getOpenId = function (req, res, code) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + appid + '&secret='
@@ -241,7 +243,15 @@ router.post('/reg', function (req, res, next) {
     var gender = req.param('gender');
     var wx_id = req.cookies.wx_id;
     if (!username || !password || !doctor_id || !bed_no) {
-        res.redirect(reg_url + '?err=1');
+        res.json(result(false, 'require username, password, bed_no', null));
+        return;
+    }
+    if (!bed_num_reg.test(bed_no)) {
+        res.json(result(false, 'invalid bed no, only allow [a-zA-Z0-9]', null));
+        return;
+    }
+    if (name_reg.test(name)) {
+        res.json(result(false, '不允许名称包含下列字符 [*-],*.)', null));
         return;
     }
 
@@ -270,7 +280,7 @@ router.post('/reg', function (req, res, next) {
                         } else {
                             console.info("doctor_open_id=" + doctor[0].wx_id);
                             if (doctor[0].wx_id) {
-                               api.sendText(doctor[0].wx_id, "有新病人[" + name + "]申请成为您的病人，请回复‘同意+病人姓名'审核通过，回复'拒绝+病人姓名'拒绝请求", function(err){
+                               api.sendText(doctor[0].wx_id, "有新病人(" + name + ")申请成为您的病人，请回复‘同意+病人姓名'审核通过，回复'拒绝+病人姓名'拒绝请求", function(err){
                                     if (err) {
                                         console.error(err);
                                     } else {
