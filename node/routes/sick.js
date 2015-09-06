@@ -54,10 +54,15 @@ router.post('/create', function (req, res, next) {
     if (sick.in_day && sick.out_day) {
         var inDay = new Date(sick.in_day);
         var outDay = new Date(sick.out_day);
-        if (!inDay.getTime || !outDay.getTime || inDay.getTime() === 0 || outDay.getTime() === 0) {
+        if (!inDay.getTime || inDay.getTime() === 0) {
             sick.in_day = null;
+        }
+
+        if (!outDay.getTime || outDay.getTime() === 0) {
             sick.out_day = null;
-        } else if (inDay.getTime() < outDay.getTime()) {
+        }
+
+        if (inDay.getTime() > outDay.getTime()) {
             res.json(result(false, '出院日期应大于入院日期',null));
             return;
         }
