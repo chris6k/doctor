@@ -54,7 +54,7 @@ var getOpenId = function (req, res, code) {
                                     } else if (data[0].status === 'f') {
                                         res.redirect(login_url);
                                     } else {
-                                        res.redirect(unverifyUrl); 
+                                        res.redirect(unverifyUrl + "?doctor_name=" + encodeURIComponent(data[0].doctor_name)); 
                                     }
                                 }
                             });
@@ -120,8 +120,8 @@ router.get('/callback', function (req, res, next) {
     }
 });
 
-var loginResp = function(type, id, url, doctor_id) {
-    return {type:type, id:id, url:url, doctor_id: doctor_id};
+var loginResp = function(type, id, url, doctor_id, doctor_name) {
+    return {type:type, id:id, url:url, doctor_id: doctor_id, doctor_name:doctor_name || ''};
 }
 
 router.post('/logout', function(req, res, next){
@@ -172,7 +172,7 @@ router.post('/update', function(req, res, next) {
             if (sign) {
                 savedata.sign = sign;
             }
-            if (oldPassrod && user.password != oldPassword) {                
+            if (oldPassword && user.password != oldPassword) {                
                 res.json(result(false, "旧密码不匹配，请重新输入", null));
             } else {
                 user.save(savedata, function(err){
@@ -223,7 +223,7 @@ router.post('/login', function(req, res, next) {
 
                             if (data[0].status === 't') {
                                 res.json(result(true, '', loginResp(type, data[0].id, decodeURIComponent(cb||''), 
-                                    data[0].doctor_id)));
+                                    data[0].doctor_id, data[0].doctor_name || data[0].name)));
                             } else {
                                 res.json(result(false, '用户审核中，请等待医生审核通过', {}));
                             }
@@ -305,7 +305,7 @@ router.post('/reg', function (req, res, next) {
                             res.cookie('sick_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: false});
                             res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: false});
                             res.cookie('status', 'u', {expires: new Date(Date.now() + 900000), httpOnly: false});
-                            res.json(result(true, '', loginResp('sick', item.id, '', item.doctor_id)));       
+                            res.json(result(true, '', loginResp('sick', item.id, '', item.doctor_id, item.doctor_name)));       
                         }
                     });
                     // res.redirect(target_url.sick + '?wx_id=' + wx_id + '&sick_id=' + item.id);
