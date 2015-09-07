@@ -30,7 +30,7 @@
 	<script type="text/javascript">
 		require(["store"],function(store){
 
-				$("#doctor_name").html(RC.parseOptions(window.location.href).doctor_name);
+				$("#doctor_name").html(RC.parseOptions(decodeURIComponent(window.location.href)).doctor_name);
 			$("#loginout").on("touchend",function(){
 		    	$.ajax({
 		    		type:"post",

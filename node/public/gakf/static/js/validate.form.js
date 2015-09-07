@@ -246,7 +246,7 @@ define(["jquery","jquery.validate","store"],function($,va,store){
 					        		}else{
 					        			if(dd.type == "sick"){
 					        				//url = "/gakf/inpatientInfo.html";
-					        				url = "/gakf/msg.html?doctor_name="+dd.doctor_name;
+					        				url = "/gakf/msg.html?"+encodeURIComponent("doctor_name="+dd.doctor_name);
 					        			}
 					        		}
 					        		window.location.href = url;
