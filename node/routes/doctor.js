@@ -8,7 +8,7 @@ var fs = require('fs');
 //Todo
 var source_url = {check: '/gakf/addCheck.html', review: '/gakf/sickDetail.html'};
 var target_url = {check: '/gakf/check.html', review: '/gakf/flowSick.html'};
-
+var api = require('../biz/weixin').api;
 //根据ID获取医生信息
 router.get('/info', function (req, res, next) {
     var doctor_id = req.param('doctor_id');
@@ -20,6 +20,30 @@ router.get('/info', function (req, res, next) {
         }
     });
 });
+
+var notifySickReview = function(sick, description) {
+    var templateId = "efwRQEhVPatDcf8alBKFbSirQ2NzZOQgtDNlYyGHWbc";
+    var url = '';
+    var topcolor = '#FF0000'; // 顶部颜色
+    /*
+    {{first.DATA}}
+    患者姓名：{{keyword1.DATA}}
+    预约时间：{{keyword2.DATA}}
+    提醒事项：{{keyword3.DATA}}
+    医生信息：{{keyword4.DATA}}
+    {{remark.DATA}}
+    */
+    var data = {
+        first: {"value":"您好，您的随访预约临近"},
+        keyword1: {"value":sick.name},
+        keyword2: {"value":"近期"},
+        keyword3: {"value":sick.doctor_name + "医生邀请您来医院参加随访"},
+        remarks: {"value":description}
+    };
+    api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, function(err){
+        console.info(err || "ok");
+    });
+}
 
 var findForArea = function(req, res, doctor_id, callback) {
     req.models.hospitalDoctor.find({"doctor_id":doctor_id}, function(err, doctors){
@@ -212,6 +236,11 @@ router.post('/out_check', function (req, res, next) {
                     console.error(err);
                     res.redirect(source_url.review + '?err=1&sick_id=' + sick_id + '&doctor_id=' + doctor_id);
                 } else {
+                    req.models.sick.get(sick_id, function(err, sick){
+                        if (!err && sick) {
+                            notifySickReview(sick,description);
+                        }
+                    });             
                     res.redirect(target_url.review + '?sick_id=' + sick_id + '&doctor_id=' + doctor_id);
                 }
             });
