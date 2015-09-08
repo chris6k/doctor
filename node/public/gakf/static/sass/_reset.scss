@@ -32,3 +32,7 @@ p { line-height: 140%; }
 a { text-decoration: none; }
 input { width: 300px; height: 30px; padding: 2px; border: solid 1px #dadada; margin-bottom: 0; border-radius: 2px; }
 ul li{list-style: none;}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
