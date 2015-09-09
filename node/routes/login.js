@@ -5,6 +5,7 @@ var result = require('./result');
 var getCb = require('./loginCheck').getCb;
 var appid = 'wxaf3a162fe7e04d37', secret = '2166e5441e7412dc7ebd4111635db0b7';
 var login_url = '/gakf/login.html';
+var dateFormat = require('dateformat');
 // var target_url = {sick: '/gakf/sickDetail.html'};
 var reg_url = '/gakf/register.html';
 var unverifyUrl = '/gakf/msg.html';
@@ -294,13 +295,18 @@ router.post('/reg', function (req, res, next) {
                         } else {
                             console.info("doctor_open_id=" + doctor[0].wx_id);
                             if (doctor[0].wx_id) {
-                               api.sendText(doctor[0].wx_id, "有新病人(" + name + ")申请成为您的病人，请回复‘同意和病人姓名'审核通过，回复'拒绝和病人姓名'拒绝请求", function(err){
-                                    if (err) {
-                                        console.error(err);
-                                    } else {
-                                        console.info("send request success");
-                                    }
-                               });
+                               //TODO
+                               notifySick(doctor[0].wx_id, name);
+                               // notifyOneDay(item.wx_id);
+                               // api.sendText(doctor[0].wx_id, "有新病人(" + name + ")申请成为您的病人，请回复‘同意和病人姓名'审核通过，回复'拒绝和病人姓名'拒绝请求", function(err){
+                               //      if (err) {
+                               //          console.error(err);
+                               //      } else {
+                               //          console.info("send request success");
+                               //      }
+                               // });
+                            } else {
+                                console.error("doctor miss wx_id, doctor_id=" + doctor[0].id);
                             }
                             res.cookie('sick_id', item.id, {expires: new Date(Date.now() + 900000), httpOnly: false});
                             res.cookie('type', 'sick', {expires: new Date(Date.now() + 900000), httpOnly: false});
@@ -315,6 +321,28 @@ router.post('/reg', function (req, res, next) {
     });
 
 });
+
+var notifySick = function(wx_id, name) {
+    var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
+    var url = '';
+    var topcolor = '#FF0000'; // 顶部颜色
+    var datetime = new Date();
+    var data = {
+        first: {"value":"您有新的病人申请"},
+        keyword1: {"value":"有新病人(" + name + ")申请成为您的病人，请回复‘同意和病人姓名'审核通过，回复'拒绝和病人姓名'拒绝请求"},
+        keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
+        remarks: {"value":"请尽快处理"}
+    };
+
+    api.sendTemplate(wx_id, templateId, url, topcolor,data,function(err){
+        if (err) {
+            console.error(err);
+        } else {
+            console.info("sendTemplate ok");
+        }
+    });
+    
+};
 
 
 

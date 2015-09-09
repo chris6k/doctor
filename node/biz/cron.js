@@ -45,26 +45,6 @@ var callback = function(){
 	console.info("send template");
 };
 
-var notifyInfo = function(sick, drugn) {
-	var templateId = template_id;
-	var url = '';
-	var topcolor = '#FF0000'; // 顶部颜色
-	var data = {
-	 	first: {"value":"用药提醒"},
-	 	keyword1: {"value":drugn.drug_name},
-	 	keyword2: {"value":"一日" + drugn.times + "次，一次" + drugn.drug_per + "片"},
-	 	keyword3: {"value":"无"},
-	 	remarks: {"value":"感谢您的使用"}
-	};
-	drugn.save({"count": drugn.count - 1}, function(err){
-		if (!err)
-			console.info("minus drug times succ");
-		else
-			console.info("minus drug times failed");
-	});
-	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
-}
-
 var notifySick = function(sick) {
 	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
 	var sick_day = sick.day;
@@ -82,22 +62,20 @@ var notifySick = function(sick) {
 	models().sick.get(sick.sick_id, function(err, sick_item){
 		if (!err && sick_item) {
 				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
-				day = sick_day + '_2';
-				url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
-				data.first.value = "健康小贴士，第 "+ sick_day +" 天 "+ articleList[day];
+				var day2 = sick_day + '_2';
+				url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day2;
+				data.first.value = "健康小贴士，第 "+ sick_day +" 天 "+ articleList[day2];
 				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
 
 				if(sick_day == "3"){
-					day = sick_day + '_3';
-					url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
-					data.first.value = "健康小贴士，第 "+ sick_day +" 天 " + articleList[day];
+					var day3 = sick_day + '_3';
+					url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day3;
+					data.first.value = "健康小贴士，第 "+ sick_day +" 天 " + articleList[day3];
 					api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
 				}
 		}
 
 	});
-
-	
 	
 }
 
@@ -187,7 +165,7 @@ later.setInterval(function(){
 	}
 }, rule20);
 
-var ruleDay = later.parse.cron("0 10 * * ?");
+var ruleDay = later.parse.cron("0 7 * * ?");
 later.setInterval(function(){
 	models().sick_notify.find({"status":1}, function(err, data){
 		if (err || !data) {
@@ -200,7 +178,9 @@ later.setInterval(function(){
 						console.info(err || "ok");
 					});
 				} else {
-					notifySick(item);
+					if (item.day > 1) {
+						notifySick(item);
+				    }
 					item.save({"day": item.day + 1}, function(err){
 					console.info(err||"ok");
 					});

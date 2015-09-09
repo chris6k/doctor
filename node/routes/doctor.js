@@ -11,7 +11,7 @@ var target_url = {check: '/gakf/check.html', review: '/gakf/flowSick.html'};
 var api = require('../biz/weixin').api;
 //根据ID获取医生信息
 router.get('/info', function (req, res, next) {
-    var doctor_id = req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
     req.models.doctor.get(doctor_id, function (err, item) {
         if (err || !item) {
             res.json(result(false, err.msg, {}));
@@ -70,7 +70,7 @@ var findForArea = function(req, res, doctor_id, callback) {
 
 //获取出院的病人
 router.get('/out_sicks', function (req, res, next) {
-    var doctor_id = req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
     if (!doctor_id) {
         res.json(result(false, 'no doctor_id', {}));
         return;
@@ -113,7 +113,7 @@ router.get('/out_sicks', function (req, res, next) {
 
 //获取入院的病人
 router.get('/in_sicks', function (req, res, next) {
-    var doctor_id = req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
     if (!doctor_id) {
         res.json(result(false, 'no doctor_id', {}));
         return;
@@ -140,12 +140,13 @@ router.get('/in_sicks', function (req, res, next) {
 
 //获取该医生所有的病人
 router.get('/sicks', function (req, res, next) {
-    var doctor_id = req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
     if (!doctor_id) {
         res.json(result(false, 'no doctor_id', {}));
         return;
     }
     findForArea(req,res,doctor_id,function(ids){
+        console.info("ids size = " + ids.length);
         req.models.sick.find({status:'t', doctor_id: ids}, function (err, data) {
         if (err || !data) {
             console.error(err);
@@ -250,7 +251,7 @@ router.post('/out_check', function (req, res, next) {
 
 router.get('/checkList', function(req, res, next){
     var sick_id = req.param('sick_id');
-    var doctor_id = req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
     var pageNo = req.param('pageNo') || 0, pageSize = req.param('pageSize') || 10;
     var query = {};
     if (sick_id) {
@@ -270,7 +271,7 @@ router.get('/checkList', function(req, res, next){
 
 router.get('/outCheckList', function(req, res, next){
     var sick_id = req.param('sick_id');
-    var doctor_id = req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
     var pageNo = req.param('pageNo') || 0, pageSize = req.param('pageSize') || 10;
     var query = {};
     if (sick_id) {

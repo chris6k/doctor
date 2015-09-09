@@ -20,6 +20,14 @@ var models = function() {
     return _models;
 };
 
+var callback = function(err) {
+    if (err) {
+        console.error(err);
+    } else {
+        console.info("send template ok");
+    }
+}
+
 var weixin_biz = function (app) {
 
 
@@ -72,12 +80,6 @@ var weixin_biz = function (app) {
                 }
             });
             
-            
-            // console.log(msg);
-            // weixin.sendMsg(msg);
-            // api.sendText(data.fromUserName, "hello world", function(err){
-            //     console.error(err)
-            // });
 
         } else if (data.content.indexOf("同意") == 0) {
             var name = data.content.slice(2);
@@ -115,7 +117,11 @@ var weixin_biz = function (app) {
                                                 "wx_id" : sick.wx_id,
                                                 "status" : 1
                                             }, function(err){
-                                                console.error(err);
+                                                if (!err) {
+                                                    notifyOneDay(sick.wx_id);
+                                                } else {
+                                                    console.error(err);
+                                                }
                                             });
                                             if (sick.wx_id) {
                                                 var templateId = "qYe34Nu4PM505KmbFaduJ3bf82hcgmNDtczROaDOCAU";
@@ -191,15 +197,16 @@ var weixin_biz = function (app) {
                                     });
                                     if (sick.wx_id) {
                                         var templateId = "-Vyr7il3acv0WRMneuSANWib1wCcB4c9WWnWL1JL1-w";
-                                        var url = 'http://www.guanaikangfu.com/gakf/video.html';
+                                        var url = '';
                                         var topcolor = '#FF0000'; // 顶部颜色
                                         var datetime = new Date();
                                         var data = {
                                             "first": {"value":"医生审核未通过"},
-                                            "keyword1": {"value":dat[0].name},
-                                            "keyword2": {"value":""},
-                                            "keyword3" :{"value":"医生拒绝了您的申请"},
-                                            "remarks":{"value":""}
+                                            "keyword1": {"value": dat[0].name},
+                                            "keyword2": {"value": "无"},
+                                            "keyword3" :{"value": "无"},
+                                            "keyword4" :{"value" : "医生拒绝了您的申请"},
+                                            "remarks":{"value": ""}
                                         };
                                         api.sendTemplate(sick.wx_id, templateId, "", topcolor, data, function(err){
                                             console.info(err||'ok');
@@ -315,11 +322,11 @@ var weixin_biz = function (app) {
         console.log(data);
     });
 
-// 监听点击菜单拉取消息时的事件推送
-    weixin.on('clickEventMsg', function (data) {
-        console.log('>>>>>>>>> clickEventMsg emit >>>>>>>>>');
-        console.log(data);
-    });
+// // 监听点击菜单拉取消息时的事件推送
+//     weixin.on('clickEventMsg', function (data) {
+//         console.log('>>>>>>>>> clickEventMsg emit >>>>>>>>>');
+//         console.log(data);
+//     });
 
 // 监听点击菜单跳转链接时的事件推送
     weixin.on('viewEventMsg', function (data) {
@@ -327,6 +334,58 @@ var weixin_biz = function (app) {
         console.log(data);
     });
 
+};
+
+var articleList = {
+    "1_1":"什么是关节置换术",
+    "1_2":"入院后需要做哪些影像学检查",
+    "2_1":"得了什么病需要关节置换术",
+    "2_2":"哪种关节置换人工材料最适合我",
+    "3_1":"什么是静脉血栓栓塞症",
+    "3_2":"我会不会得静脉血栓栓塞症",
+    "3_3":"静脉血栓栓塞症的危害",
+    "4_1":"术前心理干预",
+    "4_2":"术后尽早进行功能恢复训练",
+    "5_1":"术后应该注意什么",
+    "5_2":"术后积极药物抗感染",
+    "6_1":"术后如何预防静脉血栓栓塞症",
+    "6_2":"新型口服抗凝药优势大",
+    "7_1":"如何有效进行术后恢复锻炼",
+    "7_2":"术后随访切莫忘",
+    "8_1":"术后积极预防静脉血栓栓塞症",
+    "8_2":"术后心理干预",
+    "9_1":"小心术后便秘",
+    "9_2":"术后合理饮食防便秘",
+    "10_1":"膝关节功能HSS评分",
+    "10_2":"髋关节功能Harris评分"
+};
+
+
+var notifyOneDay = function(wx_id) {
+    var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
+    var sick_day = 1;
+    var day = sick_day + '_1';
+    var url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day;
+    var topcolor = '#FF0000'; // 顶部颜色
+    var datetime = new Date();
+    var data = {
+        first: {"value":"健康小贴士，第 "+sick_day+" 天 " + articleList[day]},
+        keyword1: {"value":"给您的健康小贴士，请点击阅读"},
+        keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
+        remarks: {"value":"请点击阅读"}
+    };
+
+   
+    if (wx_id) {
+            api.sendTemplate(wx_id, templateId, url, topcolor,data,callback);
+            var day2 = sick_day + '_2';
+            url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day2;
+            data.first.value = "健康小贴士，第 "+ sick_day +" 天 "+ articleList[day2];
+            api.sendTemplate(wx_id, templateId, url, topcolor,data,callback);
+    }
+
+    
+    
 };
 
 weixin_biz.api = api;
