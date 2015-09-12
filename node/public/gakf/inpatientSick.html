@@ -57,7 +57,7 @@
 		  <li class="list-group-item my-collapse">
 		  	<a href="#operate_type"  data-toggle="collapse" >
 			  	<span>手术类型</span>
-			  	<span class="right detail" class="" ms-if="d.operate_type==''">其他</span>
+			  	<span class="right detail" class="" ms-if="d.operate_type==''">关节手术</span>
 			  	<span class="right detail" class="" ms-if="d.operate_type">{{d.operate_type}}</span>
 
 		  	 	<input type="hidden" class="detailInput" value="" ms-duplex-string="d.operate_type">
@@ -165,7 +165,7 @@
 	            "gender":"男",
 	            "doctor_id":+RC.parseOptions(window.location.href).doctor_id,
 	            "operate_type_arr":["创伤手术","关节手术","其他"],
-	            "operate_type":"创伤手术",
+	            "operate_type":"关节手术",
 	            "care_level_arr":["高危"],
 	            "care_level":"高危",
 	            "bed_id":"",
