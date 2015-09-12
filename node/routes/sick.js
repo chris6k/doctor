@@ -25,6 +25,11 @@ router.get('/test', function(req, res, next){
 });
 
 router.get('/info', function (req, res, next) {
+    var doctor_id = req.cookies.doctor_id;
+    var sick_id = req.param("id");
+    if (doctor_id == null) {
+        sick_id = req.cookies.sick_id;
+    }
     req.models.sick.get(req.param('id'), function (err, data) {
         if (err || !data) {
             console.error(err);
