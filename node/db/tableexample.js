@@ -130,7 +130,7 @@
     "summary": "",
     "type": "input",
     "keys": [{
-      "key": "每活动8度得1分",
+      "key": "每活动8度得1分,最高不能超过18分",
       "value": 18
     }],
     "value": "",
@@ -353,7 +353,7 @@
     "summary": "",
     "type": "input",
     "keys": [{
-      "key": "每活动8度得1分",
+      "key": "每活动8度得1分,最高不能超过18分",
       "value": 18
     }],
     "value": "",
@@ -564,23 +564,23 @@
 {
 
   "title":"术后骨科筛查量表",
-   "summary":"",
+   "summary":"本项目数值默认为患者未见异常，如果患者某项指标不在正常范围，请填入实际数值",
    "items":[
    {
      "title":"血常规项目",
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"白细胞","value":"未见异常","tip":"3.5-9.5 10^9/L"},
-     {"key":"红细胞","value":"未见异常","tip":"3.8-5.10^12/L"},
-     {"key":"细胞比积","value":"未见异常","tip":"35.0-45.0%"},
-     {"key":"血红蛋白","value":"未见异常","tip":"115-150 g/L"},
-     {"key":"血小板","value":"未见异常","tip":"125-300 10^9/L"},
-     {"key":"中性细胞绝对值","value":"未见异常","tip":"1.8-6.3"},
-     {"key":"中性细胞百分比","value":"未见异常","tip":"40-75%"},
+     {"key":"白细胞","value":"未见异常","tip":"参考值：<br/>&nbsp; 3.5-9.5 10^9/L"},
+     {"key":"红细胞","value":"未见异常","tip":"参考值：<br/>&nbsp; 3.8-5.10^12/L"},
+     {"key":"细胞比积","value":"未见异常","tip":"参考值：<br/>&nbsp; 35.0-45.0%"},
+     {"key":"血红蛋白","value":"未见异常","tip":"参考值：<br/>&nbsp; 115-150 g/L"},
+     {"key":"血小板","value":"未见异常","tip":"参考值：<br/>&nbsp; 125-300 10^9/L"},
+     {"key":"中性细胞绝对值","value":"未见异常","tip":"参考值：<br/>&nbsp; 1.8-6.3"},
+     {"key":"中性细胞百分比","value":"未见异常","tip":"参考值：<br/>&nbsp; 40-75%"},
      {"key":"高敏感指标","value":"未见异常"},
-     {"key":"CRP","value":"未见异常","tip":"0-10"},
-     {"key":"降钙素原","value":"未见异常","tip":"< 0.1ng /ml"},
+     {"key":"CRP","value":"未见异常","tip":"参考值：<br/>&nbsp; 0-10"},
+     {"key":"降钙素原","value":"未见异常","tip":"参考值：<br/>&nbsp; < 0.1ng /ml"},
      {"key":"细菌涂片","value":"未见异常"},
      {"key":"细菌培养","value":"未见异常"},
      {"key":"切口是否红肿","value":"自己填写"},
@@ -600,22 +600,22 @@
 
 {
   "title":"术前骨科筛查量表",
-   "summary":"",
+   "summary":"本项目数值默认为患者未见异常，如果患者某项指标不在正常范围，请填入实际数值",
    "items":[
      {
      "title":"尿常规项目",
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"葡萄糖","value":"未见异常","tip":"NA"},
-     {"key":"胆红素","value":"未见异常","tip":"NA"},
-     {"key":"酮体","value":"未见异常","tip":"NA"},
-     {"key":"比重","value":"未见异常","tip":"1.005-1.03"},
-     {"key":"红细胞","value":"未见异常","tip":"NA"},
-     {"key":"PH值","value":"未见异常","tip":"5.5-6.5"},
-     {"key":"尿蛋白","value":"未见异常","tip":"NA"},
-     {"key":"亚硝酸盐","value":"未见异常","tip":"NA"},
-     {"key":"白细胞","value":"未见异常","tip":"NA"}
+     {"key":"葡萄糖","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"},
+     {"key":"胆红素","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"},
+     {"key":"酮体","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"},
+     {"key":"比重","value":"未见异常","tip":"参考值：<br/>&nbsp;1.005-1.03"},
+     {"key":"红细胞","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"},
+     {"key":"PH值","value":"未见异常","tip":"参考值：<br/>&nbsp;5.5-6.5"},
+     {"key":"尿蛋白","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"},
+     {"key":"亚硝酸盐","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"},
+     {"key":"白细胞","value":"未见异常","tip":"参考值：<br/>&nbsp;NA"}
      ],
      "value":"",
      "scored":false,
@@ -626,14 +626,14 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"白细胞","value":"未见异常","tip":"3.5-9.5 10^9/L"},
-     {"key":"红细胞","value":"未见异常","tip":"3.8-5.10^12/L"},
-     {"key":"细胞比积","value":"未见异常","tip":"35.0-45.0%"},
-     {"key":"血红蛋白","value":"未见异常","tip":"115-150 g/L"},
-     {"key":"血小板","value":"未见异常","tip":"125-300 10^9/L"},
-     {"key":"中性细胞绝对值","value":"未见异常","tip":"1.8-6.3"},
-     {"key":"中性细胞百分比","value":"未见异常","tip":"40-75%"},
-     {"key":"血糖","value":"未见异常","tip":"3.90-5.80mmol/L"}
+     {"key":"白细胞","value":"未见异常","tip":"参考值：<br/>&nbsp;3.5-9.5 10^9/L"},
+     {"key":"红细胞","value":"未见异常","tip":"参考值：<br/>&nbsp;3.8-5.10^12/L"},
+     {"key":"细胞比积","value":"未见异常","tip":"参考值：<br/>&nbsp;35.0-45.0%"},
+     {"key":"血红蛋白","value":"未见异常","tip":"参考值：<br/>&nbsp;115-150 g/L"},
+     {"key":"血小板","value":"未见异常","tip":"参考值：<br/>&nbsp;125-300 10^9/L"},
+     {"key":"中性细胞绝对值","value":"未见异常","tip":"参考值：<br/>&nbsp;1.8-6.3"},
+     {"key":"中性细胞百分比","value":"未见异常","tip":"参考值：<br/>&nbsp;40-75%"},
+     {"key":"血糖","value":"未见异常","tip":"参考值：<br/>&nbsp;3.90-5.80mmol/L"}
      ],
      "value":"",
      "scored":false,
@@ -644,11 +644,11 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"凝血酶原时间","value":"未见异常","tip":"11-14s"},
-     {"key":"国际标准化比率","value":"未见异常","tip":"0.82-1.15"},
-     {"key":"部分凝血活酶时间","value":"未见异常","tip":"20.0-40.0"},
-     {"key":"纤维蛋白原","value":"未见异常","tip":"2.00-4.00"},
-     {"key":"凝血酶时间","value":"未见异常","tip":"13.0-21.0"}
+     {"key":"凝血酶原时间","value":"未见异常","tip":"参考值：<br/>&nbsp;11-14s"},
+     {"key":"国际标准化比率","value":"未见异常","tip":"参考值：<br/>&nbsp;0.82-1.15"},
+     {"key":"部分凝血活酶时间","value":"未见异常","tip":"参考值：<br/>&nbsp;20.0-40.0"},
+     {"key":"纤维蛋白原","value":"未见异常","tip":"参考值：<br/>&nbsp;2.00-4.00"},
+     {"key":"凝血酶时间","value":"未见异常","tip":"参考值：<br/>&nbsp;13.0-21.0"}
      ],
      "value":"",
      "scored":false,
@@ -659,7 +659,7 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"CRP","value":"未见异常","tip":"0-10"}
+     {"key":"CRP","value":"未见异常","tip":"参考值：<br/>&nbsp;0-10"}
      ],
      "value":"",
      "scored":false,
@@ -670,13 +670,13 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"总蛋白","value":"未见异常","tip":"60-80g/L"},
-     {"key":"白蛋白","value":"未见异常","tip":"35-55g/L"},
-     {"key":"谷丙转氨酶","value":"未见异常","tip":"0-65U/L"},
-     {"key":"谷草转氨酶","value":"未见异常","tip":"8_37U/L"},
-     {"key":"尿素","value":"未见异常","tip":"2.5-6.4mmol/L"},
-     {"key":"肌酐","value":"未见异常","tip":"53-115umol/L"},
-     {"key":"尿酸","value":"未见异常","tip":"210-430umol/L"}
+     {"key":"总蛋白","value":"未见异常","tip":"参考值：<br/>&nbsp;60-80g/L"},
+     {"key":"白蛋白","value":"未见异常","tip":"参考值：<br/>&nbsp;35-55g/L"},
+     {"key":"谷丙转氨酶","value":"未见异常","tip":"参考值：<br/>&nbsp;0-65U/L"},
+     {"key":"谷草转氨酶","value":"未见异常","tip":"参考值：<br/>&nbsp;8_37U/L"},
+     {"key":"尿素","value":"未见异常","tip":"参考值：<br/>&nbsp;2.5-6.4mmol/L"},
+     {"key":"肌酐","value":"未见异常","tip":"参考值：<br/>&nbsp;53-115umol/L"},
+     {"key":"尿酸","value":"未见异常","tip":"参考值：<br/>&nbsp;210-430umol/L"}
      ],
      "value":"",
      "scored":false,
@@ -687,12 +687,12 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"K","value":"未见异常","tip":"3.5-5.5 mmol/L"},
-     {"key":"Na","value":"未见异常","tip":"135-145 mmol/L"},
-     {"key":"CI","value":"未见异常","tip":"95-105 mmol/L"},
-     {"key":"Ca","value":"未见异常","tip":"2.08-2.60 mmol/L"},
-     {"key":"Mg","value":"未见异常","tip":"0.65-1.05 mmol/L"},
-     {"key":"P","value":"未见异常","tip":"0.80-1.60 mmol/L"}
+     {"key":"K","value":"未见异常","tip":"参考值：<br/>&nbsp;3.5-5.5 mmol/L"},
+     {"key":"Na","value":"未见异常","tip":"参考值：<br/>&nbsp;135-145 mmol/L"},
+     {"key":"CI","value":"未见异常","tip":"参考值：<br/>&nbsp;95-105 mmol/L"},
+     {"key":"Ca","value":"未见异常","tip":"参考值：<br/>&nbsp;2.08-2.60 mmol/L"},
+     {"key":"Mg","value":"未见异常","tip":"参考值：<br/>&nbsp;0.65-1.05 mmol/L"},
+     {"key":"P","value":"未见异常","tip":"参考值：<br/>&nbsp;0.80-1.60 mmol/L"}
      ],
      "value":"",
      "scored":false,
@@ -703,7 +703,7 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"艾滋","value":"未见异常","tip":"阴性"}
+     {"key":"艾滋","value":"未见异常","tip":"参考值：<br/>&nbsp;阴性"}
      ],
      "value":"",
      "scored":false,
@@ -714,7 +714,7 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"乙肝","value":"未见异常","tip":"阴性"}
+     {"key":"乙肝","value":"未见异常","tip":"参考值：<br/>&nbsp;阴性"}
      ],
      "value":"",
      "scored":false,
@@ -725,7 +725,7 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"丙肝","value":"未见异常","tip":"阴性"}
+     {"key":"丙肝","value":"未见异常","tip":"参考值：<br/>&nbsp;阴性"}
      ],
      "value":"",
      "scored":false,
@@ -744,10 +744,10 @@
      "summary":"",
      "type":"input",
      "keys":[
-     {"key":"手术时间","value":"","tip":"<span style='text-align:right;display: inline-block;'>上肢60-90分<br/>下肢90-120分</span>"},
-     {"key":"止血带时长","value":"","tip":"<span style='text-align:right;display: inline-block;'>如果超时休息20-30分钟再打</span>"},
-     {"key":"出血量","value":""},
-     {"key":"输血量","value":""}
+     {"key":"手术时间","value":"","tip":" <span>分钟</span><span style='text-align:left;display: inline-block;vertical-align: middle;margin-left:5px;'>上肢60-90分<br/>下肢90-120分</span>"},
+     {"key":"止血带时长","value":"","tip":"<span>分钟</span><span style='text-align:left;display: inline-block;vertical-align: middle;margin-left:5px;'>如果超时休息<br/>20-30分钟再打</span>"},
+     {"key":"出血量","value":"","tip":"<span style='padding-top: 7px; display: inline-block;'>ml</span>"}, 
+     {"key":"输血量","value":"","tip":"<span style='padding-top: 7px; display: inline-block;'>ml</span>"}
      ],
      "value":"",
      "scored":false,
@@ -1272,7 +1272,7 @@
     "scored": true,
     "checkedStyle": "dot"
   }, {
-    "title": "是否具备所有畸形问题，固定内收畸形<10°，固定内旋畸形<10°，肢体短缩<3.2CM，固定屈曲畸形<30°",
+    "title": "畸形是否具备下列所有四条，固定内收畸形<10°，固定内旋畸形<10°，肢体短缩<3.2CM，固定屈曲畸形<30°",
     "summary": "",
     "type": "radio",
     "keys": [{

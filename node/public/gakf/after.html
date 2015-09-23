@@ -12,6 +12,10 @@
 </head>
 <body ms-controller="test" class="ms-controller">
 	<div class="" id="gradeList">
+		
+		<div class="spacer10"></div>
+		<div class="" style="padding:0px 10px;">{{d.summary|html}}</div>
+		<div class="spacer5"></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
 			<b class="my-title">{{el.title}}</b>
 			<ul class="list-group " ms-if="el.type == 'checkbox'">
@@ -39,7 +43,6 @@
 			  </li>
 			</ul>
 		</div>
-		<div class="">{{d.summary|html}}</div>
 	</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom my-nav my-nav-bottom"  ms-if="d.isshow">
 	  <div class="container text-center" style="height: 42px; line-height: 42px;">
