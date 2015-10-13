@@ -197,7 +197,7 @@ form em.error { width: 200px; margin-left: 10px; color: red; }
 
 .my-line { border-top: 1px solid #ccc; margin: 10px 0px; }
 
-.my-title { margin: 5px 10px; display: inline-block; }
+.my-title { margin: 5px 10px; display: inline-block; line-height: 20px; }
 
 .my-textarea1 { border: 0px; text-align: right; }
 

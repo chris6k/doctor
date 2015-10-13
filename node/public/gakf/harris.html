@@ -18,7 +18,7 @@
 		</div>
 		<div class="spacer5" ms-if="d.summary==''"></div>
 		<div  ms-repeat-el="d.items"  ms-attr-alt="{{$index}}">
-			<b class="my-title">{{el.title}}</b>
+			<b class="my-title">{{el.title|html}}</b>
 			<ul class="list-group " ms-if="el.type == 'radio'">
 			  <li class="list-group-item radio" ms-repeat-el="el.keys"  ms-click="click">
 			  	<div class="col-xs-8">

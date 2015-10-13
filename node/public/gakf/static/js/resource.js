@@ -137,8 +137,8 @@ RC['selected'] = function (obj,type){
     if(!$(obj).data("isSelected")){
         $(obj).addClass("selected");
         $(obj).find(".tag").addClass(t);
-        if(+type>0){
-            unit = "+"+type+"分";
+        if(+type>=0){
+            unit = "+ "+type+" 分";
         }else {
             unit = "";
         }
