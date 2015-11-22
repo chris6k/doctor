@@ -39,6 +39,9 @@ router.get('/sickrequest', function (req, res, next) {
         } else if (da2.length == 0) {
             res.json(result(true, "没有患者申请审核", []));
         } else {
+            for (var i=0; i < da2.length; i++) {
+                da2[i].lastUpdate = dateFormat(da2[i].lastUpdate, "yyyy/mm/dd hh:MM:ss");
+            }
             res.json(result(true, "", da2));
         }
     });
