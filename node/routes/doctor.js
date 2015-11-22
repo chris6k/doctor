@@ -155,9 +155,9 @@ var findForArea = function (req, res, doctor_id, callback) {
             res.json(result(false, 'no such doctor', err));
         } else {
             req.models.hospital.find({ 'name': doctors[0].hospital }, function(err, hosp) {
-                if (err || !hosp) {
+                if (err || !hosp || hosp.length == 0) {
                     res.json(result(false, 'unknown hospital', { 'err': err }));
-                } else if (hosp.showArea === 't') {
+                } else if (hosp[0].showArea === 't') {
                     var name = doctors[0].name;
                     var area = doctors[0].area;
                     console.info("name=" + name + ", area=" + area);
