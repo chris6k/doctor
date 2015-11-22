@@ -393,6 +393,7 @@ var notifyOneDay = function(wx_id) {
     
     
 };
+api.notifyOneDay = notifyOneDay;
 
 weixin_biz.api = api;
 weixin_biz.weixin = weixin;

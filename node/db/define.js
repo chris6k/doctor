@@ -21,7 +21,8 @@ defines.define = (function(defines){return function (db, models) {
     });
     models.sickRequest.sync();
     models.hospital = db.define('hospital', {
-        name: {type: 'text', required:true, unique: true}
+        name: {type: 'text', required:true, unique: true},
+        showArea: {type: 'text', required:false, unique: false} //是否显示病区 t-显示 f-不显示
     });
     models.hospital.sync();
     models.hospitalDoctor = db.define('hospital_doctor', {
