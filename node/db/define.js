@@ -207,3 +207,4 @@ defines.define = (function(defines){return function (db, models) {
 })(defines);
 
 module.exports = defines;
+

@@ -245,3 +245,4 @@ function printQRCode(name, url, callback){
 }
 
 module.exports.print = printQRCode;
+

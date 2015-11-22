@@ -41,9 +41,35 @@ var models = function() {
     }
     return _models;
 };
-var callback = function(){
+var callback = function(err, result){
+	if (err) {
+            console.error(err);
+        } else if (result) {
+            console.info("result=" + JSON.stringify(result) + ", date=" + Date.now());
+        }
 	console.info("send template");
 };
+
+var notifyInfo = function(sick, drugn) {
+	var templateId = template_id;
+	var url = '';
+	var topcolor = '#FF0000'; // 顶部颜色
+	var data = {
+	 	first: {"value":"用药提醒"},
+	 	keyword1: {"value":drugn.drug_name},
+	 	keyword2: {"value":"每日服药次数:" + drugn.times + "次，每次服药片数:" + drugn.drug_per + "片"},
+	 	keyword3: {"value":"药物请遵照医嘱服用，如有任何不适症状，请立即联系您的医生"},
+	 	remarks: {"value":"感谢您的使用"}
+	};
+	drugn.save({"count": drugn.count - 1}, function(err){
+		if (!err)
+			console.info("minus drug times succ");
+		else
+			console.info("minus drug times failed");
+	});
+	api.sendTemplate(sick.wx_id, templateId, url, topcolor, data, callback);
+}
+
 
 var notifySick = function(sick) {
 	var templateId = "_hpYqESfjPoRF45jEmSoKSVs49NFU5h1DkSQoE73RAY";
@@ -64,20 +90,42 @@ var notifySick = function(sick) {
 				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
 				var day2 = sick_day + '_2';
 				url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day2;
-				data.first.value = "健康小贴士，第 "+ sick_day +" 天 "+ articleList[day2];
-				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
+				
+				 var data2 = {
+				          	first: {"value":"健康小贴士，第 "+sick_day+" 天 " + articleList[day2]},
+                				keyword1: {"value":"给您的健康小贴士，请点击阅读"},
+                				keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
+                				remarks: {"value":"请点击阅读"}
+       				 };
+
+				api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data2,callback);
 
 				if(sick_day == "3"){
+
 					var day3 = sick_day + '_3';
+     					var data3 = {
+                                                first: {"value":"健康小贴士，第 "+sick_day+" 天 " + articleList[day3]},
+                                                keyword1: {"value":"给您的健康小贴士，请点击阅读"},
+                                                keyword2: {"value":dateFormat(datetime,"yyyy/mm/dd hh:MM:ss")},
+                                                remarks: {"value":"请点击阅读"}
+                                 	};    
 					url = 'http://www.guanaikangfu.com/gakf/day.html?day=' + day3;
-					data.first.value = "健康小贴士，第 "+ sick_day +" 天 " + articleList[day3];
-					api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data,callback);
+					data3.first.value = "健康小贴士，第 "+ sick_day +" 天 " + articleList[day3];
+					api.sendTemplate(sick_item.wx_id, templateId, url, topcolor,data3,callback);
 				}
 		}
 
 	});
 	
-}
+};
+
+var sickCallback = function(drugn) {
+   return function(err, sick) {
+   	if (!err) {
+             notifyInfo(sick, drugn);
+        }
+   };
+};
 
 var jobs = [];
 var rule8 = later.parse.cron("0 8 * * ?");
@@ -90,11 +138,7 @@ later.setInterval(function(){
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				models().sick.get(drugn.sick_id, function(err, sick){
-					if (!err) {
-						notifyInfo(sick, drugn);
-					}
-				});
+				models().sick.get(drugn.sick_id, sickCallback(drugn));
 			}
 		}
     	});
@@ -111,16 +155,30 @@ later.setInterval(function(){
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				models().sick.get(drugn.sick_id, function(err, sick){
-					if (!err) {
-						notifyInfo(sick, drugn);
-					}
-				});
+			        models().sick.get(drugn.sick_id, sickCallback(drugn));
 			}
 		}
     	});
 	}
 }, rule12);
+
+var rule16 = later.parse.cron("0 16 * * ?");
+later.setInterval(function(){
+        var times_array = [4];
+        for (var j = 0; j < times_array.length; j++) {
+        models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
+                if (err || data.length === 0) {
+                        console.info("err or no data");
+                } else {
+                        for(var i=0;i<data.length;i++) {
+                                var drugn = data[i];
+                        	models().sick.get(drugn.sick_id, sickCallback(drugn));
+			}
+                }
+        });
+        }
+}, rule16);
+
 
 var rule18 = later.parse.cron("0 18 * * ?");
 later.setInterval(function(){
@@ -132,11 +190,7 @@ later.setInterval(function(){
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				models().sick.get(drugn.sick_id, function(err, sick){
-					if (!err) {
-						notifyInfo(sick, drugn);
-					}
-				});
+				models().sick.get(drugn.sick_id, sickCallback(drugn));
 			}
 		}
     	});
@@ -146,7 +200,7 @@ later.setInterval(function(){
 
 var rule20 = later.parse.cron("0 20 * * ?");
 later.setInterval(function(){
-	var times_array = [4];
+	var times_array = [2,4];
 	for (var j = 0; j < times_array.length; j++) {
 	models().drugnotify.find({times: times_array[j], count: orm.gt(0)}, function(err, data){
 		if (err || data.length === 0) {
@@ -154,16 +208,31 @@ later.setInterval(function(){
 		} else {
 			for(var i=0;i<data.length;i++) {
 				var drugn = data[i];
-				models().sick.get(drugn.sick_id, function(err, sick){
-					if (!err) {
-						notifyInfo(sick, drugn);
-					}
-				});
+				models().sick.get(drugn.sick_id, sickCallback(drugn));
 			}
 		}
     	});
 	}
 }, rule20);
+
+
+/*var rule0 = later.parse.cron("0/2 * * * ?");
+later.setInterval(function(){
+        var times_array = [2,4];
+        for (var j = 0; j < times_array.length; j++) {
+        models().drugnotify.find({count: orm.gt(0), sick_id:1}, function(err, data){
+                if (err || data.length === 0) {
+                        console.info("err or no data");
+                } else {
+                        for(var i=0;i<data.length;i++) {
+                                var drugn = data[i];
+                                models().sick.get(drugn.sick_id, sickCallback(drugn));
+                        }
+                }
+        });
+        }
+}, rule0);
+*/
 
 var ruleDay = later.parse.cron("0 7 * * ?");
 later.setInterval(function(){
@@ -190,5 +259,34 @@ later.setInterval(function(){
 	});
 }, ruleDay);
 
+
+var ruleTest = later.parse.cron("0/2 * * * ?");
+later.setInterval(function(){
+        models().sick_notify.find({"status":1, "sick_id":123}, function(err, data){
+                if (err || !data) {
+                        console.error("err or no data");
+                } else {
+                        for (var i=0;i<data.length;i++) {
+                                var item = data[i];
+                                if (item.day >= 11) {
+                                        item.save({"status":0},function(err){
+                                                console.info(err || "ok");
+                                        });
+                                } else {
+                                        if (item.day > 1) {
+                                                notifySick(item);
+                                    }
+                                        item.save({"day": item.day + 1}, function(err){
+                                        console.info(err||"ok");
+                                        });
+                                }
+                        }
+                }
+        });
+}, ruleTest);
+
+
 module.exports = jobs;
+
+
 

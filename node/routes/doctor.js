@@ -70,7 +70,7 @@ var findForArea = function(req, res, doctor_id, callback) {
 
 //获取出院的病人
 router.get('/out_sicks', function (req, res, next) {
-    var doctor_id = req.cookies.doctor_id || 0;//req.param('doctor_id');
+    var doctor_id = req.cookies.doctor_id || req.param('doctor_id');
     if (!doctor_id) {
         res.json(result(false, 'no doctor_id', {}));
         return;
@@ -92,7 +92,7 @@ router.get('/out_sicks', function (req, res, next) {
                 req.models.sick.find({
                     status: 't',
                     doctor_id : ids,
-                    in_day: null,
+                    in_day: null
                 }, function(err, data2) {
                     if (err || !data) {
                         res.json(result(true, '', sick_array));
@@ -101,7 +101,21 @@ router.get('/out_sicks', function (req, res, next) {
                             data2[i].out_dur = 0;
                             sick_array.push(data2[i]);
                         }
+			req.models.sick.find({
+                   		 status: 't',
+                    		 doctor_id : ids,
+                    		 in_day: orm.gt(new Date())
+                	}, function(err, data2) {
+                    	if (err || !data) {
+                        	res.json(result(true, '', sick_array));
+                    	} else {
+                        	for (var i = 0; i < data2.length; i++) {
+                           	 data2[i].out_dur = 0;
+                           	 sick_array.push(data2[i]);
+                        }
                         res.json(result(true, '', sick_array));
+                    		}
+                	});
                     }
                 });
                
@@ -360,3 +374,4 @@ router.get('/verify', function(req, res, next) {
 });
 
 module.exports = router;
+

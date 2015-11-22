@@ -9,7 +9,8 @@ var loginUrl = '/gakf/login.html';
 var checkUrl = function(path) {
     path = path || "";
     var idx = path.indexOf("?");
-    path = path.substring(0, idx <= 0 ? path.length: idx);
+    path = path.substring(0, idx <= 0 ? path.length : idx);
+    console.info("checkUrl.path=" + path);
     if (urlMap[path]) {
         return true;
     } 
@@ -35,10 +36,8 @@ var check = function (req, res, next) {
     var missInfo = !open_id || open_id === 'undefined' || !uid || uid === 'undefined' 
     || !status || status === 'undefined' || !type || type === 'undefined';
     var expiresTime = 360*24*3600*1000;
-
     console.log("path=" + path + ",checkUrl=" + checkUrl(path));
     console.log("missinfo=" + missInfo);
-
     if (checkUrl(path)) {
         if (missInfo) {
             var redirectUri = encodeURIComponent(redirectUrl);

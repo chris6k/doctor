@@ -297,7 +297,6 @@ router.post('/reg', function (req, res, next) {
                             if (doctor[0].wx_id) {
                                //TODO
                                notifySick(doctor[0].wx_id, name);
-                               // notifyOneDay(item.wx_id);
                                // api.sendText(doctor[0].wx_id, "有新病人(" + name + ")申请成为您的病人，请回复‘同意和病人姓名'审核通过，回复'拒绝和病人姓名'拒绝请求", function(err){
                                //      if (err) {
                                //          console.error(err);
@@ -342,9 +341,7 @@ var notifySick = function(wx_id, name) {
         }
     });
     
-};
-
-
+}
 
 
 module.exports = router;

@@ -320,8 +320,10 @@ router.post('/savestatus', function(req, res, next) {
                     if (table_type.indexOf('slywjj') >= 0) {
                         for (var i = 0;i < tablejson.items.length; i++) {
                         var it = tablejson.items[i];
+			console.log(it);
                         it.value = it.value ? it.value : [];
                             for (var j = 0; j < it.value.length; j++) {
+				console.log(it.value[j]);
                                 if (it.value[j] === "对药物过敏") {
                                     sick.save({irr: 1}, function(err){
                                         if (!err) {
@@ -330,6 +332,7 @@ router.post('/savestatus', function(req, res, next) {
                                             console.info("save status failed");
                                         }
                                     });
+				    break;
                                 }
                             }
                         }
@@ -347,16 +350,40 @@ router.post('/savestatus', function(req, res, next) {
                     });
                 } else {
                     try {
+			var tablejson = JSON.parse(table);
+			console.info("tableindex=" + table_type.indexOf('slywjj'));
+  	                 if (table_type.indexOf('slywjj') >= 0) {
+                        for (var i = 0;i < tablejson.items.length; i++) {
+                        var it = tablejson.items[i];
+                        console.log(it);
+                        it.value = it.value ? it.value : [];
+                            for (var j = 0; j < it.value.length; j++) {
+                                console.log(it.value[j]);
+                                if (it.value[j] === "对药物过敏") {
+                                    sick.save({irr: 1}, function(err){
+                                        if (!err) {
+                                            console.info("save status succ");
+                                        } else {
+                                            console.info("save status failed");
+                                        }
+                                    });
+				    break;
+                                }
+                            }
+                        }
+        	            }
+
                         // console.info("4");
-                        var tablejson = JSON.parse(table);
                         var score = calc.score(tablejson, table_type, bmi, age);
                         var level = calc.level(table_type, tablejson);
-                        var pro_drug = recommend.prohibit(tablejson);
-                        var rec_drug = recommend.recomm(pro_drug);
-
-                        saveProhibitDrug(req, pro_drug, sick_id, table_type);
-                        saveRecommDrug(req, rec_drug, sick_id, table_type);
-                        req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
+                        
+			if (table_type.indexOf('slywjj') >= 0) {
+                            var pro_drug = recommend.prohibit(tablejson);
+                            var rec_drug = recommend.recomm(pro_drug);
+                            saveProhibitDrug(req, pro_drug, sick_id, table_type);
+                            saveRecommDrug(req, rec_drug, sick_id, table_type);
+                        }
+			req.models.sickstatus.create({sick_id:sick_id, table_type:table_type, value:JSON.stringify(tablejson),score:score, level:level},
                         function(err, item){
                         if (err) {
                             res.json(result(false, 'err', err));
@@ -510,3 +537,4 @@ router.post('/delnotify',function(req,res,next){
 });
 
 module.exports = router;
+

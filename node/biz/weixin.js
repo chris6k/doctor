@@ -333,6 +333,12 @@ var weixin_biz = function (app) {
         console.log('>>>>>>>>> viewEventMsg emit >>>>>>>>>');
         console.log(data);
     });
+   
+    weixin.on("templateSendJobFinishEventMsg", function(data){
+         console.log('>>>>>>> TEMPLATESENDJOBFINISH emit >>>>>>>>');
+         console.log(data);
+         weixin.sendMsg("success");
+    });
 
 };
 
@@ -391,3 +397,4 @@ var notifyOneDay = function(wx_id) {
 weixin_biz.api = api;
 weixin_biz.weixin = weixin;
 module.exports = weixin_biz;
+
