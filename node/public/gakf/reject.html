@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0 user-scalable=yes"/>
+	<title>审核账号</title>
+	<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./static/css/index.css">
+	<script type="text/javascript" src="./static/js/require.js"></script>
+	<script type="text/javascript" src="./static/js/main.js"></script>
+	<script type="text/javascript" src="./static/js/resource.js"></script>
+</head>
+<body ms-controller="test" class="ms-controller">
+	<nav class="navbar navbar-default navbar-fixed-top my-nav my-nav-top" >
+	  <div id="my-tab">
+	    <div class="col-xs-6 text-center my-nav-line ">
+	    	<a href="/gakf/account.html">未审核</a>
+	    </div>
+	    <div class="col-xs-6 text-center my-nav-line selected">
+	    	<a href="javascript:void(0)">已审核</a>
+	    </div>
+	  </div>
+	</nav>
+	<div style="margin-top:45px;"></div> 
+	<div class="" id="gradeList">
+		<div class="spacer5" ></div>
+		<div >
+			<ul class="list-group ">
+			  <li class="list-group-item checkbox" ms-repeat-el="d">
+			  	<div class="col-xs-10">
+			  		<span class="qtitle">姓名：{{el.sickName}}</span>
+			  		<span class="qtitle">申请时间：{{el.lastUpdate}}</span>
+			  	</div>
+			  	<div class="col-xs-2">
+			  		<span ms-attr-alt= "" class="tag"></span>
+		  			<span class="right tagcon sl8"></span>
+			  	</div>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+		require(["store","avalon","index"],function(store){
+			//Zhi.detectGesture(document.getElementById('gradeList'), ['tap']);
+			var user=store.get("user") || RC["user"]();
+			if(user.type == "sick") {
+				$("body").removeClass("ms-controller").html("<div class='text-center' style='padding:10px;'><div class='spacer20'></div><h4 style='text-align: center;'>友情提示</h4><span  style='padding:10px;'>申请账号后，请耐心等待医生审核</span></div>");
+				return ;
+			}
+
+			var data = {};
+			 //sick has save btn doctor hasn't save btn
+			var temp = store.get("user") || RC["user"](),id="";
+			if(temp.type =="doctor"){
+				data.isshow = false;
+			}else {
+				data.isshow = true;
+			}
+			id = RC.parseOptions(window.location.href).sick_id;
+			var vmodel ;
+		    
+		    
+		    $.ajax({ 
+				type:"get",
+				url: "/doctor/sickrequest?type=checked",
+				dataType: "json", 
+				success: function(obj){
+					vmodel = avalon.define({
+		                $id: "test",
+		                d: obj.content
+		            });
+					avalon.scan();
+					
+	    		},
+	    		error:function(){
+
+	    		}
+			}); 
+
+		   
+
+		});
+	</script>
+</body>
+</html>

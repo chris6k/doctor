@@ -26,7 +26,13 @@ router.get('/info', function (req, res, next) {
 
 router.get('/sickrequest', function (req, res, next) {
     var doctor_id = req.cookies.doctor_id || 0;
-    req.models.sickRequest.find({ "doctorId": doctor_id, "status": "f" }, function (err, da2) {
+    var type = req.param("type"),option;
+    if(type == "checked"){
+        option = { "doctorId": doctor_id, "status": "t" };
+    }else{
+        option = { "doctorId": doctor_id, "status": "f" }
+    }
+    req.models.sickRequest.find(option, function (err, da2) {
         if (err) {
             console.error(err);
             res.json(result(false, "暂时无法提供服务", { 'err': err }));
@@ -45,7 +51,7 @@ router.get('/acceptsick', function (req, res, next) {
         if (err || dat2.length === 0) {
             res.json(result(false, "未能找到该病患", { 'err': err }));
         } else {
-            if (!isOk) {
+            if (isOk != 'true') {
                 dat2[0].save({ status: 'f' });
             } else {
                 dat2[0].save({ status: 't' });

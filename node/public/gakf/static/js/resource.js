@@ -133,7 +133,10 @@ RC['setItem'] = function (d){
         }
 };
 RC['selected'] = function (obj,type){
-    var t = "yellowtag",type = !type?0:type,unit="";
+    var t = "yellowtag",type,unit="";
+    if(type != undefined){
+         type= !type?0:type
+    }
     if(!$(obj).data("isSelected")){
         $(obj).addClass("selected");
         $(obj).find(".tag").addClass(t);
