@@ -55,7 +55,7 @@ router.get('/acceptsick', function (req, res, next) {
             res.json(result(false, "未能找到该病患", { 'err': err }));
         } else {
             if (isOk != 'true') {
-                dat2[0].save({ status: 'f' });
+                dat2[0].save({ status: 'r' });
             } else {
                 dat2[0].save({ status: 't' });
             }
