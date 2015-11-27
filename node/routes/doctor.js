@@ -150,12 +150,15 @@ var notifySickReview = function (sick, description) {
 }
 
 var findForArea = function (req, res, doctor_id, callback) {
+    console.log("doctor_id=" + doctor_id);
     req.models.hospitalDoctor.find({ "doctor_id": doctor_id }, function (err, doctors) {
         if (err || !doctors || doctors.length == 0) {
+            console.log("findForArea err, unknown doctor");
             res.json(result(false, 'no such doctor', err));
         } else {
-            req.models.hospital.find({ 'name': doctors[0].hospital }, function(err, hosp) {
+            req.models.hospital.find({ 'name': doctors[0].name }, function(err, hosp) {
                 if (err || !hosp || hosp.length == 0) {
+                    console.log("findForArea err, unknown hospital");
                     res.json(result(false, 'unknown hospital', { 'err': err }));
                 } else if (hosp[0].showArea === 't') {
                     var name = doctors[0].name;
